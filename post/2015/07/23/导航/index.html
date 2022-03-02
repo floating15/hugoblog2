@@ -46,23 +46,20 @@
 <h2 id="22-当前的工作目录pwd">2.2 当前的工作目录:<code>pwd</code></h2>
 <p>把文件系统想成一座迷宫，形如一个倒置的树，我们就位于其中。在任何时刻，我们都处在某个目录中，能够看到该目录中包含的文件、上级目录（父目录）和下级目录（子目录）。</p>
 <p>我们所处的目录称为<strong>当前工作目录</strong>，可以使用<code>pwd</code>(print working directory)命令将其显示出来：</p>
-<pre><code class="language-Shell">root@wanghaoming1:~# pwd
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:~# <span style="color:#008000">pwd</span>
 /root
-</code></pre>
-<h2 id="23-列出目录内容ls">2.3 列出目录内容:<code>ls</code></h2>
+</code></pre></div><h2 id="23-列出目录内容ls">2.3 列出目录内容:<code>ls</code></h2>
 <p>使用<code>ls</code>命令可以列出当前工作目录中的文件与子目录：</p>
-<pre><code class="language-Shell">root@wanghaoming1:~# ls
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:~# ls
 oneinstack  oneinstack-full.tar.gz
-</code></pre>
-<h2 id="24更改当前工作目录cd">2.4更改当前工作目录:<code>cd</code></h2>
+</code></pre></div><h2 id="24更改当前工作目录cd">2.4更改当前工作目录:<code>cd</code></h2>
 <p><code>cd</code>命令可以更改当前工作目录。只需在 <code>cd</code>命令后输入要更改的工作目录路径名即可。路径名分两种：绝对路径名和相对路径名。</p>
 <h3 id="241-绝对路径名">2.4.1 绝对路径名</h3>
-<p>绝对路径名从根目录（用/表示）开始，随后紧接一个又一个分支，直到目标<u>目录或文件</u>：</p>
-<pre><code class="language-Shell">root@wanghaoming1:~# cd /usr/bin
-root@wanghaoming1:/usr/bin# pwd
+<p>绝对路径名从根目录（用/表示）开始，随后紧接一个又一个分支，直到目标<!-- raw HTML omitted -->目录或文件<!-- raw HTML omitted -->：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:~# <span style="color:#008000">cd</span> /usr/bin
+root@wanghaoming1:/usr/bin# <span style="color:#008000">pwd</span>
 /usr/bin
-</code></pre>
-<blockquote>
+</code></pre></div><blockquote>
 <p>note: 第二行 machinename 和#之间的目录名已经表明当前工作目录为/usr/bin.</p>
 </blockquote>
 <h3 id="242-相对路径名">2.4.2 相对路径名</h3>
@@ -70,28 +67,24 @@ root@wanghaoming1:/usr/bin# pwd
 <ul>
 <li>方式一：绝对路径</li>
 </ul>
-<pre><code class="language-Shell">root@wanghaoming1:/usr/bin# cd /usr
-root@wanghaoming1:/usr# pwd
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/usr/bin# <span style="color:#008000">cd</span> /usr
+root@wanghaoming1:/usr# <span style="color:#008000">pwd</span>
 /usr
-</code></pre>
-<ul>
+</code></pre></div><ul>
 <li>方式二：相对路径</li>
 </ul>
-<pre><code class="language-Shell">root@wanghaoming1:/usr/bin# cd ..
-root@wanghaoming1:/usr# pwd
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/usr/bin# <span style="color:#008000">cd</span> ..
+root@wanghaoming1:/usr# <span style="color:#008000">pwd</span>
 /usr
-</code></pre>
-<p>此外还有两种方式从当前目录（<code>usr</code>）进入其子目录<code>bin</code>中，第一种是绝对路径（<code>cd /usr/bin</code>），另一种是相对路径：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/usr# cd ./bin
-root@wanghaoming1:/usr/bin# pwd
+</code></pre></div><p>此外还有两种方式从当前目录（<code>usr</code>）进入其子目录<code>bin</code>中，第一种是绝对路径（<code>cd /usr/bin</code>），另一种是相对路径：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/usr# <span style="color:#008000">cd</span> ./bin
+root@wanghaoming1:/usr/bin# <span style="color:#008000">pwd</span>
 /usr/bin
-</code></pre>
-<p>多数情况下，<code>./</code>可以省略，因此代码可以重写为：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/usr# cd bin
-root@wanghaoming1:/usr/bin# pwd
+</code></pre></div><p>多数情况下，<code>./</code>可以省略，因此代码可以重写为：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/usr# <span style="color:#008000">cd</span> bin
+root@wanghaoming1:/usr/bin# <span style="color:#008000">pwd</span>
 /usr/bin
-</code></pre>
-<blockquote>
+</code></pre></div><blockquote>
 <p>note: 关于文件名的重要说明</p>
 <ul>
 <li>以点号开头的文件名是隐藏的，只有<code>ls -a</code>才会列出这些文件</li>
@@ -122,16 +115,15 @@ root@wanghaoming1:/usr/bin# pwd
 </tr>
 </tbody>
 </table>
-<pre><code class="language-Shell">root@wanghaoming1:/usr/bin# cd
-root@wanghaoming1:~# pwd
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/usr/bin# <span style="color:#008000">cd</span>
+root@wanghaoming1:~# <span style="color:#008000">pwd</span>
 /root
-root@wanghaoming1:~# cd -
+root@wanghaoming1:~# <span style="color:#008000">cd</span> -
 /usr/bin
-root@wanghaoming1:/usr/bin# cd ~root
-root@wanghaoming1:~# pwd
+root@wanghaoming1:/usr/bin# <span style="color:#008000">cd</span> ~root
+root@wanghaoming1:~# <span style="color:#008000">pwd</span>
 /root
-</code></pre>
-
+</code></pre></div>
 </main>
 
   <footer>

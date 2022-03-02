@@ -13,14 +13,13 @@
       <pubDate>Fri, 23 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>/post/2021/07/23/kaggle-ashrae/</guid>
-      <description>新洋教育Kaggle零基础教学计划 - 数据挖掘项目 预测建筑物的能源消耗 ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。
+      <description>预测建筑物的能源消耗 ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。
 问：夏天给大楼降温需要多少钱？
 答：非常多！政府正在进行投资，以降低能源成本，减少排放。但是问题是，这些改进是否真的有效？
 在这次竞赛中，我们通过预测冷水表、电表、热水表和蒸汽表的读数来对这些节能投资进行更好的估计。数据来自近三年来1000栋建筑中的各表读数。大型投资者和金融机构将更倾向于在这一领域投资，以提高建筑能源使用效率。
- **提示：**Code 和 Markdown 区域可通过 Shift + Enter 快捷键运行。此外，Markdown可以通过双击进入编辑模式。
- 我们将这个notebook分为不同的步骤，你可以使用下面的链接来浏览此notebook。
+我们将这个notebook分为不同的步骤，你可以使用下面的链接来浏览此notebook。
  Step 1: 导入数据 Step 2: 探索性数据分析 Step 3: 数据预处理 Step 4: LightGBM Step 5: 结果预测  在该项目中包含了如下的问题：
- 问题 1: 回顾课上内容并查阅资料，归纳总结数据预处理需要的步骤。 问题 2: 思考此处为何要进行对数转换。 问题 3: 查阅资料，总结LightGBM与CatBoost的差异。  #导入必要的库 import pandas as pd import numpy as np import os import gc import copy import warnings import lightgbm as lgb from lightgbm import LGBMRegressor from sklearn.</description>
+ 问题 1: 回顾课上内容并查阅资料，归纳总结数据预处理需要的步骤。 问题 2: 思考此处为何要进行对数转换。 问题 3: 查阅资料，总结LightGBM与CatBoost的差异。  #导入必要的库 import pandas as pd import numpy as np import os import gc import copy import warnings import lightgbm as lgb from lightgbm import LGBMRegressor from sklearn.metrics import mean_squared_log_error from sklearn.</description>
     </item>
     
     <item>

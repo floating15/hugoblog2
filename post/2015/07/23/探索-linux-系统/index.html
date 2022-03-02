@@ -42,11 +42,10 @@
 <p>[TOC]</p>
 <h2 id="31-使用ls命令">3.1 使用<code>ls</code>命令</h2>
 <p>使用<code>ls</code>命令，可以指定要显示内容的目录：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/# ls /usr
-bin  games  include  lib  local  sbin  share  src
-</code></pre>
-<p>也可以指定多个目录，既可使用绝对路径，也可使用相对路径。这里用户主目录用<code>~</code>表示：</p>
-<pre><code class="language-shell">root@wanghaoming1:/# ls ~ /usr boot
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/# ls /usr
+bin  games  include  lib  <span style="color:#008000">local</span>  sbin  share  src
+</code></pre></div><p>也可以指定多个目录，既可使用绝对路径，也可使用相对路径。这里用户主目录用<code>~</code>表示：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@wanghaoming1:/# ls ~ /usr boot
 boot:
 abi-4.4.0-62-generic  config-4.4.0-62-generic  grub  initrd.img-4.4.0-62-generic  System.map-4.4.0-62-generic  vmlinuz-4.4.0-62-generic
 
@@ -54,118 +53,113 @@ abi-4.4.0-62-generic  config-4.4.0-62-generic  grub  initrd.img-4.4.0-62-generic
 oneinstack  oneinstack-full.tar.gz
 
 /usr:
-bin  games  include  lib  local  sbin  share  src
-root@wanghaoming1:/# cd ~
+bin  games  include  lib  <span style="color:#008000">local</span>  sbin  share  src
+root@wanghaoming1:/# <span style="color:#008000">cd</span> ~
 root@wanghaoming1:~# ls ..
 bin  boot  data  dev  etc  home  initrd.img  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  swapfile  sys  tmp  usr  var  vmlinuz
-</code></pre>
-<p>还可以通过给<code>ls</code>命令添加选项，修改其显示的格式：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/usr# ls -l
-total 64
-drwxr-xr-x   2 root root 36864 Nov 29  2017 bin
-drwxr-xr-x   2 root root  4096 Apr 13  2016 games
-drwxr-xr-x  53 root root  4096 Nov 29  2017 include
-drwxr-xr-x  58 root root  4096 Nov 29  2017 lib
-drwxr-xr-x  19 root root  4096 Nov 29  2017 local
-drwxr-xr-x   2 root root  4096 Feb 12 18:24 sbin
-drwxr-xr-x 123 root root  4096 Nov 29  2017 share
-drwxr-xr-x   4 root root  4096 Aug 17  2017 src
-</code></pre>
-<h3 id="311-选项和参数">3.1.1 选项和参数</h3>
+</code></pre></div><p>还可以通过给<code>ls</code>命令添加选项，修改其显示的格式：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/usr# ls -l
+total <span style="color:#666">64</span>
+drwxr-xr-x   <span style="color:#666">2</span> root root <span style="color:#666">36864</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> bin
+drwxr-xr-x   <span style="color:#666">2</span> root root  <span style="color:#666">4096</span> Apr <span style="color:#666">13</span>  <span style="color:#666">2016</span> games
+drwxr-xr-x  <span style="color:#666">53</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> include
+drwxr-xr-x  <span style="color:#666">58</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> lib
+drwxr-xr-x  <span style="color:#666">19</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> <span style="color:#008000">local</span>
+drwxr-xr-x   <span style="color:#666">2</span> root root  <span style="color:#666">4096</span> Feb <span style="color:#666">12</span> 18:24 sbin
+drwxr-xr-x <span style="color:#666">123</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> share
+drwxr-xr-x   <span style="color:#666">4</span> root root  <span style="color:#666">4096</span> Aug <span style="color:#666">17</span>  <span style="color:#666">2017</span> src
+</code></pre></div><h3 id="311-选项和参数">3.1.1 选项和参数</h3>
 <p>多数命令格式如下：</p>
-<pre><code class="language-shell">command -options arguments
-</code></pre>
-<p>即：<strong>命令</strong>后跟随一个或多个能够修改命令行为的<strong>选项</strong>；接着跟着一个或多个<strong>参数</strong>，用于表明命令操作的对象。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#008000">command</span> -options arguments
+</code></pre></div><p>即：<strong>命令</strong>后跟随一个或多个能够修改命令行为的<strong>选项</strong>；接着跟着一个或多个<strong>参数</strong>，用于表明命令操作的对象。</p>
 <ul>
 <li>多数选项是在<strong>单个字符</strong>前加上连字符，如<code>-l</code>；</li>
 <li>有些命令也支持长选项，即在<strong>单词</strong>前加两个连字符，如<code>--reverse</code>。</li>
 <li>许多命令还可以将多个短选项串在一起使用，如将<code>-l</code>与<code>-t</code>串为<code>-lt</code>。</li>
 </ul>
 <p>下面列举<code>ls</code>常用的选项：</p>
-<pre><code class="language-Shell"># 1. -a, -all 列出所有文件，包括., ..
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell"><span style="color:#408080;font-style:italic"># 1. -a, -all 列出所有文件，包括., ..</span>
 root@wanghaoming1:/# ls -a usr
-.  ..  bin  games  include  lib  local  sbin  share  src
+.  ..  bin  games  include  lib  <span style="color:#008000">local</span>  sbin  share  src
 
-# 2. -A, --almost-all 与-a 类似，但不列出., ..
+<span style="color:#408080;font-style:italic"># 2. -A, --almost-all 与-a 类似，但不列出., ..</span>
 root@wanghaoming1:/# ls -A usr
-bin  games  include  lib  local  sbin  share  src
+bin  games  include  lib  <span style="color:#008000">local</span>  sbin  share  src
 
-# 3. -d, --directory 若指定目录，则列出该目录中的内容而非目录本身，与-l 结合使用可查看目录的详细信息
+<span style="color:#408080;font-style:italic"># 3. -d, --directory 若指定目录，则列出该目录中的内容而非目录本身，与-l 结合使用可查看目录的详细信息</span>
 root@wanghaoming1:/# ls -dl usr
-drwxr-xr-x 10 root root 4096 Aug 17  2017 usr
+drwxr-xr-x <span style="color:#666">10</span> root root <span style="color:#666">4096</span> Aug <span style="color:#666">17</span>  <span style="color:#666">2017</span> usr
 
-# 4. -F, --classify 在每个列出的名称后面加上类型指示符。例如，如果是目录名，则在其后加/
+<span style="color:#408080;font-style:italic"># 4. -F, --classify 在每个列出的名称后面加上类型指示符。例如，如果是目录名，则在其后加/</span>
 root@wanghaoming1:/# ls -F .
 bin/  boot/  data/  dev/  etc/  home/  initrd.img@  lib/  lib64/  lost+found/  media/  mnt/  opt/  proc/  root/  run/  sbin/  srv/  swapfile  sys/  tmp/  usr/  var/  vmlinuz@
 
-# 5. -l 以长格式输出结果
+<span style="color:#408080;font-style:italic"># 5. -l 以长格式输出结果</span>
 root@wanghaoming1:/# ls -l usr
-total 64
-drwxr-xr-x   2 root root 36864 Nov 29  2017 bin
-drwxr-xr-x   2 root root  4096 Apr 13  2016 games
-drwxr-xr-x  53 root root  4096 Nov 29  2017 include
-drwxr-xr-x  58 root root  4096 Nov 29  2017 lib
-drwxr-xr-x  19 root root  4096 Nov 29  2017 local
-drwxr-xr-x   2 root root  4096 Feb 12 18:24 sbin
-drwxr-xr-x 123 root root  4096 Nov 29  2017 share
-drwxr-xr-x   4 root root  4096 Aug 17  2017 src
+total <span style="color:#666">64</span>
+drwxr-xr-x   <span style="color:#666">2</span> root root <span style="color:#666">36864</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> bin
+drwxr-xr-x   <span style="color:#666">2</span> root root  <span style="color:#666">4096</span> Apr <span style="color:#666">13</span>  <span style="color:#666">2016</span> games
+drwxr-xr-x  <span style="color:#666">53</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> include
+drwxr-xr-x  <span style="color:#666">58</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> lib
+drwxr-xr-x  <span style="color:#666">19</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> <span style="color:#008000">local</span>
+drwxr-xr-x   <span style="color:#666">2</span> root root  <span style="color:#666">4096</span> Feb <span style="color:#666">12</span> 18:24 sbin
+drwxr-xr-x <span style="color:#666">123</span> root root  <span style="color:#666">4096</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> share
+drwxr-xr-x   <span style="color:#666">4</span> root root  <span style="color:#666">4096</span> Aug <span style="color:#666">17</span>  <span style="color:#666">2017</span> src
 
-# 6. -h, --human-readable 在长格式的输出结果中，以人类可读的形式显示文件大小
+<span style="color:#408080;font-style:italic"># 6. -h, --human-readable 在长格式的输出结果中，以人类可读的形式显示文件大小</span>
 root@wanghaoming1:/# ls -lh usr
 total 64K
-drwxr-xr-x   2 root root  36K Nov 29  2017 bin
-drwxr-xr-x   2 root root 4.0K Apr 13  2016 games
-drwxr-xr-x  53 root root 4.0K Nov 29  2017 include
-drwxr-xr-x  58 root root 4.0K Nov 29  2017 lib
-drwxr-xr-x  19 root root 4.0K Nov 29  2017 local
-drwxr-xr-x   2 root root 4.0K Feb 12 18:24 sbin
-drwxr-xr-x 123 root root 4.0K Nov 29  2017 share
-drwxr-xr-x   4 root root 4.0K Aug 17  2017 src
+drwxr-xr-x   <span style="color:#666">2</span> root root  36K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> bin
+drwxr-xr-x   <span style="color:#666">2</span> root root 4.0K Apr <span style="color:#666">13</span>  <span style="color:#666">2016</span> games
+drwxr-xr-x  <span style="color:#666">53</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> include
+drwxr-xr-x  <span style="color:#666">58</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> lib
+drwxr-xr-x  <span style="color:#666">19</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> <span style="color:#008000">local</span>
+drwxr-xr-x   <span style="color:#666">2</span> root root 4.0K Feb <span style="color:#666">12</span> 18:24 sbin
+drwxr-xr-x <span style="color:#666">123</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> share
+drwxr-xr-x   <span style="color:#666">4</span> root root 4.0K Aug <span style="color:#666">17</span>  <span style="color:#666">2017</span> src
 
-# 7. -S 按照文件大小顺序输出结果
+<span style="color:#408080;font-style:italic"># 7. -S 按照文件大小顺序输出结果</span>
 root@wanghaoming1:/# ls -Slh boot
 total 45M
--rw-r--r-- 1 root root  33M Nov 29  2017 initrd.img-4.4.0-62-generic
--rw------- 1 root root 6.8M Jan 18  2017 vmlinuz-4.4.0-62-generic
--rw------- 1 root root 3.7M Jan 18  2017 System.map-4.4.0-62-generic
--rw-r--r-- 1 root root 1.2M Jan 18  2017 abi-4.4.0-62-generic
--rw-r--r-- 1 root root 186K Jan 18  2017 config-4.4.0-62-generic
-drwxr-xr-x 5 root root 4.0K Feb 12 18:24 grub
+-rw-r--r-- <span style="color:#666">1</span> root root  33M Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> initrd.img-4.4.0-62-generic
+-rw------- <span style="color:#666">1</span> root root 6.8M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> vmlinuz-4.4.0-62-generic
+-rw------- <span style="color:#666">1</span> root root 3.7M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> System.map-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root 1.2M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> abi-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root 186K Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> config-4.4.0-62-generic
+drwxr-xr-x <span style="color:#666">5</span> root root 4.0K Feb <span style="color:#666">12</span> 18:24 grub
 
-# 8. -t 按照修改日期排序输出结果
+<span style="color:#408080;font-style:italic"># 8. -t 按照修改日期排序输出结果</span>
 root@wanghaoming1:/# ls -tlh boot
 total 45M
-drwxr-xr-x 5 root root 4.0K Feb 12 18:24 grub
--rw-r--r-- 1 root root  33M Nov 29  2017 initrd.img-4.4.0-62-generic
--rw-r--r-- 1 root root 1.2M Jan 18  2017 abi-4.4.0-62-generic
--rw-r--r-- 1 root root 186K Jan 18  2017 config-4.4.0-62-generic
--rw------- 1 root root 3.7M Jan 18  2017 System.map-4.4.0-62-generic
--rw------- 1 root root 6.8M Jan 18  2017 vmlinuz-4.4.0-62-generic
+drwxr-xr-x <span style="color:#666">5</span> root root 4.0K Feb <span style="color:#666">12</span> 18:24 grub
+-rw-r--r-- <span style="color:#666">1</span> root root  33M Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> initrd.img-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root 1.2M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> abi-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root 186K Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> config-4.4.0-62-generic
+-rw------- <span style="color:#666">1</span> root root 3.7M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> System.map-4.4.0-62-generic
+-rw------- <span style="color:#666">1</span> root root 6.8M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> vmlinuz-4.4.0-62-generic
 
-# 9. -r, --reverse 翻转顺序
+<span style="color:#408080;font-style:italic"># 9. -r, --reverse 翻转顺序</span>
 root@wanghaoming1:/# ls -lthr boot
 total 45M
--rw------- 1 root root 6.8M Jan 18  2017 vmlinuz-4.4.0-62-generic
--rw------- 1 root root 3.7M Jan 18  2017 System.map-4.4.0-62-generic
--rw-r--r-- 1 root root 186K Jan 18  2017 config-4.4.0-62-generic
--rw-r--r-- 1 root root 1.2M Jan 18  2017 abi-4.4.0-62-generic
--rw-r--r-- 1 root root  33M Nov 29  2017 initrd.img-4.4.0-62-generic
-drwxr-xr-x 5 root root 4.0K Feb 12 18:24 grub
-</code></pre>
-<h3 id="312-进一步了解长格式">3.1.2 进一步了解长格式</h3>
+-rw------- <span style="color:#666">1</span> root root 6.8M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> vmlinuz-4.4.0-62-generic
+-rw------- <span style="color:#666">1</span> root root 3.7M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> System.map-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root 186K Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> config-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root 1.2M Jan <span style="color:#666">18</span>  <span style="color:#666">2017</span> abi-4.4.0-62-generic
+-rw-r--r-- <span style="color:#666">1</span> root root  33M Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> initrd.img-4.4.0-62-generic
+drwxr-xr-x <span style="color:#666">5</span> root root 4.0K Feb <span style="color:#666">12</span> 18:24 grub
+</code></pre></div><h3 id="312-进一步了解长格式">3.1.2 进一步了解长格式</h3>
 <p>以选项<code>-l</code>输出的结果可以分为七个部分：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/# ls -lh usr
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/# ls -lh usr
 total 64K
-drwxr-xr-x   2 root root  36K Nov 29  2017 bin
-drwxr-xr-x   2 root root 4.0K Apr 13  2016 games
-drwxr-xr-x  53 root root 4.0K Nov 29  2017 include
-drwxr-xr-x  58 root root 4.0K Nov 29  2017 lib
-drwxr-xr-x  19 root root 4.0K Nov 29  2017 local
-drwxr-xr-x   2 root root 4.0K Feb 12 18:24 sbin
-drwxr-xr-x 123 root root 4.0K Nov 29  2017 share
-drwxr-xr-x   4 root root 4.0K Aug 17  2017 src
-</code></pre>
-<table>
+drwxr-xr-x   <span style="color:#666">2</span> root root  36K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> bin
+drwxr-xr-x   <span style="color:#666">2</span> root root 4.0K Apr <span style="color:#666">13</span>  <span style="color:#666">2016</span> games
+drwxr-xr-x  <span style="color:#666">53</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> include
+drwxr-xr-x  <span style="color:#666">58</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> lib
+drwxr-xr-x  <span style="color:#666">19</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> <span style="color:#008000">local</span>
+drwxr-xr-x   <span style="color:#666">2</span> root root 4.0K Feb <span style="color:#666">12</span> 18:24 sbin
+drwxr-xr-x <span style="color:#666">123</span> root root 4.0K Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> share
+drwxr-xr-x   <span style="color:#666">4</span> root root 4.0K Aug <span style="color:#666">17</span>  <span style="color:#666">2017</span> src
+</code></pre></div><table>
 <thead>
 <tr>
 <th>字段</th>
@@ -205,24 +199,20 @@ drwxr-xr-x   4 root root 4.0K Aug 17  2017 src
 </table>
 <h2 id="32-使用-file-命令确定文件类型">3.2 使用 <code>file</code> 命令确定文件类型</h2>
 <p>可以使用如下<code>file</code>命令确定文件类型：</p>
-<pre><code class="language-Shell">file filename
-</code></pre>
-<p>当 filename 是目录时，返回 directory.</p>
-<pre><code class="language-Shell">root@wanghaoming1:/# file boot/grub/grub.cfg
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">file filename
+</code></pre></div><p>当 filename 是目录时，返回 directory.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/# file boot/grub/grub.cfg
 boot/grub/grub.cfg: ASCII text
 root@wanghaoming1:/# file boot
 boot: directory
-</code></pre>
-<h2 id="33-使用less命令查看文本文件">3.3 使用<code>less</code>命令查看文本文件</h2>
+</code></pre></div><h2 id="33-使用less命令查看文本文件">3.3 使用<code>less</code>命令查看文本文件</h2>
 <p>可以使用如下<code>less</code>命令查看文本文件：</p>
-<pre><code class="language-Shell">less filename
-</code></pre>
-<p>很多包含系统设置的文件（配置文件）采用的都是文本格式，能够阅读这种文件可以让我们了解系统是如何工作的。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">less filename
+</code></pre></div><p>很多包含系统设置的文件（配置文件）采用的都是文本格式，能够阅读这种文件可以让我们了解系统是如何工作的。</p>
 <p>例如若要查看定义了系统中所有用户的文件，可以输入如下命令</p>
-<pre><code class="language-Shell">root@wanghaoming1:/# less /etc/passwd
-</code></pre>
-<p>运行<code>less</code>命令后，输出如下结果：</p>
-<pre><code class="language-shell">~
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/# less /etc/passwd
+</code></pre></div><p>运行<code>less</code>命令后，输出如下结果：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~
 ~
 ~
 root:x:0:0:root:/root:/bin/bash
@@ -241,7 +231,7 @@ www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
 backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
 list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
 irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
-gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System <span style="color:#666">(</span>admin<span style="color:#666">)</span>:/var/lib/gnats:/usr/sbin/nologin
 nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
 systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
 systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
@@ -260,9 +250,8 @@ memcached:x:1003:1003::/home/memcached:/sbin/nologin
 ~
 ~
 ~
-(END)
-</code></pre>
-<p>按 q 键可以推出<code>less</code>命令。</p>
+<span style="color:#666">(</span>END<span style="color:#666">)</span>
+</code></pre></div><p>按 q 键可以推出<code>less</code>命令。</p>
 <p>下面列举<code>less</code>命令常用的命令：</p>
 <table>
 <thead>
@@ -318,13 +307,11 @@ memcached:x:1003:1003::/home/memcached:/sbin/nologin
 <p><img src="media/16448489498523/16448499131477.jpg" alt=""></p>
 <h2 id="35-链接初步">3.5 链接初步</h2>
 <p>运行命令</p>
-<pre><code class="language-Shell">root@wanghaoming1:/etc# file localtime
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/etc# file localtime
 localtime: symbolic link to /usr/share/zoneinfo/Asia/Shanghai
-</code></pre>
-<p>symbolic link 叫做符号链接（也称为软连接），运行<code>root@wanghaoming1:/etc# ls -lhF /etc</code>可以看到有形如</p>
-<pre><code class="language-Shell">lrwxrwxrwx 1 root root     33 Nov 29  2017 localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai
-</code></pre>
-<p>的输出，该条目的第一个字母 l 表明该文件是一个软连接。</p>
+</code></pre></div><p>symbolic link 叫做符号链接（也称为软连接），运行<code>root@wanghaoming1:/etc# ls -lhF /etc</code>可以看到有形如</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">lrwxrwxrwx <span style="color:#666">1</span> root root     <span style="color:#666">33</span> Nov <span style="color:#666">29</span>  <span style="color:#666">2017</span> localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai
+</code></pre></div><p>的输出，该条目的第一个字母 l 表明该文件是一个软连接。</p>
 <p>关于链接的具体内容，在下一章详解。</p>
 
 </main>

@@ -13,14 +13,13 @@
       <pubDate>Fri, 23 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>/post/2021/07/23/kaggle-ashrae/</guid>
-      <description>新洋教育Kaggle零基础教学计划 - 数据挖掘项目 预测建筑物的能源消耗 ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。
+      <description>预测建筑物的能源消耗 ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。
 问：夏天给大楼降温需要多少钱？
 答：非常多！政府正在进行投资，以降低能源成本，减少排放。但是问题是，这些改进是否真的有效？
 在这次竞赛中，我们通过预测冷水表、电表、热水表和蒸汽表的读数来对这些节能投资进行更好的估计。数据来自近三年来1000栋建筑中的各表读数。大型投资者和金融机构将更倾向于在这一领域投资，以提高建筑能源使用效率。
- **提示：**Code 和 Markdown 区域可通过 Shift + Enter 快捷键运行。此外，Markdown可以通过双击进入编辑模式。
- 我们将这个notebook分为不同的步骤，你可以使用下面的链接来浏览此notebook。
+我们将这个notebook分为不同的步骤，你可以使用下面的链接来浏览此notebook。
  Step 1: 导入数据 Step 2: 探索性数据分析 Step 3: 数据预处理 Step 4: LightGBM Step 5: 结果预测  在该项目中包含了如下的问题：
- 问题 1: 回顾课上内容并查阅资料，归纳总结数据预处理需要的步骤。 问题 2: 思考此处为何要进行对数转换。 问题 3: 查阅资料，总结LightGBM与CatBoost的差异。  #导入必要的库 import pandas as pd import numpy as np import os import gc import copy import warnings import lightgbm as lgb from lightgbm import LGBMRegressor from sklearn.</description>
+ 问题 1: 回顾课上内容并查阅资料，归纳总结数据预处理需要的步骤。 问题 2: 思考此处为何要进行对数转换。 问题 3: 查阅资料，总结LightGBM与CatBoost的差异。  #导入必要的库 import pandas as pd import numpy as np import os import gc import copy import warnings import lightgbm as lgb from lightgbm import LGBMRegressor from sklearn.metrics import mean_squared_log_error from sklearn.</description>
     </item>
     
     <item>
@@ -68,13 +67,13 @@ normal &amp;lt;-&amp;gt; command
       <guid>/post/2015/07/23/intro-of-shell/</guid>
       <description>C01.Intro of Shell [TOC]
 1.2小试牛刀 1.2.1 Shell提示符 启动终端仿真器，随后出现下面提示符：
-root@wanghaoming1:~#  这叫做 Shell 提示符，表明 Shell 已经准备好接受输入，不同 Linux 发行版中提示符格式有所差异，但通常结构为：username@machinename directory $（注意空格）。
+root@wanghaoming1:~# 这叫做 Shell 提示符，表明 Shell 已经准备好接受输入，不同 Linux 发行版中提示符格式有所差异，但通常结构为：username@machinename directory $（注意空格）。
 若提示符最后一个符号为#表示该终端会话有超级用户权限。这意味着要么我们是以超级用户（root 用户）登录的；要么选用的终端仿真器提供了超级用户权限。
  ~目录就是 root 目录。
  1.2.2 方向键及 tab 按上方向键，提示符后会出现之前输入的历史命令，大部分 Linux 发行版能记住最近输入的 1000 个历史命令
 调出历史命令后，按左右方向键可以将光标移动到命令行的任意位置。
 输入指令的前部分后，按 tan 键，将补全指令（对目录与文件名也成立）
-1.3 几个简单命令  date命令：显示当期的实践和日期  root@wanghaoming1:~# date Mon Feb 14 22:40:48 CST 2022   cal命令：显示当前月份的日历  root@wanghaoming1:~# cal February 2022 Su Mo Tu We Th Fr Sa 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28   df命令：查看磁盘的当前可用空间  root@wanghaoming1:~# df Filesystem 1K-blocks Used Available Use% Mounted on udev 2004900 0 2004900 0% /dev tmpfs 404652 2928 401724 1% /run /dev/vda1 41151808 6378304 32660076 17% / tmpfs 2023240 0 2023240 0% /dev/shm tmpfs 5120 0 5120 0% /run/lock tmpfs 2023240 0 2023240 0% /sys/fs/cgroup tmpfs 404652 0 404652 0% /run/user/0   free命令：查看可用内存容量  root@wanghaoming1:~# free total used free shared buff/cache available Mem: 4046484 157700 2828820 3052 1059964 3626368 Swap: 1048572 0 1048572  </description>
+1.3 几个简单命令  date命令：显示当期的实践和日期  root@wanghaoming1:~# date Mon Feb 14 22:40:48 CST 2022  cal命令：显示当前月份的日历  root@wanghaoming1:~# cal February 2022 Su Mo Tu We Th Fr Sa 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28  df命令：查看磁盘的当前可用空间  root@wanghaoming1:~# df Filesystem 1K-blocks Used Available Use% Mounted on udev 2004900 0 2004900 0% /dev tmpfs 404652 2928 401724 1% /run /dev/vda1 41151808 6378304 32660076 17% / tmpfs 2023240 0 2023240 0% /dev/shm tmpfs 5120 0 5120 0% /run/lock tmpfs 2023240 0 2023240 0% /sys/fs/cgroup tmpfs 404652 0 404652 0% /run/user/0  free命令：查看可用内存容量  root@wanghaoming1:~# free total used free shared buff/cache available Mem: 4046484 157700 2828820 3052 1059964 3626368 Swap: 1048572 0 1048572 </description>
     </item>
     
     <item>
@@ -98,12 +97,13 @@ Quisque mattis volutpat lorem vitae feugiat.</description>
 在 windows 系统中，每个储存设备都有各自独立的文件系统树。而在类 Unix 系统中，不管计算机安装了多少存储设备，都只有一个文件系统树。
 2.2 当前的工作目录:pwd 把文件系统想成一座迷宫，形如一个倒置的树，我们就位于其中。在任何时刻，我们都处在某个目录中，能够看到该目录中包含的文件、上级目录（父目录）和下级目录（子目录）。
 我们所处的目录称为当前工作目录，可以使用pwd(print working directory)命令将其显示出来：
-root@wanghaoming1:~# pwd /root  2.3 列出目录内容:ls 使用ls命令可以列出当前工作目录中的文件与子目录：
-root@wanghaoming1:~# ls oneinstack oneinstack-full.tar.gz  2.4更改当前工作目录:cd cd命令可以更改当前工作目录。只需在 cd命令后输入要更改的工作目录路径名即可。路径名分两种：绝对路径名和相对路径名。
+root@wanghaoming1:~# pwd /root 2.3 列出目录内容:ls 使用ls命令可以列出当前工作目录中的文件与子目录：
+root@wanghaoming1:~# ls oneinstack oneinstack-full.tar.gz 2.4更改当前工作目录:cd cd命令可以更改当前工作目录。只需在 cd命令后输入要更改的工作目录路径名即可。路径名分两种：绝对路径名和相对路径名。
 2.4.1 绝对路径名 绝对路径名从根目录（用/表示）开始，随后紧接一个又一个分支，直到目标目录或文件：
-root@wanghaoming1:~# cd /usr/bin root@wanghaoming1:/usr/bin# pwd /usr/bin   note: 第二行 machinename 和#之间的目录名已经表明当前工作目录为/usr/bin.
+root@wanghaoming1:~# cd /usr/bin root@wanghaoming1:/usr/bin# pwd /usr/bin  note: 第二行 machinename 和#之间的目录名已经表明当前工作目录为/usr/bin.
  2.4.2 相对路径名 相对路径名从当前工作目录开始使用点表示法描述目标文件系统数中的相对位置：.表示当前工作目录；..表示父目录。假设我们正在目录bin中，若想进入其父目录usr，则有两种方式：
- 方式一：绝对路径  root@wanghaoming1:/usr/bin# cd /usr root@wanghaoming1:/usr# pwd /usr   方式二：相对路径  root@wanghaoming1:/usr/bin# cd .. root@wanghaoming1:/usr# pwd /usr  此外还有两种方式从当前目录（usr）进入其子目录bin中，第一种是绝对路径（cd /usr/bin），另一种是相对路径：</description>
+ 方式一：绝对路径  root@wanghaoming1:/usr/bin# cd /usr root@wanghaoming1:/usr# pwd /usr  方式二：相对路径  root@wanghaoming1:/usr/bin# cd .. root@wanghaoming1:/usr# pwd /usr 此外还有两种方式从当前目录（usr）进入其子目录bin中，第一种是绝对路径（cd /usr/bin），另一种是相对路径：
+root@wanghaoming1:/usr# cd .</description>
     </item>
     
     <item>
@@ -114,8 +114,8 @@ root@wanghaoming1:~# cd /usr/bin root@wanghaoming1:/usr/bin# pwd /usr/bin   note
       <guid>/post/2015/07/23/%E6%8E%A2%E7%B4%A2-linux-%E7%B3%BB%E7%BB%9F/</guid>
       <description>C03.探索 Linux 系统 [TOC]
 3.1 使用ls命令 使用ls命令，可以指定要显示内容的目录：
-root@wanghaoming1:/# ls /usr bin games include lib local sbin share src  也可以指定多个目录，既可使用绝对路径，也可使用相对路径。这里用户主目录用~表示：
-root@wanghaoming1:/# ls ~ /usr boot boot: abi-4.4.0-62-generic config-4.4.0-62-generic grub initrd.img-4.4.0-62-generic System.map-4.4.0-62-generic vmlinuz-4.4.0-62-generic /root: oneinstack oneinstack-full.tar.gz /usr: bin games include lib local sbin share src root@wanghaoming1:/# cd ~ root@wanghaoming1:~# ls .. bin boot data dev etc home initrd.img lib lib64 lost+found media mnt opt proc root run sbin srv swapfile sys tmp usr var vmlinuz  还可以通过给ls命令添加选项，修改其显示的格式：</description>
+root@wanghaoming1:/# ls /usr bin games include lib local sbin share src 也可以指定多个目录，既可使用绝对路径，也可使用相对路径。这里用户主目录用~表示：
+root@wanghaoming1:/# ls ~ /usr boot boot: abi-4.4.0-62-generic config-4.4.0-62-generic grub initrd.img-4.4.0-62-generic System.map-4.4.0-62-generic vmlinuz-4.4.0-62-generic /root: oneinstack oneinstack-full.tar.gz /usr: bin games include lib local sbin share src root@wanghaoming1:/# cd ~ root@wanghaoming1:~# ls .. bin boot data dev etc home initrd.img lib lib64 lost+found media mnt opt proc root run sbin srv swapfile sys tmp usr var vmlinuz 还可以通过给ls命令添加选项，修改其显示的格式：</description>
     </item>
     
     <item>

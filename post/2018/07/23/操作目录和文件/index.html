@@ -122,32 +122,28 @@
 </ul>
 <h2 id="42-mkdir创建目录">4.2 <code>mkdir</code>：创建目录</h2>
 <p><code>mkdir</code>命令可以创建目录，用法如下：</p>
-<pre><code class="language-Shell">mkdir dir...
-</code></pre>
-<blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">mkdir dir...
+</code></pre></div><blockquote>
 <ul>
 <li>参数后面出现「 &hellip; 」的，表示该参数可以重复出现。</li>
 <li>本文默认以 dir 表示目录，以 file 表示文件，以 item 表示目录或文件。</li>
 </ul>
 </blockquote>
-<pre><code class="language-Shell">root@wanghaoming1:/home# mkdir dir1 ./dir2 /home/dir3
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home# mkdir dir1 ./dir2 /home/dir3
 root@wanghaoming1:/home# ls
 dir1  dir2  dir3
-</code></pre>
-<p>注意，此处通过相对路径创建 dir1 与 dir2，通过绝对路径创建 dir3。</p>
+</code></pre></div><p>注意，此处通过相对路径创建 dir1 与 dir2，通过绝对路径创建 dir3。</p>
 <h2 id="43-cp复制文件和目录">4.3 <code>cp</code>：复制文件和目录</h2>
 <p><code>cp</code>命令可以用于复制文件或目录，有两种用法：</p>
 <ol>
 <li>将单个文件或目录 item1 复制到文件或目录 item2：</li>
 </ol>
-<pre><code class="language-Shell">cp item1 item2
-</code></pre>
-<ol start="2">
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">cp item1 item2
+</code></pre></div><ol start="2">
 <li>将多个文件后目录 item 复制到目录 dir：</li>
 </ol>
-<pre><code class="language-Shell">cp item... dir
-</code></pre>
-<p>下面列举<code>cp</code>命令常用选项：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">cp item... dir
+</code></pre></div><p>下面列举<code>cp</code>命令常用选项：</p>
 <table>
 <thead>
 <tr>
@@ -213,7 +209,7 @@ dir1  dir2  dir3
 <p>文件1复制到文件2，文件 2 可以不存在；目录 1 复制到目录 2，目录 2 可以不存在；文件 1 复制到目录 2，目录 2 必须先存在。</p>
 </blockquote>
 <p>案例：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/home# rm -r ./*
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home# rm -r ./*
 root@wanghaoming1:/home# mkdir dir1 dir2 dir3
 root@wanghaoming1:/home# ls
 dir1  dir2  dir3
@@ -243,16 +239,13 @@ dir1
 
 ./dir4:
 dir0
-</code></pre>
-<h2 id="44-mv移动和重命名文件">4.4 <code>mv</code>：移动和重命名文件</h2>
+</code></pre></div><h2 id="44-mv移动和重命名文件">4.4 <code>mv</code>：移动和重命名文件</h2>
 <p><code>mv</code>命令可以执行文件移动和文件重命名，其用法与<code>cp</code>命令类似：</p>
 <p>将文件或目录 item1 移动或重命名为 item2：</p>
-<pre><code class="language-Shell">mv item1 item2
-</code></pre>
-<p>将一个或多个文件或目录 item 移动到另一个目录：</p>
-<pre><code class="language-Shell">mv item... dir
-</code></pre>
-<p>下面列举<code>mv</code>命令常用选项：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">mv item1 item2
+</code></pre></div><p>将一个或多个文件或目录 item 移动到另一个目录：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">mv item... dir
+</code></pre></div><p>下面列举<code>mv</code>命令常用选项：</p>
 <table>
 <thead>
 <tr>
@@ -310,7 +303,7 @@ dir0
 </tbody>
 </table>
 <p>案例：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/home# rm -r ./*
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home# rm -r ./*
 root@wanghaoming1:/home# mkdir dir1 dir2 dir3 dir1/dir0 dir2/dir0
 root@wanghaoming1:/home# mv dir1 dir3
 root@wanghaoming1:/home# mv dir2 dir4
@@ -320,12 +313,10 @@ dir1
 
 dir4:
 dir0
-</code></pre>
-<h2 id="45-rm删除文件和目录">4.5 <code>rm</code>：删除文件和目录</h2>
+</code></pre></div><h2 id="45-rm删除文件和目录">4.5 <code>rm</code>：删除文件和目录</h2>
 <p><code>rm</code>可以用于删除文件和目录，用法如下：</p>
-<pre><code class="language-Shell">rm item...
-</code></pre>
-<p>下面列举<code>rm</code>命令常用选项：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">rm item...
+</code></pre></div><p>下面列举<code>rm</code>命令常用选项：</p>
 <table>
 <thead>
 <tr>
@@ -384,21 +375,18 @@ dir0
 一个实用技巧：使用 <code>rm</code> 命令时若用到通配符，可以先用 <code>ls</code> 命令先测试一下。</p>
 </blockquote>
 <p>案例：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/home# mkdir dir_test
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home# mkdir dir_test
 root@wanghaoming1:/home# ls
 dir3  dir4  dir_test
-root@wanghaoming1:/home# rm -r ./*[[:digit:]]
+root@wanghaoming1:/home# rm -r ./*<span style="color:#666">[[</span>:digit:<span style="color:#666">]]</span>
 root@wanghaoming1:/home# ls
 dir_test
-</code></pre>
-<h2 id="46-ln创建硬链接和符号链接">4.6 <code>ln</code>：创建硬链接和符号链接</h2>
+</code></pre></div><h2 id="46-ln创建硬链接和符号链接">4.6 <code>ln</code>：创建硬链接和符号链接</h2>
 <p>将 file1 硬链接到 file2：</p>
-<pre><code class="language-Shell">ln file1 file2
-</code></pre>
-<p>将 item1 符号链接到 item2：</p>
-<pre><code class="language-Shell">ln -s item1 item2
-</code></pre>
-<p>注意，可以对目录创建符号链接。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">ln file1 file2
+</code></pre></div><p>将 item1 符号链接到 item2：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">ln -s item1 item2
+</code></pre></div><p>注意，可以对目录创建符号链接。</p>
 <h3 id="461-硬链接">4.6.1 硬链接</h3>
 <p>硬链接是最初 UNIX 创建链接的方式，相较于符号链接，硬链接要更现代。在默认情况下，每个文件只有一个硬链接，由其为文件赋予名称。当我们创建硬链接时，就为文件额外创建了一个目录项。</p>
 <p>硬链接有两个重要限制。</p>
@@ -409,47 +397,44 @@ dir_test
 <p>你无法区分硬链接及其引用的文件。不同于符号链接，当你使用<code>ls</code>列出包含硬链接的目录内容时，你会发现硬链接并没有什么特别的指示说明。如果删除了某个硬链接，则消失的只是链接本身，而文件内容仍旧存在，直至文件的所有硬链接全部被删除。</p>
 <p>下面通过实例来说明硬链接：</p>
 <p>下面尝试创建一些链接：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/home# mkdir sg sg/d1 sg/d2 
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home# mkdir sg sg/d1 sg/d2 
 root@wanghaoming1:/home# cp /etc/passwd sg
-root@wanghaoming1:/home# cd sg
+root@wanghaoming1:/home# <span style="color:#008000">cd</span> sg
 root@wanghaoming1:/home/sg# ls
 d1  d2  passwd
 root@wanghaoming1:/home/sg# mv passwd pw
 root@wanghaoming1:/home/sg# ln pw pw_h
 root@wanghaoming1:/home/sg# ln pw d1/pw_h
 root@wanghaoming1:/home/sg# ls -l
-total 16
-drwxr-xr-x 2 root root 4096 Feb 17 11:01 d1
-drwxr-xr-x 2 root root 4096 Feb 17 11:00 d2
--rw-r--r-- 3 root root 1637 Feb 17 11:01 pw
--rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
+total <span style="color:#666">16</span>
+drwxr-xr-x <span style="color:#666">2</span> root root <span style="color:#666">4096</span> Feb <span style="color:#666">17</span> 11:01 d1
+drwxr-xr-x <span style="color:#666">2</span> root root <span style="color:#666">4096</span> Feb <span style="color:#666">17</span> 11:00 d2
+-rw-r--r-- <span style="color:#666">3</span> root root <span style="color:#666">1637</span> Feb <span style="color:#666">17</span> 11:01 pw
+-rw-r--r-- <span style="color:#666">3</span> root root <span style="color:#666">1637</span> Feb <span style="color:#666">17</span> 11:01 pw_h
 root@wanghaoming1:/home/sg# ls -l d1
-total 4
--rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
-</code></pre>
-<p>注意到，pw, pw_h 和 d1/pw_h 的第二个条目都是 3，这是文件当前的硬链接数量。文件至少有一个硬链接，因为文件名是通过硬链接创建的。用过<code>ls</code>命令，尽管可以通过第五个条目看出pw, pw_h 和 d1/pw_h 三个文件的大小都是 1637 字节，但是并不能看出其实质上是一个文件。</p>
+total <span style="color:#666">4</span>
+-rw-r--r-- <span style="color:#666">3</span> root root <span style="color:#666">1637</span> Feb <span style="color:#666">17</span> 11:01 pw_h
+</code></pre></div><p>注意到，pw, pw_h 和 d1/pw_h 的第二个条目都是 3，这是文件当前的硬链接数量。文件至少有一个硬链接，因为文件名是通过硬链接创建的。用过<code>ls</code>命令，尽管可以通过第五个条目看出pw, pw_h 和 d1/pw_h 三个文件的大小都是 1637 字节，但是并不能看出其实质上是一个文件。</p>
 <p>思考硬链接时，不妨将文件想象成由两部分组成：</p>
 <ul>
 <li>包含文件内容的数据部分</li>
 <li>包含文件名的名称部分</li>
 </ul>
 <p>在创建硬链接时，实际上创建的是名称部分，全部指向相同的数据部分。</p>
-<pre><code class="language-mermaid">graph TB
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">graph TB
 a((name1))--&gt;b[Data]
 c((name2))--&gt;b
-</code></pre>
-<p>系统为 i 节点（inode）分配了一系列磁盘块（disk block），然后将 i 节点与名称部分关联起来。因此，每个硬链接都指向包含文件内容的特定 i 节点。<code>ls</code>命令的<code>-i</code>选项可以显示 i 节点号：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/home/sg# ls -li 
-total 16
-931660 drwxr-xr-x 2 root root 4096 Feb 17 11:01 d1
-931661 drwxr-xr-x 2 root root 4096 Feb 17 11:00 d2
-931662 -rw-r--r-- 3 root root 1637 Feb 17 11:01 pw
-931662 -rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
+</code></pre></div><p>系统为 i 节点（inode）分配了一系列磁盘块（disk block），然后将 i 节点与名称部分关联起来。因此，每个硬链接都指向包含文件内容的特定 i 节点。<code>ls</code>命令的<code>-i</code>选项可以显示 i 节点号：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home/sg# ls -li 
+total <span style="color:#666">16</span>
+<span style="color:#666">931660</span> drwxr-xr-x <span style="color:#666">2</span> root root <span style="color:#666">4096</span> Feb <span style="color:#666">17</span> 11:01 d1
+<span style="color:#666">931661</span> drwxr-xr-x <span style="color:#666">2</span> root root <span style="color:#666">4096</span> Feb <span style="color:#666">17</span> 11:00 d2
+<span style="color:#666">931662</span> -rw-r--r-- <span style="color:#666">3</span> root root <span style="color:#666">1637</span> Feb <span style="color:#666">17</span> 11:01 pw
+<span style="color:#666">931662</span> -rw-r--r-- <span style="color:#666">3</span> root root <span style="color:#666">1637</span> Feb <span style="color:#666">17</span> 11:01 pw_h
 root@wanghaoming1:/home/sg# ls -li d1
-total 4
-931662 -rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
-</code></pre>
-<p>可以看出 pw, pw_h 和 d1/pw_h 的 i 节点号是一致的，因此他们是一个文件。</p>
+total <span style="color:#666">4</span>
+<span style="color:#666">931662</span> -rw-r--r-- <span style="color:#666">3</span> root root <span style="color:#666">1637</span> Feb <span style="color:#666">17</span> 11:01 pw_h
+</code></pre></div><p>可以看出 pw, pw_h 和 d1/pw_h 的 i 节点号是一致的，因此他们是一个文件。</p>
 <h3 id="462-符号链接">4.6.2 符号链接</h3>
 <p>其工作原理是创建一种特殊类型的文件，内含一段指向被引用文任或目录的文本指针。就这方面而言，它和Windows的快捷方式非常类似。</p>
 <p>由符号链按指向的文件与符号链接本身儿乎没有区别。例如，向往号链接写入内容，最终写入的是被引用文件。当删除符号链接时，被删除的只是链接，而非文件。如果文件先于符号链接破测除，那么符号链接仍然在在，但其指向就不再有效了。这种链接称为<strong>无效链接</strong>。<code>ls</code>命令会用红色来显示无效链接。</p>
@@ -461,11 +446,10 @@ total 4
 <p>符号链接是一种特殊类型的文件，其中包含指向目标文件或目录的文本指针。创建符号链接的方法类似于创建硬链接的方法。在跨目录创建符号链接是可以使用相对路径，也可以使用绝对路径：</p>
 <blockquote>
 <p>当用相对路径创建符号链接时，必须需要注意：</p>
-<pre><code class="language-Shell">username@machinename:workdir# ln -s item1 item2
-</code></pre>
-<p>其中 <strong>item2 是 workdir 的相对路径，item1 是 item2 的相对路径</strong>。如果 item1 是 workdir 的相对路径，则会生成无效链接：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">username@machinename:workdir# ln -s item1 item2
+</code></pre></div><p>其中 <strong>item2 是 workdir 的相对路径，item1 是 item2 的相对路径</strong>。如果 item1 是 workdir 的相对路径，则会生成无效链接：</p>
 </blockquote>
-<pre><code class="language-Shell">root@wanghaoming1:/home/sg# ls . .. d1 d2
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home/sg# ls . .. d1 d2
 .:
 d1  d2  pw
 
@@ -478,17 +462,14 @@ sd
 d2:
 root@wanghaoming1:/home/sg# ln -s pw d1/pw_s1
 root@wanghaoming1:/home/sg# ln -s ../pw d1/pw_s2
-</code></pre>
-<p>其中生成的 pw_s1 是无效链接：
+</code></pre></div><p>其中生成的 pw_s1 是无效链接：
 <img src="media/16449369852145/16450807696093.jpg" alt="">
 如果尝试运行一个无效链接，会看到如下信息：</p>
-<pre><code class="language-Shell">root@wanghaoming1:/home/sg# less d1/pw_s1
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home/sg# less d1/pw_s1
 d1/pw_s1: No such file or directory
-</code></pre>
-<pre><code class="language-Shell">root@wanghaoming1:/home/sg# ln -s pw ../pw_s3
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">root@wanghaoming1:/home/sg# ln -s pw ../pw_s3
 root@wanghaoming1:/home/sg# ln -s sg/pw ../pw_s4
-</code></pre>
-<p>其中生成的 pw_s3 是无效链接：
+</code></pre></div><p>其中生成的 pw_s3 是无效链接：
 <img src="media/16449369852145/16450808993258.jpg" alt=""></p>
 <p><img src="media/16449369852145/16450812087138.jpg" alt=""></p>
 <p>pw_s2 文件的条目中第二字段的开头字符 l 表示它是一个目标文件的符号链接，符号链接文件的大小是 5，这是字符串 pw_s2 的长度，而非它所指向的文件的长度。</p>

@@ -87,10 +87,9 @@
 <p>官方的语法规定结尾加 2 个以上空格加换行才会转成换行，也就是 <code>&lt;br /&gt;</code> 标签。MWeb 中有个选项可以直接把换行转成 <code>&lt;br /&gt;</code>，不用加上 2 个以上空格，这个选项默认是开启的。如果要关闭，请在设置页面关闭。</p>
 <h3 id="任务列表task-lists">任务列表（Task lists）</h3>
 <p>Markdown 语法：</p>
-<pre><code>- [ ] 任务一 未做任务 `- + 空格 + [ ]`
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">- [ ] 任务一 未做任务 `- + 空格 + [ ]`
 - [x] 任务二 已做任务 `- + 空格 + [x]`
-</code></pre>
-<p>效果如下：</p>
+</code></pre></div><p>效果如下：</p>
 <ul>
 <li><input disabled="" type="checkbox"> 任务一 未做任务 <code>- + 空格 + [ ]</code></li>
 <li><input checked="" disabled="" type="checkbox"> 任务二 已做任务 <code>- + 空格 + [x]</code></li>
@@ -110,22 +109,20 @@ function fancyAlert(arg) {
 ```
 </code></pre>
 <p>效果如下：</p>
-<pre><code class="language-js">function fancyAlert(arg) {
-	if(arg) {
-		$.facebox({div:'#foo'})
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#008000;font-weight:bold">function</span> fancyAlert(arg) {
+	<span style="color:#008000;font-weight:bold">if</span>(arg) {
+		$.facebox({div<span style="color:#666">:</span><span style="color:#ba2121">&#39;#foo&#39;</span>})
 	}
 
 }
-</code></pre>
-<p>这个语法目前在 MWeb 中使用，必须前后空一行，才会正确解析。我觉得，在写 Markdown 文档过程中，运用空行很有必要，基本上，块级元素（标题、列表、引用、代码块、表格、段落等），都建议前后空一行。</p>
+</code></pre></div><p>这个语法目前在 MWeb 中使用，必须前后空一行，才会正确解析。我觉得，在写 Markdown 文档过程中，运用空行很有必要，基本上，块级元素（标题、列表、引用、代码块、表格、段落等），都建议前后空一行。</p>
 <h3 id="表格">表格</h3>
 <p>Markdown 语法：</p>
-<pre><code>第一格表头 | 第二格表头
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">第一格表头 | 第二格表头
 --------- | -------------
 内容单元格 第一列第一格 | 内容单元格第二列第一格
 内容单元格 第一列第二格 多加文字 | 内容单元格第二列第二格
-</code></pre>
-<p>效果如下：</p>
+</code></pre></div><p>效果如下：</p>
 <table>
 <thead>
 <tr>
@@ -161,9 +158,8 @@ x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 </code></pre>
 <p>效果如下（在设置页面中启用 LaTeX 才会看到效果）：</p>
 <p>块级公式：</p>
-<pre><code class="language-math">x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-</code></pre>
-<p>行内公式： <code>\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N</code></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+</code></pre></div><p>行内公式： <code>\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N</code></p>
 <p>注意：为了兼容 MWeb 3，也支持 $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$
 和块级语法
 $$	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
@@ -186,7 +182,7 @@ sequenceDiagram
 ```
 </code></pre>
 <p><strong>效果如下：</strong></p>
-<pre><code class="language-mermaid">sequenceDiagram
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">sequenceDiagram
     participant Alice
     participant Bob
     Alice-&gt;John: Hello John, how are you?
@@ -197,8 +193,7 @@ sequenceDiagram
     John--&gt;Alice: Great!
     John-&gt;Bob: How about you?
     Bob--&gt;John: Jolly good!
-</code></pre>
-<h3 id="echarts">echarts</h3>
+</code></pre></div><h3 id="echarts">echarts</h3>
 <p>echarts 是百度出品的 js 画图库，它的网址为：<a href="https://echarts.apache.org/zh/index.html">https://echarts.apache.org/zh/index.html</a>，功能非常强大，MWeb 支持 echarts 的一些基本的用法，太高级的不支持。你可以将以下语法复制到 MWeb 中进行尝试。你也可以去 <a href="https://echarts.apache.org/examples/zh/index.html">https://echarts.apache.org/examples/zh/index.html</a> 这个网址查看一些例子，要注意的是 MWeb 只能解析 <code>option = {}</code> 这种简单的，不过应该是足够使用了。</p>
 <pre><code>```echarts
 option = {
@@ -217,29 +212,27 @@ option = {
 ```
 </code></pre>
 <p><strong>效果如下：</strong></p>
-<pre><code class="language-echarts">option = {
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">option = {
     xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        type: &#39;category&#39;,
+        data: [&#39;Mon&#39;, &#39;Tue&#39;, &#39;Wed&#39;, &#39;Thu&#39;, &#39;Fri&#39;, &#39;Sat&#39;, &#39;Sun&#39;]
     },
     yAxis: {
-        type: 'value'
+        type: &#39;value&#39;
     },
     series: [{
         data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: 'line'
+        type: &#39;line&#39;
     }]
 };
-</code></pre>
-<h3 id="脚注footnote">脚注（Footnote）</h3>
+</code></pre></div><h3 id="脚注footnote">脚注（Footnote）</h3>
 <p>Markdown 语法：</p>
-<pre><code>这是一个脚注：[^1]
-</code></pre>
-<p>效果如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">这是一个脚注：[^1]
+</code></pre></div><p>效果如下：</p>
 <p>这是一个脚注：<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
 <h3 id="注释和阅读更多">注释和阅读更多</h3>
-<!-- comment -->
-<!-- more -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <p><strong>注</strong> 阅读更多的功能只用在文档库生成静态网站或发布到 Wordpress 博客时，插入时注意要后空一行。</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
