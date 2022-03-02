@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>操作目录和文件 | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">操作目录和文件</span></h1>
+
+<h2 class="date">2018/07/23</h2>
+</div>
+
+<main>
+<h1 id="c04操作目录和文件">C04.操作目录和文件</h1>
+<h2 id="41-通配符">4.1 通配符</h2>
+<p>shell 提供一种特殊字符，帮助快速指定一组文件名，这种特殊字符叫做通配符（wildcard）。使用通配符的过程称为通配符匹配（globbing）。</p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>匹配任意多个字符</td>
+</tr>
+<tr>
+<td>？</td>
+<td>匹配任意单个字符</td>
+</tr>
+<tr>
+<td>[abc]</td>
+<td>匹配属于字符集和 abc 中任意单个字符</td>
+</tr>
+<tr>
+<td>[!abc]</td>
+<td>匹配不属于字符集和 abc 中任意单个字符</td>
+</tr>
+<tr>
+<td>[[:calss:]]</td>
+<td>匹配属于字符类 class 的任意单个字符</td>
+</tr>
+</tbody>
+</table>
+<p>常用字符类：</p>
+<table>
+<thead>
+<tr>
+<th>字符类</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[:alnum:]</td>
+<td>任意单个字母数字</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>任意单个字母</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>任意单个数字</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>任意单个小写字母</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>任意单个大写字母</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>传统 Unix 可以使用形如[A-Z]或[a-z]来表示字符范围写法，但是一旦配置不当可能产生以外结果。</li>
+<li>通配符用来指定文件名（或目录名），若要指定的文件并非当前工作目录的文件，前面需要加上绝对/相对路径。</li>
+</ul>
+</blockquote>
+<p>一些通配符示例：</p>
+<ul>
+<li><code>*</code> ：所有文件</li>
+<li><code>/usr/*</code>：/usr 目录下的所有文件</li>
+<li><code>g*</code>：以 g 开头的所有文件</li>
+<li><code>b*.txt</code>：以 b 开头的所以 txt 文件</li>
+<li><code>Data???</code>：以 Data 开头并紧接 3 个字符的文件</li>
+<li><code>[abc]*</code>：以 a、b、c 任意字符开头的文件</li>
+<li><code>[a-c]*</code>：同上</li>
+<li><code>[![:upper:]]*</code>：不以大写字母开头的文件</li>
+<li><code>*[[:lower:]123]</code>：以小写字母或 1、2、3 结尾的文件</li>
+</ul>
+<h2 id="42-mkdir创建目录">4.2 <code>mkdir</code>：创建目录</h2>
+<p><code>mkdir</code>命令可以创建目录，用法如下：</p>
+<pre><code class="language-Shell">mkdir dir...
+</code></pre>
+<blockquote>
+<ul>
+<li>参数后面出现「 &hellip; 」的，表示该参数可以重复出现。</li>
+<li>本文默认以 dir 表示目录，以 file 表示文件，以 item 表示目录或文件。</li>
+</ul>
+</blockquote>
+<pre><code class="language-Shell">root@wanghaoming1:/home# mkdir dir1 ./dir2 /home/dir3
+root@wanghaoming1:/home# ls
+dir1  dir2  dir3
+</code></pre>
+<p>注意，此处通过相对路径创建 dir1 与 dir2，通过绝对路径创建 dir3。</p>
+<h2 id="43-cp复制文件和目录">4.3 <code>cp</code>：复制文件和目录</h2>
+<p><code>cp</code>命令可以用于复制文件或目录，有两种用法：</p>
+<ol>
+<li>将单个文件或目录 item1 复制到文件或目录 item2：</li>
+</ol>
+<pre><code class="language-Shell">cp item1 item2
+</code></pre>
+<ol start="2">
+<li>将多个文件后目录 item 复制到目录 dir：</li>
+</ol>
+<pre><code class="language-Shell">cp item... dir
+</code></pre>
+<p>下面列举<code>cp</code>命令常用选项：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-a, &ndash;archive</td>
+<td>复制文件和目录及其包括所有权和权限在内的所有属性</td>
+</tr>
+<tr>
+<td>-i, &ndash;interactive</td>
+<td>在覆盖已有文件前，提示用户确认</td>
+</tr>
+<tr>
+<td>-r, &ndash;recursive</td>
+<td>递归复制目录及其内容，复制目录时，要用到这个选项（或者-a 选项）</td>
+</tr>
+<tr>
+<td>-u, &ndash;update</td>
+<td>将文件从一个目录复制到目标目录时，只复制目标目录不存在或比目标目录中现有文件更新的文件</td>
+</tr>
+<tr>
+<td>-v, &ndash;verbose</td>
+<td>复制时显示相关信息</td>
+</tr>
+</tbody>
+</table>
+<p>下面列出<code>cp</code>命令的示例：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cp file1 /home/file2</code></td>
+<td>将当期工作目录中的文件 file1复制为/home 目录中的文件 file2。若 file2 文件存在，则 file1 中的内容将覆盖；若 file2 文件不存在，则创建 file2 文件。</td>
+</tr>
+<tr>
+<td><code>cp -i file1 /home/file2</code></td>
+<td>同时，在 file2 文件存在时，覆盖前会提示用户</td>
+</tr>
+<tr>
+<td><code>cp file1 fil2 dir1</code></td>
+<td>将文件 file1, file2 复制到目录 dir1，<strong>该目录事先必须存在</strong>。</td>
+</tr>
+<tr>
+<td><code>cp dir1/* dir2</code></td>
+<td>将目录 dir1 中的所有文件复制到目录 dir2 中，<strong>目录dir2 实现必须存在</strong>。</td>
+</tr>
+<tr>
+<td><code>cp -r dir1 dir2</code></td>
+<td>将目录 dir1 的<strong>内容</strong>复制到 dir2 中，若 dir2 不存在，则创建 dir2，再复制 dir1 的<strong>内容</strong>；若 dir2 存在，则将 dir1 <strong>及其内容</strong>复制到 dir2 中。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>文件1复制到文件2，文件 2 可以不存在；目录 1 复制到目录 2，目录 2 可以不存在；文件 1 复制到目录 2，目录 2 必须先存在。</p>
+</blockquote>
+<p>案例：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/home# rm -r ./*
+root@wanghaoming1:/home# mkdir dir1 dir2 dir3
+root@wanghaoming1:/home# ls
+dir1  dir2  dir3
+root@wanghaoming1:/home# mkdir dir1/dir0
+root@wanghaoming1:/home# ls dir1
+dir0
+root@wanghaoming1:/home# cp -r dir1 dir4
+root@wanghaoming1:/home# ls ./*
+./dir1:
+dir0
+
+./dir2:
+
+./dir3:
+
+./dir4:
+dir0
+root@wanghaoming1:/home# cp -r dir1 dir2
+root@wanghaoming1:/home# ls ./*
+./dir1:
+dir0
+
+./dir2:
+dir1
+
+./dir3:
+
+./dir4:
+dir0
+</code></pre>
+<h2 id="44-mv移动和重命名文件">4.4 <code>mv</code>：移动和重命名文件</h2>
+<p><code>mv</code>命令可以执行文件移动和文件重命名，其用法与<code>cp</code>命令类似：</p>
+<p>将文件或目录 item1 移动或重命名为 item2：</p>
+<pre><code class="language-Shell">mv item1 item2
+</code></pre>
+<p>将一个或多个文件或目录 item 移动到另一个目录：</p>
+<pre><code class="language-Shell">mv item... dir
+</code></pre>
+<p>下面列举<code>mv</code>命令常用选项：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-i, &ndash;interactive</td>
+<td>在覆盖已有文件前，提示用户确认</td>
+</tr>
+<tr>
+<td>-u, &ndash;update</td>
+<td>将文件从一个目录移动到目标目录时，只移动目标目录不存在或比目标目录中现有文件更新的文件</td>
+</tr>
+<tr>
+<td>-v, &ndash;verbose</td>
+<td>移动时显示相关信息</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>移动目录时，不需要声明<code>-r</code>选项。</p>
+</blockquote>
+<p>下面列出<code>mv</code>命令的示例：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mv file1 /home/file2</code></td>
+<td>将当期工作目录中的文件 file1移动为/home 目录中的文件 file2。若 file2 文件存在，则 file1 中的内容将覆盖；若 file2 文件不存在，则创建 file2 文件。</td>
+</tr>
+<tr>
+<td><code>mv -i file1 /home/file2</code></td>
+<td>同时，在 file2 文件存在时，覆盖前会提示用户</td>
+</tr>
+<tr>
+<td><code>mv file1 fil2 dir1</code></td>
+<td>将文件 file1, file2 移动到目录 dir1，<strong>该目录事先必须存在</strong>。</td>
+</tr>
+<tr>
+<td><code>mv dir1/* dir2</code></td>
+<td>将目录 dir1 中的所有文件移动到目录 dir2 中，<strong>目录dir2 实现必须存在</strong>。</td>
+</tr>
+<tr>
+<td><code>mv dir1 dir2</code></td>
+<td>若 dir2 不存在，则创建 dir2，再移动 dir1 的<strong>内容</strong>（相当于对 dir1 进行重命名）；若 dir2 存在，则将 dir1 <strong>及其内容</strong>移动到 dir2 中。</td>
+</tr>
+</tbody>
+</table>
+<p>案例：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/home# rm -r ./*
+root@wanghaoming1:/home# mkdir dir1 dir2 dir3 dir1/dir0 dir2/dir0
+root@wanghaoming1:/home# mv dir1 dir3
+root@wanghaoming1:/home# mv dir2 dir4
+root@wanghaoming1:/home# ls dir3 dir4
+dir3:
+dir1
+
+dir4:
+dir0
+</code></pre>
+<h2 id="45-rm删除文件和目录">4.5 <code>rm</code>：删除文件和目录</h2>
+<p><code>rm</code>可以用于删除文件和目录，用法如下：</p>
+<pre><code class="language-Shell">rm item...
+</code></pre>
+<p>下面列举<code>rm</code>命令常用选项：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-i, &ndash;interactive</td>
+<td>在删除已有文件前，提示用户确认</td>
+</tr>
+<tr>
+<td>-r, &ndash;recursive</td>
+<td>递归删除目录及其内容，删除目录时，要用到这个选项</td>
+</tr>
+<tr>
+<td>-f, &ndash;force</td>
+<td>忽略不存在的文件；不显示；该选项或屏蔽调-i 选项</td>
+</tr>
+<tr>
+<td>-v, &ndash;verbose</td>
+<td>删除时显示相关信息</td>
+</tr>
+</tbody>
+</table>
+<p>下面列出<code>rm</code>命令的示例：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rm file1 /home/file2</code></td>
+<td>删除当期工作目录中的文件 file1 和/home 目录中的文件 file2，不提示。</td>
+</tr>
+<tr>
+<td><code>rm -i file1 /home/file2</code></td>
+<td>删除前会提示用户</td>
+</tr>
+<tr>
+<td><code>rm -r file1 fil2 dir1</code></td>
+<td>将文件 file1, file2 和目录 dir1删除。</td>
+</tr>
+<tr>
+<td><code>rm -r ./*</code></td>
+<td>将当前工作目录中的所有文件和目录删除。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>使用<code>rm</code>命令时，要小心使用通配符，尤其小心有没有输入多于的空格
+一个实用技巧：使用 <code>rm</code> 命令时若用到通配符，可以先用 <code>ls</code> 命令先测试一下。</p>
+</blockquote>
+<p>案例：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/home# mkdir dir_test
+root@wanghaoming1:/home# ls
+dir3  dir4  dir_test
+root@wanghaoming1:/home# rm -r ./*[[:digit:]]
+root@wanghaoming1:/home# ls
+dir_test
+</code></pre>
+<h2 id="46-ln创建硬链接和符号链接">4.6 <code>ln</code>：创建硬链接和符号链接</h2>
+<p>将 file1 硬链接到 file2：</p>
+<pre><code class="language-Shell">ln file1 file2
+</code></pre>
+<p>将 item1 符号链接到 item2：</p>
+<pre><code class="language-Shell">ln -s item1 item2
+</code></pre>
+<p>注意，可以对目录创建符号链接。</p>
+<h3 id="461-硬链接">4.6.1 硬链接</h3>
+<p>硬链接是最初 UNIX 创建链接的方式，相较于符号链接，硬链接要更现代。在默认情况下，每个文件只有一个硬链接，由其为文件赋予名称。当我们创建硬链接时，就为文件额外创建了一个目录项。</p>
+<p>硬链接有两个重要限制。</p>
+<ul>
+<li>链按不能引用其所在文件系统之外的文件。这意味着如果文件与链接不在同一个磁盘分区内的话，是无法引用该文件的。</li>
+<li>硬链接不能引用且录。</li>
+</ul>
+<p>你无法区分硬链接及其引用的文件。不同于符号链接，当你使用<code>ls</code>列出包含硬链接的目录内容时，你会发现硬链接并没有什么特别的指示说明。如果删除了某个硬链接，则消失的只是链接本身，而文件内容仍旧存在，直至文件的所有硬链接全部被删除。</p>
+<p>下面通过实例来说明硬链接：</p>
+<p>下面尝试创建一些链接：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/home# mkdir sg sg/d1 sg/d2 
+root@wanghaoming1:/home# cp /etc/passwd sg
+root@wanghaoming1:/home# cd sg
+root@wanghaoming1:/home/sg# ls
+d1  d2  passwd
+root@wanghaoming1:/home/sg# mv passwd pw
+root@wanghaoming1:/home/sg# ln pw pw_h
+root@wanghaoming1:/home/sg# ln pw d1/pw_h
+root@wanghaoming1:/home/sg# ls -l
+total 16
+drwxr-xr-x 2 root root 4096 Feb 17 11:01 d1
+drwxr-xr-x 2 root root 4096 Feb 17 11:00 d2
+-rw-r--r-- 3 root root 1637 Feb 17 11:01 pw
+-rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
+root@wanghaoming1:/home/sg# ls -l d1
+total 4
+-rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
+</code></pre>
+<p>注意到，pw, pw_h 和 d1/pw_h 的第二个条目都是 3，这是文件当前的硬链接数量。文件至少有一个硬链接，因为文件名是通过硬链接创建的。用过<code>ls</code>命令，尽管可以通过第五个条目看出pw, pw_h 和 d1/pw_h 三个文件的大小都是 1637 字节，但是并不能看出其实质上是一个文件。</p>
+<p>思考硬链接时，不妨将文件想象成由两部分组成：</p>
+<ul>
+<li>包含文件内容的数据部分</li>
+<li>包含文件名的名称部分</li>
+</ul>
+<p>在创建硬链接时，实际上创建的是名称部分，全部指向相同的数据部分。</p>
+<pre><code class="language-mermaid">graph TB
+a((name1))--&gt;b[Data]
+c((name2))--&gt;b
+</code></pre>
+<p>系统为 i 节点（inode）分配了一系列磁盘块（disk block），然后将 i 节点与名称部分关联起来。因此，每个硬链接都指向包含文件内容的特定 i 节点。<code>ls</code>命令的<code>-i</code>选项可以显示 i 节点号：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/home/sg# ls -li 
+total 16
+931660 drwxr-xr-x 2 root root 4096 Feb 17 11:01 d1
+931661 drwxr-xr-x 2 root root 4096 Feb 17 11:00 d2
+931662 -rw-r--r-- 3 root root 1637 Feb 17 11:01 pw
+931662 -rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
+root@wanghaoming1:/home/sg# ls -li d1
+total 4
+931662 -rw-r--r-- 3 root root 1637 Feb 17 11:01 pw_h
+</code></pre>
+<p>可以看出 pw, pw_h 和 d1/pw_h 的 i 节点号是一致的，因此他们是一个文件。</p>
+<h3 id="462-符号链接">4.6.2 符号链接</h3>
+<p>其工作原理是创建一种特殊类型的文件，内含一段指向被引用文任或目录的文本指针。就这方面而言，它和Windows的快捷方式非常类似。</p>
+<p>由符号链按指向的文件与符号链接本身儿乎没有区别。例如，向往号链接写入内容，最终写入的是被引用文件。当删除符号链接时，被删除的只是链接，而非文件。如果文件先于符号链接破测除，那么符号链接仍然在在，但其指向就不再有效了。这种链接称为<strong>无效链接</strong>。<code>ls</code>命令会用红色来显示无效链接。</p>
+<p>符号链接旨在弥补硬链接的两个不足：</p>
+<ul>
+<li>硬链接不能跨物理设备</li>
+<li>硬链接不能引用目录</li>
+</ul>
+<p>符号链接是一种特殊类型的文件，其中包含指向目标文件或目录的文本指针。创建符号链接的方法类似于创建硬链接的方法。在跨目录创建符号链接是可以使用相对路径，也可以使用绝对路径：</p>
+<blockquote>
+<p>当用相对路径创建符号链接时，必须需要注意：</p>
+<pre><code class="language-Shell">username@machinename:workdir# ln -s item1 item2
+</code></pre>
+<p>其中 <strong>item2 是 workdir 的相对路径，item1 是 item2 的相对路径</strong>。如果 item1 是 workdir 的相对路径，则会生成无效链接：</p>
+</blockquote>
+<pre><code class="language-Shell">root@wanghaoming1:/home/sg# ls . .. d1 d2
+.:
+d1  d2  pw
+
+..:
+pg  sg  sg_c
+
+d1:
+sd
+
+d2:
+root@wanghaoming1:/home/sg# ln -s pw d1/pw_s1
+root@wanghaoming1:/home/sg# ln -s ../pw d1/pw_s2
+</code></pre>
+<p>其中生成的 pw_s1 是无效链接：
+<img src="media/16449369852145/16450807696093.jpg" alt="">
+如果尝试运行一个无效链接，会看到如下信息：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/home/sg# less d1/pw_s1
+d1/pw_s1: No such file or directory
+</code></pre>
+<pre><code class="language-Shell">root@wanghaoming1:/home/sg# ln -s pw ../pw_s3
+root@wanghaoming1:/home/sg# ln -s sg/pw ../pw_s4
+</code></pre>
+<p>其中生成的 pw_s3 是无效链接：
+<img src="media/16449369852145/16450808993258.jpg" alt=""></p>
+<p><img src="media/16449369852145/16450812087138.jpg" alt=""></p>
+<p>pw_s2 文件的条目中第二字段的开头字符 l 表示它是一个目标文件的符号链接，符号链接文件的大小是 5，这是字符串 pw_s2 的长度，而非它所指向的文件的长度。</p>
+<blockquote>
+<p>虽然可以使用绝对路径名，但是多数情况下，相对路径名更可取，因为这样可以在不破坏链接的情况下，重命名或移动包含符号链接与引用文件的目录树。</p>
+</blockquote>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

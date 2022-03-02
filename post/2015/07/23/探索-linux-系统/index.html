@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>探索 Linux 系统 | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">探索 Linux 系统</span></h1>
+
+<h2 class="date">2015/07/23</h2>
+</div>
+
+<main>
+<h1 id="c03探索-linux-系统">C03.探索 Linux 系统</h1>
+<p>[TOC]</p>
+<h2 id="31-使用ls命令">3.1 使用<code>ls</code>命令</h2>
+<p>使用<code>ls</code>命令，可以指定要显示内容的目录：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/# ls /usr
+bin  games  include  lib  local  sbin  share  src
+</code></pre>
+<p>也可以指定多个目录，既可使用绝对路径，也可使用相对路径。这里用户主目录用<code>~</code>表示：</p>
+<pre><code class="language-shell">root@wanghaoming1:/# ls ~ /usr boot
+boot:
+abi-4.4.0-62-generic  config-4.4.0-62-generic  grub  initrd.img-4.4.0-62-generic  System.map-4.4.0-62-generic  vmlinuz-4.4.0-62-generic
+
+/root:
+oneinstack  oneinstack-full.tar.gz
+
+/usr:
+bin  games  include  lib  local  sbin  share  src
+root@wanghaoming1:/# cd ~
+root@wanghaoming1:~# ls ..
+bin  boot  data  dev  etc  home  initrd.img  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  swapfile  sys  tmp  usr  var  vmlinuz
+</code></pre>
+<p>还可以通过给<code>ls</code>命令添加选项，修改其显示的格式：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/usr# ls -l
+total 64
+drwxr-xr-x   2 root root 36864 Nov 29  2017 bin
+drwxr-xr-x   2 root root  4096 Apr 13  2016 games
+drwxr-xr-x  53 root root  4096 Nov 29  2017 include
+drwxr-xr-x  58 root root  4096 Nov 29  2017 lib
+drwxr-xr-x  19 root root  4096 Nov 29  2017 local
+drwxr-xr-x   2 root root  4096 Feb 12 18:24 sbin
+drwxr-xr-x 123 root root  4096 Nov 29  2017 share
+drwxr-xr-x   4 root root  4096 Aug 17  2017 src
+</code></pre>
+<h3 id="311-选项和参数">3.1.1 选项和参数</h3>
+<p>多数命令格式如下：</p>
+<pre><code class="language-shell">command -options arguments
+</code></pre>
+<p>即：<strong>命令</strong>后跟随一个或多个能够修改命令行为的<strong>选项</strong>；接着跟着一个或多个<strong>参数</strong>，用于表明命令操作的对象。</p>
+<ul>
+<li>多数选项是在<strong>单个字符</strong>前加上连字符，如<code>-l</code>；</li>
+<li>有些命令也支持长选项，即在<strong>单词</strong>前加两个连字符，如<code>--reverse</code>。</li>
+<li>许多命令还可以将多个短选项串在一起使用，如将<code>-l</code>与<code>-t</code>串为<code>-lt</code>。</li>
+</ul>
+<p>下面列举<code>ls</code>常用的选项：</p>
+<pre><code class="language-Shell"># 1. -a, -all 列出所有文件，包括., ..
+root@wanghaoming1:/# ls -a usr
+.  ..  bin  games  include  lib  local  sbin  share  src
+
+# 2. -A, --almost-all 与-a 类似，但不列出., ..
+root@wanghaoming1:/# ls -A usr
+bin  games  include  lib  local  sbin  share  src
+
+# 3. -d, --directory 若指定目录，则列出该目录中的内容而非目录本身，与-l 结合使用可查看目录的详细信息
+root@wanghaoming1:/# ls -dl usr
+drwxr-xr-x 10 root root 4096 Aug 17  2017 usr
+
+# 4. -F, --classify 在每个列出的名称后面加上类型指示符。例如，如果是目录名，则在其后加/
+root@wanghaoming1:/# ls -F .
+bin/  boot/  data/  dev/  etc/  home/  initrd.img@  lib/  lib64/  lost+found/  media/  mnt/  opt/  proc/  root/  run/  sbin/  srv/  swapfile  sys/  tmp/  usr/  var/  vmlinuz@
+
+# 5. -l 以长格式输出结果
+root@wanghaoming1:/# ls -l usr
+total 64
+drwxr-xr-x   2 root root 36864 Nov 29  2017 bin
+drwxr-xr-x   2 root root  4096 Apr 13  2016 games
+drwxr-xr-x  53 root root  4096 Nov 29  2017 include
+drwxr-xr-x  58 root root  4096 Nov 29  2017 lib
+drwxr-xr-x  19 root root  4096 Nov 29  2017 local
+drwxr-xr-x   2 root root  4096 Feb 12 18:24 sbin
+drwxr-xr-x 123 root root  4096 Nov 29  2017 share
+drwxr-xr-x   4 root root  4096 Aug 17  2017 src
+
+# 6. -h, --human-readable 在长格式的输出结果中，以人类可读的形式显示文件大小
+root@wanghaoming1:/# ls -lh usr
+total 64K
+drwxr-xr-x   2 root root  36K Nov 29  2017 bin
+drwxr-xr-x   2 root root 4.0K Apr 13  2016 games
+drwxr-xr-x  53 root root 4.0K Nov 29  2017 include
+drwxr-xr-x  58 root root 4.0K Nov 29  2017 lib
+drwxr-xr-x  19 root root 4.0K Nov 29  2017 local
+drwxr-xr-x   2 root root 4.0K Feb 12 18:24 sbin
+drwxr-xr-x 123 root root 4.0K Nov 29  2017 share
+drwxr-xr-x   4 root root 4.0K Aug 17  2017 src
+
+# 7. -S 按照文件大小顺序输出结果
+root@wanghaoming1:/# ls -Slh boot
+total 45M
+-rw-r--r-- 1 root root  33M Nov 29  2017 initrd.img-4.4.0-62-generic
+-rw------- 1 root root 6.8M Jan 18  2017 vmlinuz-4.4.0-62-generic
+-rw------- 1 root root 3.7M Jan 18  2017 System.map-4.4.0-62-generic
+-rw-r--r-- 1 root root 1.2M Jan 18  2017 abi-4.4.0-62-generic
+-rw-r--r-- 1 root root 186K Jan 18  2017 config-4.4.0-62-generic
+drwxr-xr-x 5 root root 4.0K Feb 12 18:24 grub
+
+# 8. -t 按照修改日期排序输出结果
+root@wanghaoming1:/# ls -tlh boot
+total 45M
+drwxr-xr-x 5 root root 4.0K Feb 12 18:24 grub
+-rw-r--r-- 1 root root  33M Nov 29  2017 initrd.img-4.4.0-62-generic
+-rw-r--r-- 1 root root 1.2M Jan 18  2017 abi-4.4.0-62-generic
+-rw-r--r-- 1 root root 186K Jan 18  2017 config-4.4.0-62-generic
+-rw------- 1 root root 3.7M Jan 18  2017 System.map-4.4.0-62-generic
+-rw------- 1 root root 6.8M Jan 18  2017 vmlinuz-4.4.0-62-generic
+
+# 9. -r, --reverse 翻转顺序
+root@wanghaoming1:/# ls -lthr boot
+total 45M
+-rw------- 1 root root 6.8M Jan 18  2017 vmlinuz-4.4.0-62-generic
+-rw------- 1 root root 3.7M Jan 18  2017 System.map-4.4.0-62-generic
+-rw-r--r-- 1 root root 186K Jan 18  2017 config-4.4.0-62-generic
+-rw-r--r-- 1 root root 1.2M Jan 18  2017 abi-4.4.0-62-generic
+-rw-r--r-- 1 root root  33M Nov 29  2017 initrd.img-4.4.0-62-generic
+drwxr-xr-x 5 root root 4.0K Feb 12 18:24 grub
+</code></pre>
+<h3 id="312-进一步了解长格式">3.1.2 进一步了解长格式</h3>
+<p>以选项<code>-l</code>输出的结果可以分为七个部分：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/# ls -lh usr
+total 64K
+drwxr-xr-x   2 root root  36K Nov 29  2017 bin
+drwxr-xr-x   2 root root 4.0K Apr 13  2016 games
+drwxr-xr-x  53 root root 4.0K Nov 29  2017 include
+drwxr-xr-x  58 root root 4.0K Nov 29  2017 lib
+drwxr-xr-x  19 root root 4.0K Nov 29  2017 local
+drwxr-xr-x   2 root root 4.0K Feb 12 18:24 sbin
+drwxr-xr-x 123 root root 4.0K Nov 29  2017 share
+drwxr-xr-x   4 root root 4.0K Aug 17  2017 src
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>drwxr-xr-x</td>
+<td>文件访问权限。第一个字符指明文件类型，其中以连字符（-）开头表示普通文件，以 d 开头表示目录。之后的三个字符（rwx）表示文件属主的访问权限；后续的三个字符（r-x）表示文件属组的访问权限；最后的三个字符（r-x）表示其他人的访问权限</td>
+</tr>
+<tr>
+<td>2</td>
+<td>文件的硬链接数列</td>
+</tr>
+<tr>
+<td>root</td>
+<td>文件属主</td>
+</tr>
+<tr>
+<td>root</td>
+<td>文件属组</td>
+</tr>
+<tr>
+<td>36K</td>
+<td>文件大小</td>
+</tr>
+<tr>
+<td>Nov 29  2017</td>
+<td>文件最后修改时间</td>
+</tr>
+<tr>
+<td>bin</td>
+<td>文件名</td>
+</tr>
+</tbody>
+</table>
+<h2 id="32-使用-file-命令确定文件类型">3.2 使用 <code>file</code> 命令确定文件类型</h2>
+<p>可以使用如下<code>file</code>命令确定文件类型：</p>
+<pre><code class="language-Shell">file filename
+</code></pre>
+<p>当 filename 是目录时，返回 directory.</p>
+<pre><code class="language-Shell">root@wanghaoming1:/# file boot/grub/grub.cfg
+boot/grub/grub.cfg: ASCII text
+root@wanghaoming1:/# file boot
+boot: directory
+</code></pre>
+<h2 id="33-使用less命令查看文本文件">3.3 使用<code>less</code>命令查看文本文件</h2>
+<p>可以使用如下<code>less</code>命令查看文本文件：</p>
+<pre><code class="language-Shell">less filename
+</code></pre>
+<p>很多包含系统设置的文件（配置文件）采用的都是文本格式，能够阅读这种文件可以让我们了解系统是如何工作的。</p>
+<p>例如若要查看定义了系统中所有用户的文件，可以输入如下命令</p>
+<pre><code class="language-Shell">root@wanghaoming1:/# less /etc/passwd
+</code></pre>
+<p>运行<code>less</code>命令后，输出如下结果：</p>
+<pre><code class="language-shell">~
+~
+~
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false
+_apt:x:105:65534::/nonexistent:/bin/false
+messagebus:x:106:110::/var/run/dbus:/bin/false
+uuidd:x:107:111::/run/uuidd:/bin/false
+ntp:x:108:114::/home/ntp:/bin/false
+sshd:x:109:65534::/var/run/sshd:/usr/sbin/nologin
+mysql:x:1000:1000::/home/mysql:/sbin/nologin
+www:x:1001:1001::/home/www:/sbin/nologin
+redis:x:1002:1002::/home/redis:/sbin/nologin
+memcached:x:1003:1003::/home/memcached:/sbin/nologin
+~
+~
+~
+(END)
+</code></pre>
+<p>按 q 键可以推出<code>less</code>命令。</p>
+<p>下面列举<code>less</code>命令常用的命令：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>后翻一页</td>
+</tr>
+<tr>
+<td>空格</td>
+<td>前翻一页</td>
+</tr>
+<tr>
+<td>上方向键</td>
+<td>向后一行</td>
+</tr>
+<tr>
+<td>下方向键</td>
+<td>向上一行</td>
+</tr>
+<tr>
+<td>G</td>
+<td>移动到文件末尾</td>
+</tr>
+<tr>
+<td>g</td>
+<td>移动到文件开头</td>
+</tr>
+<tr>
+<td>/characters</td>
+<td>向前搜索指定字符串</td>
+</tr>
+<tr>
+<td>n</td>
+<td>重复上一次搜索</td>
+</tr>
+<tr>
+<td>h</td>
+<td>显示帮助</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出</td>
+</tr>
+</tbody>
+</table>
+<h2 id="34-目录系统">3.4 目录系统</h2>
+<p><img src="media/16448489498523/16448499131477.jpg" alt=""></p>
+<h2 id="35-链接初步">3.5 链接初步</h2>
+<p>运行命令</p>
+<pre><code class="language-Shell">root@wanghaoming1:/etc# file localtime
+localtime: symbolic link to /usr/share/zoneinfo/Asia/Shanghai
+</code></pre>
+<p>symbolic link 叫做符号链接（也称为软连接），运行<code>root@wanghaoming1:/etc# ls -lhF /etc</code>可以看到有形如</p>
+<pre><code class="language-Shell">lrwxrwxrwx 1 root root     33 Nov 29  2017 localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai
+</code></pre>
+<p>的输出，该条目的第一个字母 l 表明该文件是一个软连接。</p>
+<p>关于链接的具体内容，在下一章详解。</p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

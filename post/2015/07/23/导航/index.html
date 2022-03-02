@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>导航 | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">导航</span></h1>
+
+<h2 class="date">2015/07/23</h2>
+</div>
+
+<main>
+<h1 id="c02导航">C02.导航</h1>
+<p>[TOC]</p>
+<h2 id="21-文件系统树">2.1 文件系统树</h2>
+<p>Linux 按照有层次的目录结构组织文件。文件是在树状的目录中组织的，目录中可以有文件和其他目录。文件的第一个目录称为根目录（/）。</p>
+<p>在 windows 系统中，每个储存设备都有各自独立的文件系统树。而在类 Unix 系统中，不管计算机安装了多少存储设备，都只有一个文件系统树。</p>
+<h2 id="22-当前的工作目录pwd">2.2 当前的工作目录:<code>pwd</code></h2>
+<p>把文件系统想成一座迷宫，形如一个倒置的树，我们就位于其中。在任何时刻，我们都处在某个目录中，能够看到该目录中包含的文件、上级目录（父目录）和下级目录（子目录）。</p>
+<p>我们所处的目录称为<strong>当前工作目录</strong>，可以使用<code>pwd</code>(print working directory)命令将其显示出来：</p>
+<pre><code class="language-Shell">root@wanghaoming1:~# pwd
+/root
+</code></pre>
+<h2 id="23-列出目录内容ls">2.3 列出目录内容:<code>ls</code></h2>
+<p>使用<code>ls</code>命令可以列出当前工作目录中的文件与子目录：</p>
+<pre><code class="language-Shell">root@wanghaoming1:~# ls
+oneinstack  oneinstack-full.tar.gz
+</code></pre>
+<h2 id="24更改当前工作目录cd">2.4更改当前工作目录:<code>cd</code></h2>
+<p><code>cd</code>命令可以更改当前工作目录。只需在 <code>cd</code>命令后输入要更改的工作目录路径名即可。路径名分两种：绝对路径名和相对路径名。</p>
+<h3 id="241-绝对路径名">2.4.1 绝对路径名</h3>
+<p>绝对路径名从根目录（用/表示）开始，随后紧接一个又一个分支，直到目标<u>目录或文件</u>：</p>
+<pre><code class="language-Shell">root@wanghaoming1:~# cd /usr/bin
+root@wanghaoming1:/usr/bin# pwd
+/usr/bin
+</code></pre>
+<blockquote>
+<p>note: 第二行 machinename 和#之间的目录名已经表明当前工作目录为/usr/bin.</p>
+</blockquote>
+<h3 id="242-相对路径名">2.4.2 相对路径名</h3>
+<p>相对路径名从当前工作目录开始使用点表示法描述目标文件系统数中的相对位置：<code>.</code>表示当前工作目录；<code>..</code>表示父目录。假设我们正在目录<code>bin</code>中，若想进入其父目录<code>usr</code>，则有两种方式：</p>
+<ul>
+<li>方式一：绝对路径</li>
+</ul>
+<pre><code class="language-Shell">root@wanghaoming1:/usr/bin# cd /usr
+root@wanghaoming1:/usr# pwd
+/usr
+</code></pre>
+<ul>
+<li>方式二：相对路径</li>
+</ul>
+<pre><code class="language-Shell">root@wanghaoming1:/usr/bin# cd ..
+root@wanghaoming1:/usr# pwd
+/usr
+</code></pre>
+<p>此外还有两种方式从当前目录（<code>usr</code>）进入其子目录<code>bin</code>中，第一种是绝对路径（<code>cd /usr/bin</code>），另一种是相对路径：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/usr# cd ./bin
+root@wanghaoming1:/usr/bin# pwd
+/usr/bin
+</code></pre>
+<p>多数情况下，<code>./</code>可以省略，因此代码可以重写为：</p>
+<pre><code class="language-Shell">root@wanghaoming1:/usr# cd bin
+root@wanghaoming1:/usr/bin# pwd
+/usr/bin
+</code></pre>
+<blockquote>
+<p>note: 关于文件名的重要说明</p>
+<ul>
+<li>以点号开头的文件名是隐藏的，只有<code>ls -a</code>才会列出这些文件</li>
+<li>Linux 中的文件名区分大小写</li>
+<li>文件名中最好不要使用空格，使用下划线（_）来分隔单词</li>
+</ul>
+</blockquote>
+<h3 id="243-一些有用的便捷写法">2.4.3 一些有用的便捷写法</h3>
+<table>
+<thead>
+<tr>
+<th>便捷写法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd</code></td>
+<td>将当前工作目录更改为用户主目录</td>
+</tr>
+<tr>
+<td><code>cd -</code></td>
+<td>将当前工作目录切换回前一个工作目录（时间）</td>
+</tr>
+<tr>
+<td><code>cd ~user_name</code></td>
+<td>将当前工作目录更改为用户 user_name 的主目录</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-Shell">root@wanghaoming1:/usr/bin# cd
+root@wanghaoming1:~# pwd
+/root
+root@wanghaoming1:~# cd -
+/usr/bin
+root@wanghaoming1:/usr/bin# cd ~root
+root@wanghaoming1:~# pwd
+/root
+</code></pre>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
