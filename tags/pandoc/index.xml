@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pandoc on A minimal Hugo website</title>
+    <title>Pandoc on haoming&#39;s blog</title>
     <link>/tags/pandoc/</link>
-    <description>Recent content in Pandoc on A minimal Hugo website</description>
+    <description>Recent content in Pandoc on haoming&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 14 Feb 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/pandoc/index.xml" rel="self" type="application/rss+xml" />
@@ -16,6 +16,21 @@
       <description>This sample post is mainly for blogdown users. If you do not use blogdown, you can skip the first section.
 1. Markdown or R Markdown This is a post written in plain Markdown (*.md) instead of R Markdown (*.Rmd). The major differences are:
  You cannot run any R code in a plain Markdown document, whereas in an R Markdown document, you can embed R code chunks (```{r}); A plain Markdown post is rendered through Blackfriday, and an R Markdown document is compiled by rmarkdown and Pandoc.</description>
+    </item>
+    
+    <item>
+      <title>Vim intro</title>
+      <link>/post/2016/02/14/vim-intro/</link>
+      <pubDate>Sun, 14 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2016/02/14/vim-intro/</guid>
+      <description>1. vim 模式 normal -&amp;gt; insert
+insert -&amp;gt; normal
+normal -&amp;gt; visual
+visual -&amp;gt; normal
+normal &amp;lt;-&amp;gt; command
+2. 光标移动 在 normal 模式下：
+3. operator  d: cut c: change, i.e. cut and into insert mode y: copy p: paste u: undo vwwww: select to next 4 words from here(visual mode is convenient for select) vjjjp: select 3 lines form here and cut vkd: delect a above line from here  4.</description>
     </item>
     
   </channel>

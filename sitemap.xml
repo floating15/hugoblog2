@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/other/abc/</loc>
+    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/note/2017/06/14/another-note/</loc>
     <lastmod>2017-06-14T00:00:00+00:00</lastmod>
   </url><url>
@@ -17,6 +20,9 @@
     <loc>/note/</loc>
     <lastmod>2017-06-14T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/other/</loc>
+    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/tags/</loc>
     <lastmod>2017-06-14T00:00:00+00:00</lastmod>
   </url><url>
@@ -30,6 +36,12 @@
     <lastmod>2016-02-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/blogdown/</loc>
+    <lastmod>2016-02-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/other/def/</loc>
+    <lastmod>2016-02-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/other/ghi/</loc>
     <lastmod>2016-02-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/hugo/</loc>
@@ -48,6 +60,9 @@
     <lastmod>2016-02-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/rstudio/</loc>
+    <lastmod>2016-02-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/2016/02/14/vim-intro/</loc>
     <lastmod>2016-02-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/2015/07/23/lorem-ipsum/</loc>

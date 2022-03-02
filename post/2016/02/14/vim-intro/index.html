@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vim intro | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Vim intro</span></h1>
+<h2 class="author">Yihui Xie</h2>
+<h2 class="date">2016/02/14</h2>
+</div>
+
+<main>
+<h2 id="1-vim-模式">1. vim 模式</h2>
+<p><img src="img/2022-02-27-21-14-40.png" alt="">
+<em>normal -&gt; insert</em></p>
+<p><img src="img/2022-02-27-21-14-04.png" alt="">
+<em>insert -&gt; normal</em></p>
+<p><img src="img/2022-02-27-21-17-56.png" alt="">
+<em>normal -&gt; visual</em></p>
+<p><img src="img/2022-02-27-21-19-39.png" alt="">
+<em>visual -&gt; normal</em></p>
+<p><img src="img/2022-02-27-21-21-07.png" alt="">
+<em>normal &lt;-&gt; command</em></p>
+<h2 id="2-光标移动">2. 光标移动</h2>
+<p>在 normal 模式下：</p>
+<p><img src="img/2022-02-27-21-24-22.png" alt=""></p>
+<p><img src="img/2022-02-27-21-25-50.png" alt=""></p>
+<p><img src="img/2022-02-27-21-29-05.png" alt=""></p>
+<p><img src="img/2022-02-27-21-31-52.png" alt=""></p>
+<h2 id="3-operator">3. operator</h2>
+<p><img src="img/2022-02-27-21-49-34.png" alt=""></p>
+<ul>
+<li>d: cut</li>
+<li>c: change, i.e. cut and into insert mode</li>
+<li>y: copy</li>
+<li>p: paste</li>
+<li>u: undo</li>
+<li>vwwww: select to next 4 words from here(visual mode is convenient for select)</li>
+<li>vjjjp: select 3 lines form here and cut</li>
+<li>vkd: delect a above line from here</li>
+</ul>
+<h2 id="4-motion">4. motion</h2>
+<p><img src="img/2022-02-27-21-43-51.png" alt=""></p>
+<p><img src="img/2022-02-27-21-48-54.png" alt=""></p>
+<ul>
+<li>viw: select the inner word</li>
+<li>diw = viwd
+<ul>
+<li>/daw/ciw/caw/dib/di'/diB/di[</li>
+</ul>
+</li>
+<li>dd: cut the line
+<ul>
+<li>cc: change, i.e. cut the line and into insert mode</li>
+<li>yy: copy the line</li>
+</ul>
+</li>
+<li>2dd: cut two lines (this line and next line)</li>
+<li>dfs: cut from here to string &rsquo;s'</li>
+<li>d^: cut from here to the first string in the line</li>
+<li>die: cut the entire content</li>
+<li>cit: change the content in the tag (in HTML file, the cursor must in the tag line)</li>
+</ul>
+<h2 id="5-change-upper-and-lower">5. change upper and lower</h2>
+<p><img src="img/2022-02-27-22-43-57.png" alt=""></p>
+<ul>
+<li>vjgu=vju: lower to the next line from here (gu/gU is similar with d/c/y)
+<ul>
+<li>vj~: exchange upper and lower of words from here</li>
+</ul>
+</li>
+<li>vawgu=vawu: lowe the word (g can be ignored in visual mode)
+<ul>
+<li>viwgu = viwu</li>
+</ul>
+</li>
+<li>guiB: lower the contents in the braces{}
+<ul>
+<li>gu$: lower to the end of line</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-tips">6. tips</h2>
+<ul>
+<li>gd: go to the definition, look the content of the function</li>
+<li>gh: go to the however, look the augments setting of the function</li>
+<li>gt: go to next tab
+<ul>
+<li>gT: go to last tab</li>
+<li>4gt: go to the next 4 tab</li>
+</ul>
+</li>
+<li>command 0: cursor move to side column for editor
+<ul>
+<li>space: open the directory; open the file</li>
+<li>l: cursor move to the editor from side column</li>
+</ul>
+</li>
+<li>command x: cursor move the x-th split screen (x=1,2,3&hellip;)</li>
+</ul>
+<h2 id="7-easy-motion">7. easy-motion</h2>
+<p><code>&lt;leader&gt;</code> is space:
+<img src="img/2022-02-27-23-31-06.png" alt="">
+<img src="img/2022-02-27-23-33-45.png" alt=""></p>
+<h2 id="8-vim-surround">8. vim-surround</h2>
+<p><img src="img/2022-02-27-23-38-36.png" alt=""></p>
+<ul>
+<li>ysiw' / ysis] / ysipB</li>
+</ul>
+<h2 id="9-multi-cursor-mode">9. multi-cursor mode</h2>
+<p><img src="img/2022-02-28-00-01-29.png" alt="">
+two methods:</p>
+<ol>
+<li>press <code>gb</code>: select the first <strong>word</strong> and into <em>visual mode</em>, press <code>gb</code> to select next matched <strong>word</strong>, etc. press <code>d/c/y</code> to operate, or press <code>v</code> into <em>normal mode</em> and then press <code>i</code> into <em>insert mode</em>.</li>
+<li>get into <em>visual mode</em> first, and choose any <strong>item</strong> (not must be a word), press <code>gb</code> to select next matched <strong>item</strong>, etc.</li>
+</ol>
+<p>note that <em>multi insert mode</em> -ESC/jj-&gt; <em>multi normal mode</em> -ESC-&gt; <em>normal mode</em></p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
