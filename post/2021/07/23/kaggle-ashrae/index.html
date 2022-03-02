@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>kaggle-ASHRAE | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">kaggle-ASHRAE</span></h1>
+
+<h2 class="date">2021/07/23</h2>
+</div>
+
+<main>
+<h1 id="新洋教育kaggle零基础教学计划---数据挖掘项目">新洋教育Kaggle零基础教学计划 - 数据挖掘项目</h1>
+<h1 id="预测建筑物的能源消耗">预测建筑物的能源消耗</h1>
+<p>ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。</p>
+<p><img src="https://www.shell.com/energy-and-innovation/the-energy-future/shell-energy-transition-report/_jcr_content/par/pageHeader/image.img.960.jpeg/1523515186785/cityscape-river-sunshine-hong-kong-china.jpeg?imformat=chrome&amp;imwidth=1280" alt="image"></p>
+<p>问：夏天给大楼降温需要多少钱？</p>
+<p>答：非常多！政府正在进行投资，以降低能源成本，减少排放。但是问题是，这些改进是否真的有效？</p>
+<p>在这次竞赛中，我们通过<strong>预测冷水表、电表、热水表和蒸汽表的读数</strong>来对这些节能投资进行更好的估计。数据来自近三年来1000栋建筑中的各表读数。大型投资者和金融机构将更倾向于在这一领域投资，以提高建筑能源使用效率。</p>
+<blockquote>
+<p>**提示：**Code 和 Markdown 区域可通过 <strong>Shift + Enter</strong> 快捷键运行。此外，Markdown可以通过双击进入编辑模式。</p>
+</blockquote>
+<p>我们将这个notebook分为不同的步骤，你可以使用下面的链接来浏览此notebook。</p>
+<ul>
+<li><a href="#step1">Step 1</a>: 导入数据</li>
+<li><a href="#step2">Step 2</a>: 探索性数据分析</li>
+<li><a href="#step3">Step 3</a>: 数据预处理</li>
+<li><a href="#step4">Step 4</a>: LightGBM</li>
+<li><a href="#step5">Step 5</a>: 结果预测</li>
+</ul>
+<p>在该项目中包含了如下的问题：</p>
+<ul>
+<li><a href="#question1">问题 1</a>: 回顾课上内容并查阅资料，归纳总结数据预处理需要的步骤。</li>
+<li><a href="#question2">问题 2</a>: 思考此处为何要进行对数转换。</li>
+<li><a href="#question3">问题 3</a>: 查阅资料，总结LightGBM与CatBoost的差异。</li>
+</ul>
+<pre><code class="language-python">#导入必要的库
+import pandas as pd
+import numpy as np
+import os
+import gc
+import copy
+import warnings
+
+import lightgbm as lgb
+from lightgbm import LGBMRegressor
+from sklearn.metrics import mean_squared_log_error
+from sklearn.model_selection import StratifiedKFold, KFold
+from tqdm.notebook import tqdm
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+warnings.filterwarnings('ignore')
+pd.set_option(&quot;max_columns&quot;, 500)
+%matplotlib inline
+</code></pre>
+<p><a id='step1'></a></p>
+<h1 id="1-导入数据">1. 导入数据</h1>
+<p>ASHRAE给出的数据包含大量的特征数据，包括仪表读数，天气和建筑的数据等等。该问题为典型的监督学习问题。比赛举办方提供了6个csv文件，包括5个数据集与1个提交样本。其中数据集的字段含义为：</p>
+<p><code>[train/test].csv</code></p>
+<ul>
+<li>building_id：建筑原数据的外键</li>
+<li>meter : 仪表的id码, {0: 电表 , 1: 冷水表, 2: 蒸汽表, 3: 热水表}，不是每栋建筑都有全部类型的仪表</li>
+<li>timestamp：读表的时间</li>
+<li>meter_reading：目标变量, 用千瓦时（或等效值）表示的能耗。这是带有测量误差的真实数据，其中site0的电表读数出现问题，单位是千英热</li>
+</ul>
+<p><code>building_meta.csv</code></p>
+<ul>
+<li>site_id: 天气文件的外键</li>
+<li>building_id: training.csv对应的外键</li>
+<li>primary_use: 基于EnergyStar property type definitions的建筑物活动的主要类别的指标（education, office…)</li>
+<li>square_feet: 建筑物的总建筑面积</li>
+<li>year_built: 建筑完成的年份</li>
+<li>floor_count: 建筑物层数</li>
+</ul>
+<p><code>weather_[train/test].csv</code>：气象站提供的气象数据,尽可能接近现场。</p>
+<ul>
+<li>site_id: 天气文件的外键</li>
+<li>air_temperature: 气温，单位为摄氏度</li>
+<li>cloud_coverage: 天空中被云层覆盖的部分，单位为oktas</li>
+<li>dew_temperature: 露点温度，单位为摄氏度</li>
+<li>precip_depth_1_hr: 降水深度，单位为毫米</li>
+<li>sea_level_pressure: 海平面压力，单位为毫巴/公顷</li>
+<li>wind_direction: 风向，使用的是指南针方向（0-360）</li>
+<li>wind_speed: 风速，单位为米每秒</li>
+</ul>
+<pre><code class="language-python">train = pd.read_csv(&quot;../input/ashrae-energy-prediction/train.csv&quot;, parse_dates=[&quot;timestamp&quot;])
+test = pd.read_csv(&quot;../input/ashrae-energy-prediction/test.csv&quot;, parse_dates=[&quot;timestamp&quot;])
+building = pd.read_csv('../input/ashrae-energy-prediction/building_metadata.csv')
+weather_train = pd.read_csv('../input/ashrae-energy-prediction/weather_train.csv', parse_dates=[&quot;timestamp&quot;])
+weather_test = pd.read_csv(&quot;../input/ashrae-energy-prediction/weather_test.csv&quot;, parse_dates=[&quot;timestamp&quot;])
+</code></pre>
+<pre><code class="language-python">df = pd.DataFrame(
+    weather_train['site_id'].value_counts()
+)
+df
+</code></pre>
+<p><a id='step2'></a></p>
+<h1 id="2-探索性数据分析">2. 探索性数据分析</h1>
+<ul>
+<li>根据主办方提供的数据，&ldquo;meter&quot;代表仪表的类型，对应关系为 {0: 电表 , 1: 冷水表, 2: 蒸汽表, 3: 热水表}</li>
+<li>观察各个建筑的仪表读数，可以发现，其中一些建筑的读数在某些区间出现了持续为0的异常情况,也有读数异常的高的值</li>
+<li>可以通过修改<code>site</code>,<code>meter_type</code>,<code>primary_use</code>三个参数选择想要绘制的数据</li>
+</ul>
+<p>关联train表格和building表格用于作图</p>
+<pre><code class="language-python">train_plot = train.merge(building, on='building_id', how='left')
+
+site = 0 #建筑物的地点
+meter_type = 1 #仪表的类型
+primary_use = 'Education' #建筑物的用途
+
+r = int(
+    np.ceil(
+        len(
+            train_plot[
+                (train_plot['site_id'] == site) &amp;
+                (train_plot['primary_use'] == primary_use) &amp;
+                (train_plot['meter'] == meter_type)
+            ]['building_id'].value_counts(dropna=False).index.to_list()
+        ) / 2
+    )
+)
+</code></pre>
+<pre><code class="language-python">s = enumerate(
+    train_plot[
+        (train_plot['site_id'] == site) &amp;
+        (train_plot['primary_use'] == primary_use) &amp;
+        (train_plot['meter'] == meter_type)
+    ]['building_id'].value_counts(dropna=False).index.to_list()
+)
+</code></pre>
+<pre><code class="language-python">fig, axes = plt.subplots(r,2,figsize=(14, 36), dpi=100)
+for i, building_id in s:
+    train_plot[
+        (train_plot['site_id'] == site) &amp;
+        (train_plot['primary_use'] == primary_use) &amp;
+        (train_plot['meter'] == meter_type) &amp;
+        (train_plot['building_id'] == building_id)
+    ][
+        ['timestamp', 'meter_reading']
+    ].set_index('timestamp').resample('H').mean()['meter_reading'].plot(
+        ax=axes[i%r][i//r],
+        alpha=0.8,
+        label='By hour',
+        color='tab:blue'
+    ).set_ylabel('Mean meter reading', fontsize=13);
+
+    train_plot[
+        (train_plot['site_id'] == site) &amp;
+        (train_plot['primary_use'] == primary_use) &amp;
+        (train_plot['meter'] == meter_type) &amp;
+        (train_plot['building_id'] == building_id )
+    ][
+        ['timestamp', 'meter_reading']
+    ].set_index('timestamp').resample('D').mean()['meter_reading'].plot(
+        ax=axes[i%r][i//r],
+        alpha=1,
+        label='By day',
+        color='tab:orange'
+    ).set_xlabel('');
+
+axes[i%r][i//r].legend();
+axes[i%r][i//r].set_title('building_id: ' + str(building_id ), fontsize=13);
+plt.subplots_adjust(hspace=0.45)
+
+del train_plot,fig,axes,r
+gc.collect();
+</code></pre>
+<p><a id='step3'></a></p>
+<h1 id="3-数据预处理">3. 数据预处理</h1>
+<p><a id='question1'></a></p>
+<h3 id="__问题-1__"><strong>问题 1:</strong></h3>
+<p>回顾课上内容并查阅资料，归纳总结数据预处理需要的步骤。</p>
+<p><strong>回答:</strong></p>
+<h2 id="31-数据类型转换">3.1 数据类型转换</h2>
+<pre><code class="language-python">def compress_dataframe(df):
+    '''将所有数据的类型都转换为数值型'''
+    result = df.copy()
+    for col in result.columns:
+        col_data = result[col]
+        dn = col_data.dtype.name
+        if dn == &quot;object&quot;:
+            result[col] = pd.to_numeric(col_data.astype(&quot;category&quot;).cat.codes, downcast=&quot;integer&quot;)
+        elif dn == &quot;bool&quot;:
+            result[col] = col_data.astype(&quot;int8&quot;)
+        elif dn.startswith(&quot;int&quot;) or (col_data.round() == col_data).all():
+            result[col] = pd.to_numeric(col_data, downcast=&quot;integer&quot;)
+        else:
+            result[col] = pd.to_numeric(col_data, downcast='float')
+    return result
+</code></pre>
+<h2 id="32-缺失值填充与特征扩展">3.2 缺失值填充与特征扩展</h2>
+<pre><code class="language-python">def set_time(df):
+    df.timestamp = (df.timestamp - pd.to_datetime(&quot;2016-01-01&quot;)).dt.total_seconds() // 3600
+    #这里将timestamp转换成了16年1月1日0点开始计算的小时数‘//’代表除法运算后取整
+    return df
+
+# 根据分析得出各个site来自哪个时区，来修正时间
+# https://www.kaggle.com/patrick0302/locate-cities-according-weather-temperature
+site_GMT_offsets = [-5, 0, -7, -5, -8, 0, -5, -5, -5, -6, -7, -5, 0, -6, -5, -5]
+
+#转换天气数据表格中的时间,并填充缺失值
+def weather_set_time(df,time_zone):
+    df.timestamp = (df.timestamp - pd.to_datetime(&quot;2016-01-01&quot;)).dt.total_seconds() // 3600
+    
+    GMT_offset_map = {site: offset for site, offset in enumerate(site_GMT_offsets)}
+    df.timestamp = df.timestamp + df.site_id.map(GMT_offset_map)
+    #根据时区的不同，统一时间
+    site_dfs = []
+    for site_id in df.site_id.unique():
+        # 确保包括所有可能的小时数
+        site_df = df[df.site_id == site_id].set_index(&quot;timestamp&quot;).reindex(time_zone)
+        site_df.site_id = site_id
+        for col in [c for c in site_df.columns if c != &quot;site_id&quot;]:
+            site_df[f&quot;had_{col}&quot;] = ~site_df[col].isna()
+            site_df[col] = site_df[col].interpolate(limit_direction='both', method='linear')
+            # 这里使用中位数来填充缺失值
+            site_df[col] = site_df[col].fillna(df[col].median())
+        site_dfs.append(site_df)
+    df = pd.concat(site_dfs).reset_index()  # make timestamp back into a regular column
+    for col in df.columns:
+        if df[col].isna().any(): df[f&quot;had_{col}&quot;] = ~df[col].isna()
+    #如果某列其中有缺失值，就增加一列新的特征：had_xxx 表示这一行在xxx这一列是否有记录
+    return df
+    
+#增加星期，月份，时间的特征
+def _add_time_features(X):
+    return X.assign(tm_day_of_week=((X.timestamp // 24) % 7), tm_hour_of_day=(X.timestamp % 24))
+
+building = compress_dataframe(building.fillna(-1)).set_index(&quot;building_id&quot;)
+
+train = compress_dataframe(set_time(train))
+test = compress_dataframe(set_time(test)).set_index(&quot;row_id&quot;)
+weather_train = compress_dataframe(weather_set_time(weather_train,range(8784))).set_index([&quot;site_id&quot;, &quot;timestamp&quot;])
+weather_test = compress_dataframe(weather_set_time(weather_test,range(8784,26304))).set_index([&quot;site_id&quot;, &quot;timestamp&quot;])
+</code></pre>
+<h2 id="33-关联数据">3.3 关联数据</h2>
+<pre><code class="language-python">def combined_data(df,weather):
+    df = compress_dataframe(df.join(building, on=&quot;building_id&quot;).join(weather,
+        on=[&quot;site_id&quot;, &quot;timestamp&quot;]).fillna(-1))
+    return df.drop(columns=[&quot;meter_reading&quot;]),df.meter_reading
+</code></pre>
+<h2 id="34-异常值处理">3.4 异常值处理</h2>
+<pre><code class="language-python">def make_is_bad_zero(Xy_subset, min_interval=48, summer_start=3000, summer_end=7500):
+    #夏天，3000/24=125，7500/24=312.5,第125天到第312.5天为夏天。
+
+    meter = Xy_subset.meter_id.iloc[0]
+    is_zero = Xy_subset.meter_reading == 0 #返回读数为0的电表的indices
+    if meter == 0:
+        #电表的度数不应该为0，所以电表（meter为0）读数为0的行从training dataframe中drop掉
+        return is_zero
+
+    transitions = (is_zero != is_zero.shift(1))#出现0和非0变化的位置
+    all_sequence_ids = transitions.cumsum()#到各位置出现的变化的和，是一个pd.Seires
+    ids = all_sequence_ids[is_zero].rename(&quot;ids&quot;)#将其中读数为0的提取出来
+    if meter in [2, 3]:
+        # 蒸汽和热水有可能在夏天被关闭
+        keep = set(ids[(Xy_subset.timestamp &lt; summer_start) |
+                       (Xy_subset.timestamp &gt; summer_end)].unique())#不在夏天的indices
+        is_bad = ids.isin(keep) &amp; (ids.map(ids.value_counts()) &gt;= min_interval) 
+        #将不在夏天却被关闭的蒸汽和热水表提取出来，至少被关闭了48小时以上的
+    elif meter == 1:
+        time_ids = ids.to_frame().join(Xy_subset.timestamp).set_index(&quot;timestamp&quot;).ids#将ids和timestamp对应起来
+        is_bad = ids.map(ids.value_counts()) &gt;= min_interval#关闭时间大于48小时的
+
+        # 冷水在冬天可能被关闭
+        jan_id = time_ids.get(0, False)#一月份的开始的id
+        dec_id = time_ids.get(8283, False)#十二月份开始的id
+        if (jan_id and dec_id and jan_id == time_ids.get(500, False) and
+                dec_id == time_ids.get(8783, False)):
+        #如果一月500小时和十二月500小时的读表都为0的话
+            is_bad = is_bad &amp; (~(ids.isin(set([jan_id, dec_id]))))
+            #将这一部分的的行从is_bad中删除
+    else:
+        raise Exception(f&quot;Unexpected meter type: {meter}&quot;)
+
+    result = is_zero.copy()
+    result.update(is_bad)
+    return result
+
+def find_bad_zeros(X, y):
+    &quot;&quot;&quot;返回仅包含应该删除的行的Index&quot;&quot;&quot;
+    Xy = X.assign(meter_reading=y, meter_id=X.meter)
+    is_bad_zero = Xy.groupby([&quot;building_id&quot;, &quot;meter&quot;]).apply(make_is_bad_zero)
+    return is_bad_zero[is_bad_zero].index.droplevel([0, 1])
+
+def find_bad_sitezero(X):
+    &quot;&quot;&quot;返回Site 0 读数异常的行的index.&quot;&quot;&quot;
+    return X[(X.timestamp &lt; 3378) &amp; (X.site_id == 0) &amp; (X.meter == 0)].index
+
+def find_bad_building1099(X, y):
+    &quot;&quot;&quot;返回建筑1099的读数异常高的行的index .&quot;&quot;&quot;
+    return X[(X.building_id == 1099) &amp; (X.meter == 2) &amp; (y &gt; 3e4)].index
+
+def find_bad_rows(X, y):
+    return find_bad_zeros(X, y).union(find_bad_sitezero(X)).union(find_bad_building1099(X, y))
+</code></pre>
+<pre><code class="language-python">X, y = combined_data(train,weather_train)
+
+bad_rows = find_bad_rows(X, y)
+#输出异常值的index
+pd.Series(bad_rows.sort_values()).to_csv(&quot;rows_to_drop.csv&quot;, header=False, index=False)
+
+X = X.drop(index=bad_rows)
+y = y.reindex_like(X)
+
+X = _add_time_features(X)
+X = compress_dataframe(X)
+X = X.drop(columns=&quot;timestamp&quot;)  # drop掉原本的timestamp
+
+del bad_rows,train,weather_train
+gc.collect();
+</code></pre>
+<h2 id="35-评价函数">3.5 评价函数</h2>
+<p>由于需要预测连续值，因此需要采用回归模型。由于该项目是Kaggle赛题，测试集是使用均方根对数误差 RMSLE（Root Mean Squared Logarithmic Error, RMSLE)评测的，因此这里只能使用RMSLE。RMSLE的计算公式为：</p>
+<p>$${\rm RMSLE} = \sqrt{\frac{1}{n} \sum_{i=1}^n (\log(p_i + 1) - \log(a_i+1))^2 }$$</p>
+<p>其中</p>
+<ul>
+<li>$n$（public/private）数据集中的样本总数,</li>
+<li>$p_i$ 是目标的预测值</li>
+<li>$a_i$ 第i个目标的真实值.</li>
+<li>$\log(x)$ 是自然对数</li>
+</ul>
+<p>我们只需要对目标值进行$y = \log(y+1)$的变换，就可以使用常见的RMSE作为评价函数，我们使用numpy中的log1p就可以实现。</p>
+<p>注意：进行预测的时候需要使用$y = e^y-1$将目标值转换回去，可以使用 y = np.exp1m(y)。</p>
+<pre><code class="language-python">#对目标值进行变换
+y = np.log1p(y)
+</code></pre>
+<p><a id='question2'></a></p>
+<h3 id="__问题-2__"><strong>问题 2:</strong></h3>
+<p>思考此处为何要进行对数转换。</p>
+<p><strong>回答:</strong></p>
+<p><a id='step4'></a></p>
+<h1 id="4-lightgbm">4. LightGBM</h1>
+<h2 id="41-模型参数">4.1 模型参数</h2>
+<p>LightGBM 主要调节的参数包括：</p>
+<ul>
+<li><code>learning_rate</code>：迭代步长,学习率；</li>
+<li><code>num_leaves</code>：LightGBM使用leaf-wise的算法，在调节树的复杂度时，使用num_leaves，较小导致欠拟合，较大导致过拟合；</li>
+<li><code>subsample</code>：0-1之间，控制每棵树随机采样的比例，减小这个参数的值，算法会更加保守，避免过拟合。但如果这个值设置得过小，可能会导致欠拟合；</li>
+<li><code>lambda_l2</code>：L2正则化系数，用来控制过拟合；</li>
+<li><code>num_trees</code>：迭代步数。</li>
+</ul>
+<pre><code class="language-python">params = {
+    'task': 'train',
+    'boosting_type': 'gbdt',  
+    'objective': 'regression',  
+    'metric': 'rmse',  
+    'num_leaves': 40,  
+    'subsample':0.8,
+    'learning_rate': 0.03,  
+    'verbose': 1,
+    'lambda_l2':3
+}
+
+num_trees = 1000
+
+#设置分类变量
+categorical_features=['building_id', 'site_id', 'primary_use', 'had_air_temperature', 'had_cloud_coverage', 
+                      'had_dew_temperature', 'had_precip_depth_1_hr','had_sea_level_pressure', 'had_wind_direction',
+                      'had_wind_speed', 'tm_day_of_week', 'tm_hour_of_day']
+</code></pre>
+<h2 id="42-模型训练">4.2 模型训练</h2>
+<pre><code class="language-python">n_splits = 3
+
+for val in X['meter'].unique():
+    X1 = X[X['meter'] == val].drop(columns=['meter'])
+    kf = StratifiedKFold(n_splits=n_splits,random_state=42)
+    #使用StratifiedKFold，让指定列在每一个fold中的分布相同，这里设置分为3个fold
+    t = 0
+    for train_index, test_index in kf.split(X1, X1['tm_hour_of_day']):
+        #让每个fold中['tm_hour_of_day']的分布相同
+        train_features = X1.iloc[train_index]
+        train_target = y[X1.iloc[train_index].index]
+        
+        test_features = X1.iloc[test_index]
+        test_target = y[X1.iloc[test_index].index]
+        
+        d_train = lgb.Dataset(train_features, train_target, categorical_feature=categorical_features)
+        d_eval = lgb.Dataset(test_features,test_target, categorical_feature=categorical_features)
+        print(&quot;Building model meter :&quot;,val,'fold:',t)        
+        
+        md = lgb.train(params, d_train, num_boost_round=num_trees, valid_sets=(d_train, d_eval), 
+                       early_stopping_rounds=200,verbose_eval=20)
+        md.save_model('lgb_val{}_fold{}.bin'.format(val,t))
+        t += 1
+    del X1  
+        
+del d_train, d_eval, train_features, test_features, md
+gc.collect();
+</code></pre>
+<p><a id='question3'></a></p>
+<h3 id="__问题-3__"><strong>问题 3:</strong></h3>
+<p>查阅资料，总结LightGBM与CatBoost的差异。</p>
+<p><strong>回答:</strong></p>
+<p><a id='step5'></a></p>
+<h1 id="5-结果预测">5. 结果预测</h1>
+<pre><code class="language-python">X = compress_dataframe(test.join(building, on=&quot;building_id&quot;).join(weather_test, on=[&quot;site_id&quot;, &quot;timestamp&quot;]).fillna(-1))
+X = compress_dataframe(_add_time_features(X))
+X = X.drop(columns=&quot;timestamp&quot;)  # drop掉原本的timestamp
+
+del test, weather_test
+gc.collect();
+</code></pre>
+<pre><code class="language-python">#输出预测结果
+result = np.zeros(len(X))
+for val in X['meter'].unique():
+    ix = np.nonzero((X['meter'] == val).to_numpy())
+    for i in tqdm(range(n_splits)):
+        #加载刚才保存的模型
+        model = lgb.Booster(model_file='lgb_val{}_fold{}.bin'.format(val, i))
+        result[ix] += model.predict(X.iloc[ix].drop(columns=['meter']), num_iteration=model.best_iteration)/n_splits
+        del model
+        gc.collect();
+    
+predictions = pd.DataFrame({
+    &quot;row_id&quot;: X.index,
+    &quot;meter_reading&quot;: np.clip(np.expm1(result), 0, None)
+})
+
+# float_format设置保留四位小数，减少文件大小，为文件上传节省时间
+predictions.to_csv(&quot;submission.csv&quot;, index=False, float_format=&quot;%.4f&quot;)
+</code></pre>
+<pre><code class="language-python">
+</code></pre>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
