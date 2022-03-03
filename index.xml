@@ -8,13 +8,12 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 23 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>kaggle-ASHRAE</title>
-      <link>/post/2021/07/23/kaggle-ashrae/</link>
+      <title>Kaggle - ASHRAE, Great Energy Predictor III</title>
+      <link>/post/2021/07/23/kaggle-ashrae-great-energy-predictor-iii/</link>
       <pubDate>Fri, 23 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/2021/07/23/kaggle-ashrae/</guid>
-      <description>预测建筑物的能源消耗 pdf
-ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。
+      <guid>/post/2021/07/23/kaggle-ashrae-great-energy-predictor-iii/</guid>
+      <description>预测建筑物的能源消耗 ASHRAE（American Society of Heating, Refrigerating and Air-Conditioning Engineers），中文名称“美国采暖、制冷与空调工程师学会”，于1894年在美国纽约成立，是由暖通空调（HVAC）工程师所组成的学会，全球拥有超过54,000名成员。协会及其成员专注于建筑系统、能源效率、室内空气质量、制冷和行业内的可持续性。通过调研、标准编写、出版和继续教育，ASHRAE发展至现在的规模。
 问：夏天给大楼降温需要多少钱？
 答：非常多！政府正在进行投资，以降低能源成本，减少排放。但是问题是，这些改进是否真的有效？
 在这次竞赛中，我们通过预测冷水表、电表、热水表和蒸汽表的读数来对这些节能投资进行更好的估计。数据来自近三年来1000栋建筑中的各表读数。大型投资者和金融机构将更倾向于在这一领域投资，以提高建筑能源使用效率。
