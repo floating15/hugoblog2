@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on haoming&#39;s blog</title>
+    <link>/tags/git/</link>
+    <description>Recent content in Git on haoming&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 23 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git - Intro</title>
+      <link>/post/2019/07/23/git-intro/</link>
+      <pubDate>Tue, 23 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/07/23/git-intro/</guid>
+      <description>1. Git intro Git 是一个分布式版本控制软件。版本控制的方式一共经历过四个发展阶段：
+ 文件管理 本地管理软件 集中式管理软件，以 SVN 为代表 分布式管理软件，以 Git 为代表  在 Git 中，用户本地与云端服务器中都存在版本仓库。当用户打算更新版本时，需要将新版本文件推送到本地仓库，再推送到云端仓库。用户也可以多次将新版本推送到本地仓库，再统一推送到云端仓库。因此所云端服务器崩溃，不影响用户的版本控制。
+在本地安装 Git 后，可以在本地进行版本控制；若要将版本代码上传至云端仓库，需要链接 Github, Gitlab 账户等。
+2. Git 三大分区 Git 有三种状态，你的文件可能处于其中之一： 已暂存（staged）、已修改（modified） 和已提交（committed） 。
+ 已修改（modified）表示修改了文件，但还没保存到数据库中。 已暂存（staged）表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。 已提交（committed）表示数据已经安全地保存在本地数据库中。  这会让我们的 Git 项目拥有三个阶段：工作区、暂存区、版本库。基本的 Git 工作流程如下：
+ 在工作区中修改文件，文件状态变为 modified。 将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区，文件状态变为 staged。 提交更新，找到暂存区的文件，将快照永久性存储到 Git 目录，文件状态变为 committed。  3. Git 命令基础 利用 Git 进行版本控制，大致有以下几步：
+3.1. 进入要管理的目录 进入工作区：
+(base) wanghaoming@localhost ~ % cd ~/Documents/MATLAB (base) wanghaoming@localhost MATLAB % 3.</description>
+    </item>
+    
+  </channel>
+</rss>
