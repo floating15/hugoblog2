@@ -146,7 +146,7 @@ On branch master
 nothing to commit, working tree clean
 </code></pre></div><p>此时目录内所有文件均已被 git 管理生成了一个版本并添加到版本库中。此时执行<code>git status</code>命令，目录内已没有需要管理的文件。</p>
 <p>此时对文件<code>AHPcal.m</code>进行一处修改，如在文件头加上 Git test 注释：</p>
-<p><img src="../../../../img/2022-03-04-10-05-26.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-25-32.png" alt=""></p>
 <p>则会被 git 检测出该修改，文件 AHPcal.m 被标记为 modified 模式：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
 On branch master
@@ -182,12 +182,13 @@ Date:   Fri Mar <span style="color:#666">4</span> 08:48:15 <span style="color:#6
     v1
 
 </code></pre></div><h3 id="36-回滚">3.6. 回滚</h3>
+<p><img src="../../../../img/2022-03-04-12-33-41.jpg" alt=""></p>
 <h4 id="git-reset-hard-版本号">git reset hard 版本号</h4>
 <p>将版本库中的文件添加到工作区中，即要恢复到之前的某一版本，只需要将 <code>git log</code> 中显示的 commit 号粘贴至 <code>git reset --hard</code> 后即可：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git reset --hard bf75a8c80fe17c8c07b554858451ed162bc64a0f 
 HEAD is now at bf75a8c v1
 </code></pre></div><p>此时 AHPcal.m 文件中已经没有之前的修改信息了：</p>
-<p><img src="../../../../img/2022-03-04-10-02-59.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-24-35.png" alt=""></p>
 <p>此时查看版本日志会发现 v2 版本消失了：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git log 
 commit bf75a8c80fe17c8c07b554858451ed162bc64a0f <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span>
@@ -205,10 +206,10 @@ bf75a8c <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#66
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git reset --hard 742bb77
 HEAD is now at 742bb77 v2
 </code></pre></div><p>此时 AHPcal.m 表头的 Git test 又出现了：</p>
-<p><img src="../../../../img/2022-03-04-10-14-27.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-25-50.png" alt=""></p>
 <h4 id="git-checkout">git checkout</h4>
 <p>将工作区中 modified 状态的文件修改为未修改的状态，只需执行命令：<code>git checkout -- &lt;file name&gt;</code>（或<code>.</code>）。例如将 AHPcal.m 文件的表头在 v1 版本的文件头增加 git checkout test 注释：</p>
-<p><img src="../../../../img/2022-03-04-11-14-15.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-26-16.png" alt=""></p>
 <p>检查文件状态，可以发现该修改：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
 On branch master
@@ -221,7 +222,7 @@ no changes added to commit <span style="color:#666">(</span>use <span style="col
 </code></pre></div><p>执行回滚命令：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git checkout -- AHPcal.m  
 </code></pre></div><p>此时文件恢复到未被修改的状态:</p>
-<p><img src="../../../../img/2022-03-04-11-15-08.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-24-50.png" alt=""></p>
 <p>此时执行 <code>git status</code> 没有检测到改变：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
 On branch master
@@ -229,7 +230,7 @@ nothing to commit, working tree clean
 </code></pre></div><h4 id="git-reset-head">git reset HEAD</h4>
 <p>若要将暂存区的文件恢复到工作区的 modified 状态的文件，可执行命令 <code>git reset HEAD &lt;file name&gt;</code>。</p>
 <p>对 v1 版本 AHPcal.m 的文件头增加 git reset HEAD 注释：</p>
-<p><img src="../../../../img/2022-03-04-11-08-44.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-27-16.png" alt=""></p>
 <p>将其提交到缓存区：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git add AHPcal.m
 <span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
@@ -252,7 +253,7 @@ no changes added to commit <span style="color:#666">(</span>use <span style="col
 </code></pre></div><p>可见文件回到了未被暂存的状态（Changes not staged for commit），再次执行回滚命令：</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git checkout -- AHPcal.m
 </code></pre></div><p>之前增加的注释消失了，恢复到了 v1 的状态：</p>
-<p><img src="../../../../img/2022-03-04-11-12-41.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-12-25-00.png" alt=""></p>
 <h2 id="4-总结">4. 总结：</h2>
 <ul>
 <li><code>git init</code>: 初始化，让 git 管理当前目录</li>
@@ -261,7 +262,9 @@ no changes added to commit <span style="color:#666">(</span>use <span style="col
 <li><code>git commit</code>：生成版本</li>
 <li><code>git log</code>：查看已经生成的版本</li>
 <li><code>git reflog</code></li>
-<li><code>git reset --hard 版本号</code>：回滚</li>
+<li><code>git reset --hard 版本号</code>：版本库回滚至工作区未修改状态</li>
+<li><code>git reset HEAD &lt;file name&gt;</code>: 暂存区回滚至工作区修改状态</li>
+<li><code>git checkout -- &lt;file name&gt;</code>：工作区修改状态回滚至工作区未修改状态</li>
 </ul>
 
 </main>
