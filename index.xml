@@ -33,9 +33,8 @@
 在本地安装 Git 后，可以在本地进行版本控制；若要将版本代码上传至云端仓库，需要链接 Github, Gitlab 账户等。
 2. Git 三大分区 Git 有三种状态，你的文件可能处于其中之一： 已暂存（staged）、已修改（modified） 和已提交（committed） 。
  已修改（modified）表示修改了文件，但还没保存到数据库中。 已暂存（staged）表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。 已提交（committed）表示数据已经安全地保存在本地数据库中。  这会让我们的 Git 项目拥有三个阶段：工作区、暂存区、版本库。基本的 Git 工作流程如下：
- 在工作区中修改文件，文件状态变为 modified。 将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区，文件状态变为 staged。 提交更新，找到暂存区的文件，将快照永久性存储到 Git 目录，文件状态变为 committed。  3. Git 命令基础 利用 Git 进行版本控制，大致有以下几步：
-3.1. 进入要管理的目录 进入工作区：
-(base) wanghaoming@localhost ~ % cd ~/Documents/MATLAB (base) wanghaoming@localhost MATLAB % 3.</description>
+ 在工作区中修改文件，文件状态变为 modified。 将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区，文件状态变为 staged。 提交更新，找到暂存区的文件，将快照永久性存储到 Git 目录，文件状态变为 committed。  3. Git 命令基础 本文以文件 ~/Documents/git_test/items.py 为例，如下：
+3.0 忽略 .DS_Store 文件 Mac OS 系统会自动在每个目录中生成一个隐藏的 .DS_Store 文件。默认情况下 Git 会把 DS_Store 文件代入版本控制的范围内，从而与 Git 中的某些功能产生冲突。所以，需要在对项目进行版本管理之前设置 Git 忽略.</description>
     </item>
     
     <item>

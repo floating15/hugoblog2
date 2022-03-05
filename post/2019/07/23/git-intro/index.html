@@ -62,13 +62,23 @@
 </ol>
 <p><img src="../../../../img/2022-03-04-09-40-19.png" alt=""></p>
 <h2 id="3-git-命令基础">3. Git 命令基础</h2>
-<p>利用 Git 进行版本控制，大致有以下几步：</p>
-<h3 id="31-进入要管理的目录">3.1. 进入要管理的目录</h3>
+<p>本文以文件 <code>~/Documents/git_test/items.py</code> 为例，如下：</p>
+<p><img src="../../../../img/2022-03-04-21-05-10.png" alt=""></p>
+<h3 id="30-忽略-ds_store-文件">3.0 忽略 <code>.DS_Store</code> 文件</h3>
+<p>Mac OS 系统会自动在每个目录中生成一个隐藏的 <code>.DS_Store</code> 文件。默认情况下 Git 会把 <code>DS_Store</code> 文件代入版本控制的范围内，从而与 Git 中的某些功能产生冲突。所以，需要在对项目进行版本管理之前设置 Git 忽略<code>.DS_Store</code> 文件:</p>
+<ol>
+<li>将 <code>.DS_Store</code> 文件加入全局的 <code>.gitignore</code>文件，执行命令：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % <span style="color:#008000">echo</span> .DS_Store &gt;&gt; ~/.gitignore_global
+</code></pre></div><ol start="2">
+<li>将这个全局的 <code>.gitignore</code> 文件加入 Git 的全局 config 文件中，执行命令：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git config --global core.excludesfile ~/.gitignore_global
+</code></pre></div><h3 id="31-进入要管理的目录">3.1. 进入要管理的目录</h3>
 <p>进入工作区：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost ~ % <span style="color:#008000">cd</span> ~/Documents/MATLAB 
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % 
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost ~ % <span style="color:#008000">cd</span> ~/Documents/git_test 
 </code></pre></div><h3 id="32-初始化-git">3.2. 初始化 Git</h3>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git init
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git init
 hint: Using <span style="color:#ba2121">&#39;master&#39;</span> as the name <span style="color:#008000;font-weight:bold">for</span> the initial branch. This default branch name
 hint: is subject to change. To configure the initial branch name to use in all
 hint: of your new repositories, which will suppress this warning, call:
@@ -79,181 +89,143 @@ hint: Names commonly chosen instead of <span style="color:#ba2121">&#39;master&#
 hint: <span style="color:#ba2121">&#39;development&#39;</span>. The just-created branch can be renamed via this command:
 hint: 
 hint: 	git branch -m &lt;name&gt;
-Initialized empty Git repository in /Users/wanghaoming/Documents/MATLAB/.git/
-</code></pre></div><p>执行完该命令后，MATLAB 目录内会生成<code>.git</code>隐藏目录，Git 所有的配置与版本信息都会储存到<code>.git</code>目录中。</p>
+Initialized empty Git repository in /Users/wanghaoming/Documents/git_test/.git/
+</code></pre></div><p>执行完该命令后，git_test 目录内会生成<code>.git</code>隐藏目录，Git 所有的配置与版本信息都会储存到<code>.git</code>目录中。</p>
 <h3 id="33-管理">3.3. 管理</h3>
 <p>检测当前目录下的文件状态：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
 On branch master
 
 No commits yet
 
 Untracked files:
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to include in what will be committed<span style="color:#666">)</span>
-	AHPcal.m
-	untitled.fig
-	untitled.m
-	untitled.pdf
+	items.py
 
 nothing added to commit but untracked files present <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> to track<span style="color:#666">)</span>
 </code></pre></div><p>将要管理的文件添加到暂存区：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git add AHPcal.m 
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add items.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
 On branch master
 
 No commits yet
 
 Changes to be committed:
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git rm --cached &lt;file&gt;...&#34;</span> to unstage<span style="color:#666">)</span>
-	new file:   AHPcal.m
-
-Untracked files:
-  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to include in what will be committed<span style="color:#666">)</span>
-	untitled.fig
-	untitled.m
-	untitled.pdf
-
-</code></pre></div><p>可见文件<code>AHPcal.m</code>已被 git 管理；若要继续管理所有未被管理的文件可以使用<code>.</code>:</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git add .
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
-On branch master
-
-No commits yet
-
-Changes to be committed:
-  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git rm --cached &lt;file&gt;...&#34;</span> to unstage<span style="color:#666">)</span>
-	new file:   AHPcal.m
-	new file:   untitled.fig
-	new file:   untitled.m
-	new file:   untitled.pdf
-
-</code></pre></div><p>指定选项<code>-A</code>可以一次性管理目录内所有文件。</p>
+	new file:   items.py
+</code></pre></div><p>可见文件<code>items.py</code>已被 git 管理；若要继续管理所有未被管理的文件可以使用 <code>.</code> 代替文件名，即 <code>git add .</code>；指定选项<code>-A</code>可以一次性管理目录内所有文件，即 <code>git add -A</code>。</p>
 <h3 id="34-个人信息配置">3.4. 个人信息配置</h3>
 <p>第一次使用 Git 时，在进行下一步提交到版本库之前，需要先对 Git 进行配置（用户名，邮箱）</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git config --global user.email <span style="color:#ba2121">&#34;wanghaoming17@163.com&#34;</span>
 git config --global user.name <span style="color:#ba2121">&#34;wanghaoming17&#34;</span>
 </code></pre></div><p>Git 在 commit 时会自动记录该版本由谁生成，可以在 <code>git log</code> 中查看。</p>
 <h3 id="35-生成版本">3.5. 生成版本</h3>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git commit -m <span style="color:#ba2121">&#34;v1&#34;</span>
-<span style="color:#666">[</span>master <span style="color:#666">(</span>root-commit<span style="color:#666">)</span> bf75a8c<span style="color:#666">]</span> v1
- <span style="color:#666">4</span> files changed, <span style="color:#666">36</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>
- create mode <span style="color:#666">100644</span> AHPcal.m
- create mode <span style="color:#666">100644</span> untitled.fig
- create mode <span style="color:#666">100644</span> untitled.m
- create mode <span style="color:#666">100644</span> untitled.pdf
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
-On branch master
-nothing to commit, working tree clean
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git commit -m <span style="color:#ba2121">&#34;v1&#34;</span>
+<span style="color:#666">[</span>master <span style="color:#666">(</span>root-commit<span style="color:#666">)</span> 4687263<span style="color:#666">]</span> v1
+ <span style="color:#666">1</span> file changed, <span style="color:#666">13</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>
+ create mode <span style="color:#666">100644</span> items.py
 </code></pre></div><p>此时目录内所有文件均已被 git 管理生成了一个版本并添加到版本库中。此时执行<code>git status</code>命令，目录内已没有需要管理的文件。</p>
-<p>此时对文件<code>AHPcal.m</code>进行一处修改，如在文件头加上 Git test 注释：</p>
-<p><img src="../../../../img/2022-03-04-12-25-32.png" alt=""></p>
-<p>则会被 git 检测出该修改，文件 AHPcal.m 被标记为 modified 模式：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+<p>此时对文件<code>items.py</code>进行一处修改，如将 version 改为 2：</p>
+<p><img src="../../../../img/2022-03-04-21-05-47.png" alt=""></p>
+<p>则会被 git 检测出该修改，文件 items.py 被标记为 modified 状态：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
 On branch master
 Changes not staged <span style="color:#008000;font-weight:bold">for</span> commit:
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to update what will be committed<span style="color:#666">)</span>
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git restore &lt;file&gt;...&#34;</span> to discard changes in working directory<span style="color:#666">)</span>
-	modified:   AHPcal.m
-
-Untracked files:
-  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to include in what will be committed<span style="color:#666">)</span>
-	.DS_Store
+	modified:   items.py
 
 no changes added to commit <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> and/or <span style="color:#ba2121">&#34;git commit -a&#34;</span><span style="color:#666">)</span>
 </code></pre></div><p>将其管理并生成为第二个版本:</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git add .
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git commit -m <span style="color:#ba2121">&#34;v2&#34;</span>
-<span style="color:#666">[</span>master 742bb77<span style="color:#666">]</span> v2
- <span style="color:#666">2</span> files changed, <span style="color:#666">3</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">1</span> deletion<span style="color:#666">(</span>-<span style="color:#666">)</span>
- create mode <span style="color:#666">100644</span> .DS_Store
-
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add .
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git commit -m <span style="color:#ba2121">&#34;v2&#34;</span>
+<span style="color:#666">[</span>master e89090f<span style="color:#666">]</span> v2
+ <span style="color:#666">1</span> file changed, <span style="color:#666">1</span> insertion<span style="color:#666">(</span>+<span style="color:#666">)</span>
 </code></pre></div><p>若要查看 Git 的所生成的版本：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git log
-commit 742bb774073f29dc1fcbb6d126054237617986a1 <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git log
+commit 1954fae802221ffd98fa26512275a4817ff3dc5d <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span>
 Author: wanghaoming17 &lt;wanghaoming17@163.com&gt;
-Date:   Fri Mar <span style="color:#666">4</span> 08:59:00 <span style="color:#666">2022</span> +0800
+Date:   Sat Mar <span style="color:#666">5</span> 09:04:22 <span style="color:#666">2022</span> +0800
 
     v2
 
-commit bf75a8c80fe17c8c07b554858451ed162bc64a0f
+commit 2ecfd74d8ac144d1ee7a5a8ad1875013e56ebb72
 Author: wanghaoming17 &lt;wanghaoming17@163.com&gt;
-Date:   Fri Mar <span style="color:#666">4</span> 08:48:15 <span style="color:#666">2022</span> +0800
+Date:   Sat Mar <span style="color:#666">5</span> 09:03:51 <span style="color:#666">2022</span> +0800
 
     v1
-
 </code></pre></div><h3 id="36-回滚">3.6. 回滚</h3>
 <p><img src="../../../../img/2022-03-04-12-33-41.jpg" alt=""></p>
-<h4 id="git-reset-hard-版本号">git reset hard 版本号</h4>
+<h4 id="1-git-reset-hard-版本号">1) git reset hard &lt;版本号&gt;</h4>
 <p>将版本库中的文件添加到工作区中，即要恢复到之前的某一版本，只需要将 <code>git log</code> 中显示的 commit 号粘贴至 <code>git reset --hard</code> 后即可：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git reset --hard bf75a8c80fe17c8c07b554858451ed162bc64a0f 
-HEAD is now at bf75a8c v1
-</code></pre></div><p>此时 AHPcal.m 文件中已经没有之前的修改信息了：</p>
-<p><img src="../../../../img/2022-03-04-12-24-35.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git reset --hard 2ecfd74d8ac144d1ee7a5a8ad1875013e56ebb72
+HEAD is now at <span style="color:#666">4687263</span> v1
+</code></pre></div><p>此时 items.py 文件中已经没有之前的修改信息了：</p>
+<p><img src="../../../../img/2022-03-04-21-09-24.png" alt=""></p>
 <p>此时查看版本日志会发现 v2 版本消失了：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git log 
-commit bf75a8c80fe17c8c07b554858451ed162bc64a0f <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git log
+commit 2ecfd74d8ac144d1ee7a5a8ad1875013e56ebb72 <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span>
 Author: wanghaoming17 &lt;wanghaoming17@163.com&gt;
-Date:   Fri Mar <span style="color:#666">4</span> 08:48:15 <span style="color:#666">2022</span> +0800
+Date:   Sat Mar <span style="color:#666">5</span> 08:35:43 <span style="color:#666">2022</span> +0800
 
     v1
-
 </code></pre></div><p>若要再回滚到 v2 版本则通过 <code>git reflog</code> 查看版本日志：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git reflog
-bf75a8c <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>0<span style="color:#666">}</span>: reset: moving to bf75a8c80fe17c8c07b554858451ed162bc64a0f
-742bb77 HEAD@<span style="color:#666">{</span>1<span style="color:#666">}</span>: commit: v2
-bf75a8c <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>2<span style="color:#666">}</span>: commit <span style="color:#666">(</span>initial<span style="color:#666">)</span>: v1
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git reflog
+2ecfd74 <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>0<span style="color:#666">}</span>: reset: moving to 2ecfd74d8ac144d1ee7a5a8ad1875013e56ebb72
+1954fae HEAD@<span style="color:#666">{</span>1<span style="color:#666">}</span>: commit: v2
+2ecfd74 <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>2<span style="color:#666">}</span>: commit <span style="color:#666">(</span>initial<span style="color:#666">)</span>: v1
 </code></pre></div><p>reset v2的版本号即可：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git reset --hard 742bb77
-HEAD is now at 742bb77 v2
-</code></pre></div><p>此时 AHPcal.m 表头的 Git test 又出现了：</p>
-<p><img src="../../../../img/2022-03-04-12-25-50.png" alt=""></p>
-<h4 id="git-checkout">git checkout</h4>
-<p>将工作区中 modified 状态的文件修改为未修改的状态，只需执行命令：<code>git checkout -- &lt;file name&gt;</code>（或<code>.</code>）。例如将 AHPcal.m 文件的表头在 v1 版本的文件头增加 git checkout test 注释：</p>
-<p><img src="../../../../img/2022-03-04-12-26-16.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git reset --hard 1954fae
+HEAD is now at 1954fae v2
+</code></pre></div><p>此时 items.py 又恢复为 version 2 了：</p>
+<p><img src="../../../../img/2022-03-04-21-11-26.png" alt=""></p>
+<h4 id="2-git-checkout----filename">2) git checkout &ndash; filename</h4>
+<p>将工作区中 modified 状态的文件回滚为未修改的状态，只需执行命令：<code>git checkout -- &lt;file name&gt;</code>（或<code>.</code>）。例如在 items.py 文件中做如下修改：</p>
+<p><img src="../../../../img/2022-03-04-21-13-22.png" alt=""></p>
 <p>检查文件状态，可以发现该修改：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
 On branch master
 Changes not staged <span style="color:#008000;font-weight:bold">for</span> commit:
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to update what will be committed<span style="color:#666">)</span>
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git restore &lt;file&gt;...&#34;</span> to discard changes in working directory<span style="color:#666">)</span>
-	modified:   AHPcal.m
+	modified:   items.py
 
 no changes added to commit <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> and/or <span style="color:#ba2121">&#34;git commit -a&#34;</span><span style="color:#666">)</span>
 </code></pre></div><p>执行回滚命令：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git checkout -- AHPcal.m  
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout -- items.py  
 </code></pre></div><p>此时文件恢复到未被修改的状态:</p>
-<p><img src="../../../../img/2022-03-04-12-24-50.png" alt=""></p>
+<p><img src="../../../../img/2022-03-04-21-14-39.png" alt=""></p>
 <p>此时执行 <code>git status</code> 没有检测到改变：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
 On branch master
 nothing to commit, working tree clean
-</code></pre></div><h4 id="git-reset-head">git reset HEAD</h4>
+</code></pre></div><h4 id="3-git-reset-head-filename">3) git reset HEAD filename</h4>
 <p>若要将暂存区的文件恢复到工作区的 modified 状态的文件，可执行命令 <code>git reset HEAD &lt;file name&gt;</code>。</p>
-<p>对 v1 版本 AHPcal.m 的文件头增加 git reset HEAD 注释：</p>
-<p><img src="../../../../img/2022-03-04-12-27-16.png" alt=""></p>
+<p>对 v2 版本 items.py 进行如下修改：</p>
+<p><img src="../../../../img/2022-03-04-21-19-40.png" alt=""></p>
 <p>将其提交到缓存区：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git add AHPcal.m
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add items.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
 On branch master
 Changes to be committed:
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git restore --staged &lt;file&gt;...&#34;</span> to unstage<span style="color:#666">)</span>
-	modified:   AHPcal.m
+	modified:   items.py
 </code></pre></div><p>执行回滚命令</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git reset HEAD AHPcal.m
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git reset HEAD items.py
 Unstaged changes after reset:
-M	AHPcal.m
-<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git status
+M	items.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status             
 On branch master
 Changes not staged <span style="color:#008000;font-weight:bold">for</span> commit:
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to update what will be committed<span style="color:#666">)</span>
   <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git restore &lt;file&gt;...&#34;</span> to discard changes in working directory<span style="color:#666">)</span>
-	modified:   AHPcal.m
+	modified:   items.py
 
 no changes added to commit <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> and/or <span style="color:#ba2121">&#34;git commit -a&#34;</span><span style="color:#666">)</span>
 </code></pre></div><p>可见文件回到了未被暂存的状态（Changes not staged for commit），再次执行回滚命令：</p>
-<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost MATLAB % git checkout -- AHPcal.m
-</code></pre></div><p>之前增加的注释消失了，恢复到了 v1 的状态：</p>
-<p><img src="../../../../img/2022-03-04-12-25-00.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout -- items.py
+</code></pre></div><p>之前增加的修改消失了，恢复到了 v2 的状态：</p>
+<p><img src="../../../../img/2022-03-04-21-22-21.png" alt=""></p>
 <h2 id="4-总结">4. 总结：</h2>
 <ul>
 <li><code>git init</code>: 初始化，让 git 管理当前目录</li>
@@ -262,9 +234,9 @@ no changes added to commit <span style="color:#666">(</span>use <span style="col
 <li><code>git commit</code>：生成版本</li>
 <li><code>git log</code>：查看已经生成的版本</li>
 <li><code>git reflog</code></li>
-<li><code>git reset --hard 版本号</code>：版本库回滚至工作区未修改状态</li>
-<li><code>git reset HEAD &lt;file name&gt;</code>: 暂存区回滚至工作区修改状态</li>
-<li><code>git checkout -- &lt;file name&gt;</code>：工作区修改状态回滚至工作区未修改状态</li>
+<li><code>git reset --hard 版本号</code>：版本库回滚到工作区</li>
+<li><code>git reset HEAD 文件名</code>：暂存库回滚到工作区已修改状态</li>
+<li><code>git checkout -- 文件名</code>：工作区已修改状态回滚到未修改状态</li>
 </ul>
 
 </main>
