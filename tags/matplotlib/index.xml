@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Matplotlib on haoming&#39;s blog</title>
+    <link>/tags/matplotlib/</link>
+    <description>Recent content in Matplotlib on haoming&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/matplotlib/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matplotlib - 1. Intro</title>
+      <link>/post/2020/03/05/matplotlib-1.-intro/</link>
+      <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/03/05/matplotlib-1.-intro/</guid>
+      <description>import numpy as np import pandas as pd 1. Matplotlib 介绍 1.1 导入Matplotlib plt 是 Matplotlib 最常用的接口
+import matplotlib as mpl import matplotlib.pyplot as plt 1.2 设置绘图样式 使用 plt.style.use 来选择图形的绘图风格
+plt.style.use(&amp;#39;classic&amp;#39;) 1.3 关于 show() 方法 Matplotlib 是否使用 show() 方法取决于开发环境，一般而言有三种开发环境：1）script；2）IPython Shell；3）IPython Notebook
+1.3.1 Script 如果在脚本文件中使用 Matplotlib，显示图形时必须使用 plt.show()。plt.show() 会启动一个 event loop，找到当前所有可用的图形对象，然后打开一个或多个交互式窗口文本。
+需要注意，一个 Python session 中只能使用一次 plt.show()，因此通常把它放在脚本最后。
+1.3.2 IPython Shell 在该开发环境下，可以通过 %matplotlib 魔法命令开启 Matplotlib 模式，此后不需要使用 plt.show() 了。开启 Matplotlib 模式后任何 plt 命令都会自动打开一个图形窗口，增加新的命令图形就会更新。有时一些变化不会自动及时更新，此时可以使用 plt.draw() 强制更新。</description>
+    </item>
+    
+  </channel>
+</rss>
