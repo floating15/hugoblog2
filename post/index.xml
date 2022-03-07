@@ -23,6 +23,22 @@
     </item>
     
     <item>
+      <title>Mermaid</title>
+      <link>/post/2020/01/03/mermaid/</link>
+      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/01/03/mermaid/</guid>
+      <description>概述  什么是Mermaid？  Mermaid是一种基于Javascript的绘图工具，使用类似于Markdown的语法，使用户可以方便快捷地通过代码创建图表。 项目地址：https://github.com/mermaid-js/mermaid（需要将梯子设置成全局模式才能访问）      怎么使用Mermaid？
+ 使用特定的Mermaid渲染器； **使用集成了Mermaid渲染功能的Markdown编辑器，如Typora。**使用时，需要将代码块的语言选择为Mermaid。   Typora是宇宙第一笔记软件，不接受反驳
+   Mermaid能绘制哪些图？
+ 饼状图：使用pie关键字，具体用法后文将详细介绍 流程图：使用graph关键字，具体用法后文将详细介绍 序列图：使用sequenceDiagram关键字 甘特图：使用gantt关键字 类图：使用classDiagram关键字 状态图：使用stateDiagram关键字 用户旅程图：使用journey关键字    实例：朱元璋家谱简图，圆圈代表皇帝
+  graph LRemperor((朱八八))-.子.-father(朱五四)-.子.-朱四九-.子.-朱百六朱雄英--长子--朱标--长子--emperoremperor2((朱允炆))--次子--朱标朱樉--次子--emperor朱棡--三子--emperoremperor3((朱棣))--四子--emperoremperor4((朱高炽))--长子--emperor3 以上是概述，下面详细介绍饼状图和流程图的语法。其他图的语法可访问上文给出的项目地址，自行学习。（记得挂梯子）
+饼状图   在线渲染器：Online FlowChart &amp;amp; Diagrams Editor（需要梯子）
+  语法
+ 从pie关键字开始图表 然后使用title关键字及其在字符串中的值，为饼图赋予标题。（这是可选的） 数据部分  在&amp;quot; &amp;quot;内写上分区名。 分区名后使用:作为分隔符 分隔符后写上数值，最多支持2位小数——数据会以百分比的形式展示       实例  pietitle 为什么总是宅在家里？&#34;</description>
+    </item>
+    
+    <item>
       <title>Git - Intro</title>
       <link>/post/2019/07/23/git-intro/</link>
       <pubDate>Tue, 23 Jul 2019 00:00:00 +0000</pubDate>
