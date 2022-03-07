@@ -6,7 +6,19 @@
     <description>Recent content in Matplotlib on haoming&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/matplotlib/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/matplotlib/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matplotlib - 2. Line And Scatter Diagram</title>
+      <link>/post/2020/03/10/matplotlib-2.-line-and-scatter-diagram/</link>
+      <pubDate>Tue, 10 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/03/10/matplotlib-2.-line-and-scatter-diagram/</guid>
+      <description>1. 简单线形图 import matplotlib.pyplot as plt %matplotlib inline import numpy as np plt.style.use(&amp;#39;seaborn-whitegrid&amp;#39;) 1.1 绘制线形图 Matplotlib 利用面向对象接口作图时，需要需要先创建一个图形对象 fig 和一个坐标轴对象 ax：
+fig = plt.figure() ax = plt.axes() 在 Matplotlib 中，fig (plt.figure 类的一个实例) 可以看成是一个能容纳各种坐标轴、图形、文字、标签的容器；ax (plt.axes 类的一个实例) 是一个带有刻度和标签的矩形，最终包含所有可视化的图形元素。创建好坐标轴后就可以用 ax.plot 作图了（ax.plot 必须与创建的 fig，ax 对象在一起）：
+x = np.linspace(0, 10, 1000) fig = plt.figure() ax = plt.axes() ax.plot(x, np.sin(x)) [&amp;lt;matplotlib.lines.Line2D at 0x7f9b28c501f0&amp;gt;]  也可以利用类似 Matlab 接口作图：
+plt.plot(x, np.sin(x)) [&amp;lt;matplotlib.lines.Line2D at 0x7f9b28c86850&amp;gt;]   注意，如果我们在 ax.plot() 或 plt.</description>
+    </item>
+    
     <item>
       <title>Matplotlib - 1. Intro</title>
       <link>/post/2020/03/05/matplotlib-1.-intro/</link>
