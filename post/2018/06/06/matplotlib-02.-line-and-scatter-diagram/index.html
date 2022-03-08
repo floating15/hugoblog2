@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matplotlib - 02. Line  and Scatter Diagram | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Matplotlib - 02. Line  and Scatter Diagram</span></h1>
+
+<h2 class="date">2018/06/06</h2>
+</div>
+
+<main>
+<h1 id="1-简单线形图">1. 简单线形图</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+<span style="color:#666">%</span>matplotlib inline
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+plt<span style="color:#666">.</span>style<span style="color:#666">.</span>use(<span style="color:#ba2121">&#39;seaborn-whitegrid&#39;</span>)
+</code></pre></div><h2 id="11-绘制线形图">1.1 绘制线形图</h2>
+<p>Matplotlib 利用面向对象接口作图时，需要需要先创建一个图形对象 fig 和一个坐标轴对象 ax：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure()
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+</code></pre></div><p><img src="../../../../img_mpl/MPL02/output_3_0.png" alt="png"></p>
+<p>在 Matplotlib 中，fig (plt.figure 类的一个实例) 可以看成是一个能容纳各种<strong>坐标轴、图形、文字、标签</strong>的容器；ax (plt.axes 类的一个实例) 是一个带有刻度和标签的矩形，最终包含所有可视化的图形元素。创建好坐标轴后就可以用 <code>ax.plot</code> 作图了（<code>ax.plot</code> 必须与创建的 fig，ax 对象在一起）。在 <code>plt.figure()</code> 中设置参数<code>figuresize</code>可以指定图形的大小，指定参数 <code>dpi</code>可以指定分辨率。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">10</span>, <span style="color:#666">1000</span>)
+
+fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>, <span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x))
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8630237ca0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_5_1.png" alt="png"></p>
+<p>观察到图片上方的标识 <code>[&lt;matplotlib.lines.Line2D at 0x7f8670fc8130&gt;]</code>，这说明 <code>plot</code> 函数生成了一个 <code>plt.Line2D</code> 实例。</p>
+<p>也可以利用类似 Matlab 接口作图：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x))
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f867139f160&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_7_1.png" alt="png"></p>
+<blockquote>
+<p>注意，如果我们在 <code>ax.plot()</code> 或 <code>plt.plot()</code> 外面指定 <code>y = np.sin(x)</code>，然后将 <code>y</code> 作为第二个参数输入 <code>ax.plot()</code> 或 <code>plt.plot()</code>，这样画出的图形是散点图。</p>
+</blockquote>
+<h2 id="12-一张图中创建多条线">1.2 一张图中创建多条线</h2>
+<h3 id="121-重复命令">1.2.1 重复命令</h3>
+<p>在面向对象编程接口中，需要重复 <code>ax.plot()</code> 命令：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">10</span>, <span style="color:#666">1000</span>)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>cos(x))
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x))
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86495c8730&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_10_1.png" alt="png"></p>
+<p>在 Matlab 接口中，需要重复 <code>plt.plot()</code> 命令：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x))
+plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>cos(x))
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f865144afd0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_12_1.png" alt="png"></p>
+<p>对于有一定规律的函数，我们可以构建一个循环来多次作图，还可以指定风格：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+style <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;-r&#39;</span>, <span style="color:#ba2121">&#39;--g&#39;</span>, <span style="color:#ba2121">&#39;:b&#39;</span>, <span style="color:#ba2121">&#39;-.c&#39;</span>]
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">4</span>):
+    plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x<span style="color:#666">+</span>np<span style="color:#666">.</span>pi <span style="color:#666">*</span> <span style="color:#666">0.5</span> <span style="color:#666">*</span> i), style[i])
+</code></pre></div><p><img src="../../../../img_mpl/MPL02/output_14_0.png" alt="png"></p>
+<h3 id="122-一次性作图">1.2.2 一次性作图</h3>
+<p>假设 <code>x.shape=(1000,)</code>，利用矢量运算生成 <code>y.shape=(1000, n)</code>，则 <code>plt.plot(x, y)</code>可以一次性做出 n 条线。这一操作可以利用 numpy 广播：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y <span style="color:#666">=</span> np<span style="color:#666">.</span>sin(x[:, np<span style="color:#666">.</span>newaxis] <span style="color:#666">+</span> np<span style="color:#666">.</span>pi <span style="color:#666">*</span> np<span style="color:#666">.</span>arange(<span style="color:#666">0</span>, <span style="color:#666">2</span>, <span style="color:#666">0.5</span>))
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, y)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8671818e50&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f8671818f40&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f8671824040&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f8671824100&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_16_1.png" alt="png"></p>
+<p>上面的广播原理为：
+<div class="mermaid">
+    
+graph LR
+Z((1000,)) -[:, np.newaxis]-> A((1000,1)) --> B((1000:4)) 
+C((1,4)) --> D((1000,4)) --B
+B --> y(y(1000,4))
+
+  </div></p>
+<p>事实上我们也可以人工创造出类似的矩阵形式，当所要绘制的函数无规律时，这样做更省事：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">s <span style="color:#666">=</span> [
+    x <span style="color:#666">-</span> <span style="color:#666">1</span>,
+    np<span style="color:#666">.</span>sin(x),
+    np<span style="color:#666">.</span>log1p(x),
+    np<span style="color:#666">.</span>e <span style="color:#666">**</span> <span style="color:#666">-</span>x
+]
+s <span style="color:#666">=</span> np<span style="color:#666">.</span>array(s)
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, s<span style="color:#666">.</span>T)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86514bed60&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f86514bee50&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f86514bef10&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f86514befd0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_18_1.png" alt="png"></p>
+<h2 id="13-设置线条颜色">1.3 设置线条颜色</h2>
+<p>对 <code>ax.plot()</code> 和 <code>plt.plot()</code> 设置  <code>color</code> 参数即可设置颜色，支持多种表示方式，主要强调三种：</p>
+<ul>
+<li>标准颜色名称：red, blue, green 等（可以省略 <code>color=</code> ）</li>
+<li>缩写颜色代码：rgbcmyk，分别是 red/green/blue/cyan/magenta/yellow/black 的缩写（可以省略 <code>color=</code> ）</li>
+<li>RGB 元组: (x, y, z)，x,y,z 是 0 到 1 的实数，表示 R/G/B 的程度</li>
+</ul>
+<p>如果不指定颜色，Matplotlib 会为多条线自动循环使用一组默认的颜色。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x <span style="color:#666">-</span> <span style="color:#666">0</span>), <span style="color:#ba2121">&#34;red&#34;</span>,)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x <span style="color:#666">-</span> <span style="color:#666">1</span>), <span style="color:#ba2121">&#34;c&#34;</span>,)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x <span style="color:#666">-</span> <span style="color:#666">2</span>), color<span style="color:#666">=</span>(<span style="color:#666">0</span>, <span style="color:#666">0</span>, <span style="color:#666">1</span>),)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x <span style="color:#666">-</span> <span style="color:#666">3</span>), color<span style="color:#666">=</span>(<span style="color:#666">0</span>, <span style="color:#666">1</span>, <span style="color:#666">0</span>),)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f865191bd90&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_20_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">+</span> <span style="color:#666">0</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;r&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">+</span> <span style="color:#666">200</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;c&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">+</span> <span style="color:#666">400</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;m&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">+</span> <span style="color:#666">600</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;k&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8649742fd0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_21_1.png" alt="png"></p>
+<h2 id="14-设置线条风格">1.4 设置线条风格</h2>
+<p>对 <code>ax.plot()</code> 和 <code>plt.plot()</code> 设置  <code>linestyle</code> 参数（可以省略 <code>linestyle=</code> ）即可设置线条风格，一共有四种风格：</p>
+<ul>
+<li>实线：&lsquo;solid&rsquo;，简写为 &lsquo;-&rsquo;</li>
+<li>虚线：&lsquo;dashed&rsquo;，简写为 &lsquo;&ndash;&rsquo;</li>
+<li>点划线：&lsquo;dashdot&rsquo;，简写为 &lsquo;-.&rsquo;</li>
+<li>点线：&lsquo;dotted&rsquo;，简写为 &lsquo;:&rsquo;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x), linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#39;-&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x<span style="color:#666">-</span><span style="color:#666">1</span>), linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#39;--&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x<span style="color:#666">-</span><span style="color:#666">2</span>), <span style="color:#ba2121">&#39;-.&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x<span style="color:#666">-</span><span style="color:#666">3</span>), <span style="color:#ba2121">&#39;:&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86304834f0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_23_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">-</span> x<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">+</span> x, <span style="color:#ba2121">&#39;-&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">-</span> x<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">+</span> x <span style="color:#666">+</span> <span style="color:#666">100</span>, <span style="color:#ba2121">&#39;--&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">-</span> x<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">+</span> x <span style="color:#666">+</span> <span style="color:#666">200</span>, <span style="color:#ba2121">&#39;-.&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">-</span> x<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">+</span> x <span style="color:#666">+</span> <span style="color:#666">300</span>, <span style="color:#ba2121">&#39;:&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86303fd670&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_24_1.png" alt="png"></p>
+<p>可以将 linestyle 与 color 简写合并起来，直接输入 <code>ax.plot</code> 或 <code>plt.plot</code> 中同时设置线条风格与颜色：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">0</span>, <span style="color:#ba2121">&#39;-r&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;--c&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">2</span>, <span style="color:#ba2121">&#39;-.m&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">3</span>, <span style="color:#ba2121">&#39;:k&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8651849fa0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_26_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">0</span>, <span style="color:#ba2121">&#39;-r&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">2</span>, <span style="color:#ba2121">&#39;--c&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">4</span>, <span style="color:#ba2121">&#39;-.m&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">6</span>, <span style="color:#ba2121">&#39;:y&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86513098b0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_27_1.png" alt="png"></p>
+<h2 id="15-调整上下限">1.5 调整上下限</h2>
+<p>在面向对象接口作图时，对通过 <code>ax.set_xlim(xmin, xmax)</code> 以及 <code>ax.set_ylim(ymin, ymax)</code> 来设置上下限；在 Matlab 接口作图时，通过 <code>plt.xlim(xmin, xmax)</code> 以及 plt.ylim(ymin, ymax)` 来设置上下限：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>set_xlim(<span style="color:#666">2</span>, <span style="color:#666">3</span>)
+ax<span style="color:#666">.</span>set_ylim(<span style="color:#666">3</span>, <span style="color:#666">4</span>)
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;--r&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f865187d9a0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_29_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;-.m&#39;</span>)
+plt<span style="color:#666">.</span>xlim(<span style="color:#666">2</span>, <span style="color:#666">3</span>)
+plt<span style="color:#666">.</span>ylim(<span style="color:#666">3</span>, <span style="color:#666">4</span>)
+</code></pre></div><pre><code>(3.0, 4.0)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_30_1.png" alt="png"></p>
+<p>逆序设置坐标轴刻度值即可逆序显示图形，对两种接口都成立：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>set_xlim(<span style="color:#666">3</span>, <span style="color:#666">2</span>)
+ax<span style="color:#666">.</span>set_ylim(<span style="color:#666">3</span>, <span style="color:#666">4</span>)
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;--r&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86510134f0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_32_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;-.c&#39;</span>)
+plt<span style="color:#666">.</span>xlim(<span style="color:#666">3</span>, <span style="color:#666">2</span>)
+plt<span style="color:#666">.</span>ylim(<span style="color:#666">3</span>,<span style="color:#666">4</span>)
+</code></pre></div><pre><code>(3.0, 4.0)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_33_1.png" alt="png"></p>
+<p>利用 <code>ax.axis([xmin, xmax, ymin, ymax])</code> 和 <code>plt.axis([xmin, xmax, ymin, ymax])</code> 方法可以一行代码设置坐标限值:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>axis([<span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">2</span>, <span style="color:#666">5</span>])
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;--b&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f86518a05e0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_35_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x ,x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;r&#39;</span>)
+plt<span style="color:#666">.</span>axis([<span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">5</span>, <span style="color:#666">2</span>])
+</code></pre></div><pre><code>(2.0, 3.0, 5.0, 2.0)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_36_1.png" alt="png"></p>
+<p><code>ax.axis()</code> 和 <code>plt.axis()</code> 方法还可以自动调整坐标限，如设置参数 &lsquo;tight&rsquo; 可以使图形自动收紧坐标轴；设置参数 &lsquo;equal&rsquo; 可以使图形横纵轴单位长度相等：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;equal&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;--r&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8671bfb460&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_38_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x ,x<span style="color:#666">+</span><span style="color:#666">1</span>, <span style="color:#ba2121">&#39;r&#39;</span>)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+</code></pre></div><pre><code>(-0.5, 10.5, 0.5, 11.5)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_40_1.png" alt="png"></p>
+<p>在结束本小节之前，我们需要再次强调 Matplotlib 的两种作图接口的方法差异。大多数的 <code>plt</code> 函数可以直接转换成 <code>ax</code> 方法，如：</p>
+<ul>
+<li><code>plt.plot()</code> -&gt; <code>ax.plot</code></li>
+<li><code>plt.legend()</code> -&gt; <code>ax.legend()</code></li>
+<li><code>plt.axis()</code> -&gt; <code>ax.axis()</code></li>
+</ul>
+<p>但是有一些函数略有差别，如：</p>
+<ul>
+<li><code>plt.xlim</code> -&gt; <code>ax.set_xlim</code></li>
+<li><code>plt.ylim</code> -&gt; <code>ax.set_ylim</code></li>
+<li><code>plt.title</code> -&gt; <code>ax.set_title</code></li>
+<li><code>plt.xlabel</code> -&gt; <code>ax.set_xlabel</code></li>
+<li><code>plt.ylabel</code> -&gt; <code>ax.set_ylabel</code></li>
+</ul>
+<p>在面向对象接口作图时，可以采用 <code>ax.set()</code> 方法一次性设置所有属性：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>set(
+    xlim<span style="color:#666">=</span>(<span style="color:#666">0</span>, <span style="color:#666">10</span>),
+    ylim<span style="color:#666">=</span>(<span style="color:#666">-</span><span style="color:#666">2</span>, <span style="color:#666">2</span>),
+    title<span style="color:#666">=</span><span style="color:#ba2121">&#39;A sample Plot&#39;</span>,
+    xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#39;x&#39;</span>,
+    ylabel<span style="color:#666">=</span><span style="color:#ba2121">&#39;sin(x)&#39;</span>
+)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x), <span style="color:#ba2121">&#39;-r&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8651a02490&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_42_1.png" alt="png"></p>
+<h2 id="16-设置图形标签">1.6 设置图形标签</h2>
+<p>这一小节介绍设置：图形标题、坐标轴标题、图例的方法。可以通过 <code>plt.title('title')</code>, <code>plt.xlabel('xlabel')</code>, &lsquo;plt.ylabel(&lsquo;ylabel&rsquo;)&rsquo; 设置图形标题和坐标轴标题；对于面向对象接口，可以对 <code>ax.set()</code> 直接设置参数：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>set(
+    title<span style="color:#666">=</span><span style="color:#ba2121">&#39;a sine curve&#39;</span>,
+    xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#39;x&#39;</span>,
+    ylabel<span style="color:#666">=</span><span style="color:#ba2121">&#39;sin(x)&#39;</span>
+)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x), <span style="color:#ba2121">&#39;b&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f864998aca0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_44_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>title(<span style="color:#ba2121">&#39;a sine curve&#39;</span>)
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;x&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;sin(x)&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x), <span style="color:#ba2121">&#39;r&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8651a355b0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_45_1.png" alt="png"></p>
+<p>对于一张图形中多条线的情况，可以在 <code>ax.plot()</code> 或 <code>plt.plot()</code> 中指明 label 参数来设置标签。通过 <code>ax.legend()</code> 或 <code>plt.legend()</code> 来创建图例：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>set(
+    title<span style="color:#666">=</span><span style="color:#ba2121">&#39;a sine curve&#39;</span>,
+    xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#39;x&#39;</span>,
+    ylabel<span style="color:#666">=</span><span style="color:#ba2121">&#39;sin(x)&#39;</span>
+)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x), <span style="color:#ba2121">&#39;b&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;sin(x)&#39;</span>)
+ax<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>cos(x), <span style="color:#ba2121">&#39;r&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;cos(x)&#39;</span>)
+ax<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f86306da760&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_47_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>title(<span style="color:#ba2121">&#39;a sine curve&#39;</span>)
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;x&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;sin(x)&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>sin(x), <span style="color:#ba2121">&#39;r&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;sin(x)&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, np<span style="color:#666">.</span>cos(x), <span style="color:#ba2121">&#39;b&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;cos(x)&#39;</span>)
+plt<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f8651b1af40&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_48_1.png" alt="png"></p>
+<h1 id="2-简单散点图">2. 简单散点图</h1>
+<h2 id="21-plot-画散点图">2.1 plot 画散点图</h2>
+<p>我们在 <code>plot()</code> 函数外定义 <code>y</code>，然后将 <code>y</code> 输入 <code>plot()</code> 函数，这样绘制出的是散点图。我们可以为散点图设置图形符号的类型，常用的简写有 <code>'o', 's', 'v', '^', '&gt;', '&lt;', 'x', '+'</code></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">10</span>, <span style="color:#666">30</span>)
+y <span style="color:#666">=</span> np<span style="color:#666">.</span>sin(x) <span style="color:#666">+</span> x
+
+fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+t <span style="color:#666">=</span> <span style="color:#666">0</span>
+<span style="color:#008000;font-weight:bold">for</span> mark <span style="color:#a2f;font-weight:bold">in</span> [<span style="color:#ba2121">&#39;o&#39;</span>, <span style="color:#ba2121">&#39;.&#39;</span>, <span style="color:#ba2121">&#39;,&#39;</span>, <span style="color:#ba2121">&#39;x&#39;</span>, <span style="color:#ba2121">&#39;+&#39;</span>, <span style="color:#ba2121">&#39;v&#39;</span>, <span style="color:#ba2121">&#39;^&#39;</span>, <span style="color:#ba2121">&#39;&lt;&#39;</span>, <span style="color:#ba2121">&#39;&gt;&#39;</span>, <span style="color:#ba2121">&#39;s&#39;</span>, <span style="color:#ba2121">&#39;d&#39;</span>]:
+    ax<span style="color:#666">.</span>plot(x, y<span style="color:#666">+</span>t, mark, label<span style="color:#666">=</span><span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;marker is </span><span style="color:#b68;font-weight:bold">{</span>mark<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">&#34;</span>)
+    t <span style="color:#666">+=</span> <span style="color:#666">5</span>
+ax<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f8651b62910&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_50_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+t <span style="color:#666">=</span> <span style="color:#666">0</span>
+<span style="color:#008000;font-weight:bold">for</span> mark <span style="color:#a2f;font-weight:bold">in</span> [<span style="color:#ba2121">&#39;o&#39;</span>, <span style="color:#ba2121">&#39;.&#39;</span>, <span style="color:#ba2121">&#39;,&#39;</span>, <span style="color:#ba2121">&#39;x&#39;</span>, <span style="color:#ba2121">&#39;+&#39;</span>, <span style="color:#ba2121">&#39;v&#39;</span>, <span style="color:#ba2121">&#39;^&#39;</span>, <span style="color:#ba2121">&#39;&lt;&#39;</span>, <span style="color:#ba2121">&#39;&gt;&#39;</span>, <span style="color:#ba2121">&#39;s&#39;</span>, <span style="color:#ba2121">&#39;d&#39;</span>]:
+    plt<span style="color:#666">.</span>plot(x, y<span style="color:#666">+</span>t, mark, label<span style="color:#666">=</span><span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;marker is </span><span style="color:#b68;font-weight:bold">{</span>mark<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">&#34;</span>)
+    t <span style="color:#666">+=</span> <span style="color:#666">2</span>
+plt<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f86307746d0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_51_1.png" alt="png"></p>
+<p>同个将 color, linestyle 的简写参数组合（顺序无所谓），我们可以将散点与线条组合起来：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, y, <span style="color:#ba2121">&#39;-rx&#39;</span>)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8671cc8bb0&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_53_1.png" alt="png"></p>
+<p>通过设置 markersize，
+markerfacecolor，
+markeredgecolor，
+markeredgewidth 参数，可以设置散点风格：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(
+    x, y, <span style="color:#ba2121">&#39;-rs&#39;</span>,
+    linewidth<span style="color:#666">=</span><span style="color:#666">4</span>,
+    markersize<span style="color:#666">=</span><span style="color:#666">15</span>,
+    markerfacecolor<span style="color:#666">=</span><span style="color:#ba2121">&#39;white&#39;</span>,
+    markeredgecolor<span style="color:#666">=</span><span style="color:#ba2121">&#39;m&#39;</span>,
+    markeredgewidth<span style="color:#666">=</span><span style="color:#666">2</span>
+)
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8649e09490&gt;]
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_55_1.png" alt="png"></p>
+<h2 id="22-scatter-画散点图">2.2 scatter 画散点图</h2>
+<p><code>plt/ax.scatter</code> 与 <code>plt/ax.plot</code> 的主要差别在于，前者在创建散点图时有更高的灵活性，可以单独控制每个散点与数据匹配，也可以让每个散点有不同属性（大小、表面颜色、边框颜色等）。在处理大量数据使，<code>scatter</code> 的效率要低于 <code>plot</code>.</p>
+<p><code>plt/ax.scatter</code>的参数中：</p>
+<ul>
+<li>alpha：控制透明度，为标量；</li>
+<li>c：控制颜色，可以是标量或列表；</li>
+<li>s：控制大小，可以是标量或列表：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+a <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>)
+b <span style="color:#666">=</span> a <span style="color:#666">*</span> <span style="color:#666">2</span>
+plt<span style="color:#666">.</span>scatter(
+    a,b,
+    c<span style="color:#666">=</span>[<span style="color:#ba2121">&#39;b&#39;</span>,<span style="color:#ba2121">&#39;r&#39;</span>,<span style="color:#ba2121">&#39;b&#39;</span>,<span style="color:#ba2121">&#39;r&#39;</span>,<span style="color:#ba2121">&#39;b&#39;</span>], 
+    s<span style="color:#666">=</span>np<span style="color:#666">.</span>array([<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">4</span>, <span style="color:#666">5</span>]) <span style="color:#666">*</span> <span style="color:#666">30</span>
+)
+</code></pre></div><pre><code>&lt;matplotlib.collections.PathCollection at 0x7f864a113130&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_57_1.png" alt="png"></p>
+<p>上面的例子是将参数c设置为颜色序列，但是一般我们用来做分类的数据Y是整数0，1，2，&hellip;&hellip;.，等等。此时就需要cmap参数将数值转换为对应的颜色了，这部分会在后面详细介绍。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">rng <span style="color:#666">=</span> np<span style="color:#666">.</span>random
+x <span style="color:#666">=</span> rng<span style="color:#666">.</span>randn(<span style="color:#666">100</span>)
+y <span style="color:#666">=</span> rng<span style="color:#666">.</span>randn(<span style="color:#666">100</span>)
+color <span style="color:#666">=</span> rng<span style="color:#666">.</span>rand(<span style="color:#666">100</span>)
+size <span style="color:#666">=</span> rng<span style="color:#666">.</span>rand(<span style="color:#666">100</span>) <span style="color:#666">*</span> <span style="color:#666">1000</span>
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>scatter(
+    x, y,
+    c<span style="color:#666">=</span>color,
+    s<span style="color:#666">=</span>size,
+    alpha<span style="color:#666">=</span><span style="color:#666">0.3</span>,
+    cmap<span style="color:#666">=</span><span style="color:#ba2121">&#39;viridis&#39;</span>
+)
+plt<span style="color:#666">.</span>colorbar()
+</code></pre></div><pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7f863096e550&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_59_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+ax<span style="color:#666">.</span>scatter(
+    x, y,
+    c<span style="color:#666">=</span>color,
+    s<span style="color:#666">=</span>size,
+    alpha<span style="color:#666">=</span><span style="color:#666">0.3</span>,
+    cmap<span style="color:#666">=</span><span style="color:#ba2121">&#39;viridis&#39;</span>
+)
+<span style="color:#408080;font-style:italic"># colorbar() 报错</span>
+</code></pre></div><pre><code>&lt;matplotlib.collections.PathCollection at 0x7f86304ebc70&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_60_1.png" alt="png"></p>
+<p>利用散点的颜色，大小等性质，可以用来分析多维数据的信息。例如下例中，每个点的 x 坐标为鸢尾花花萼的长度，y 坐标为花萼的宽度，点的大小为花瓣的宽度，这三者对应着模型的三个特征；三种颜色对应不同类型的鸢尾花，这对应着模型的目标值：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.datasets</span> <span style="color:#008000;font-weight:bold">import</span> load_iris
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">iris <span style="color:#666">=</span> load_iris()
+feature <span style="color:#666">=</span> iris<span style="color:#666">.</span>data<span style="color:#666">.</span>T
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>scatter(
+    feature[<span style="color:#666">0</span>],
+    feature[<span style="color:#666">1</span>],
+    alpha<span style="color:#666">=</span><span style="color:#666">0.2</span>,
+    s <span style="color:#666">=</span>  <span style="color:#666">100</span><span style="color:#666">*</span>feature[<span style="color:#666">3</span>],
+    c <span style="color:#666">=</span> iris<span style="color:#666">.</span>target,
+    cmap<span style="color:#666">=</span><span style="color:#ba2121">&#39;viridis&#39;</span>
+)
+plt<span style="color:#666">.</span>xlabel(iris<span style="color:#666">.</span>feature_names[<span style="color:#666">0</span>])
+plt<span style="color:#666">.</span>ylabel(iris<span style="color:#666">.</span>feature_names[<span style="color:#666">1</span>])
+</code></pre></div><pre><code>Text(0, 0.5, 'sepal width (cm)')
+</code></pre>
+<p><img src="../../../../img_mpl/MPL02/output_63_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+</code></pre></div>
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
