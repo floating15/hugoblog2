@@ -6,7 +6,45 @@
     <description>Recent content in Git on haoming&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git - Rebase (in Chinese)</title>
+      <link>/post/2019/08/05/git-rebase-in-chinese/</link>
+      <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/05/git-rebase-in-chinese/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Git - 3. Host code by Github (in Chinese)</title>
+      <link>/post/2019/08/02/git-3.-host-code-by-github-in-chinese/</link>
+      <pubDate>Fri, 02 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/02/git-3.-host-code-by-github-in-chinese/</guid>
+      <description>1. Github 1.1 上传 push git push 命用于从将本地的分支版本上传到远程并合并。命令格式如下：
+git push &amp;lt;远程主机名&amp;gt; &amp;lt;本地分支名&amp;gt;:&amp;lt;远程分支名&amp;gt; 如果本地分支名与远程分支名相同，则可以省略冒号：
+git push &amp;lt;远程主机名&amp;gt; &amp;lt;本地分支名&amp;gt; 删除主机的分支可以使用 &amp;ndash;delete 参数，以下命令表示删除 origin 主机的 master 分支：
+git push origin --delete master  首先创建一个 github 仓库 git_exercise，复制其地址。在 git 中设置该 github 仓库的地址：
+(base) wanghaoming@localhost git_test % git remote add origin https://github.com/git_username/git_exercise.git 这行命令为对该 git_exercise 仓库起一个别名 origin（也可以取其他别名），这一点在 git_test/.git/config 文件中可以看到：
+(base) wanghaoming@localhost git_test % cat ./.git/config [core] repositoryformatversion = 0 filemode = true bare = false logallrefupdates = true ignorecase = true precomposeunicode = true [remote &amp;#34;origin&amp;#34;] url = https://github.</description>
+    </item>
+    
+    <item>
+      <title>Git - 2. Branch (in Chinese)</title>
+      <link>/post/2019/07/26/git-2.-branch-in-chinese/</link>
+      <pubDate>Fri, 26 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/07/26/git-2.-branch-in-chinese/</guid>
+      <description>1. 分支简介 假设在版本 1 （V1）中一共写入 100 个文件；在 V2 中修改了 V1 中的 10 个文件，并新写入 20 个文件。则 Git 在生成 V2 时，会只生成新变化的 30 个文件，并通过指针指向 V1 从而链接未改变的 90 个文件，提升效率。
+扩展这一过程，此时 A，B 两台电脑可以在 V2 的基础上分别开发不同的功能，并生成 V3，V4，这一就形成了两个分支：
+当 A，B 完成开发后，可以将两分支汇合生成 V5：
+考虑如下一种工作流程：若项目（C3）目前需求开发一项新功能，则可以为其创建一个分支（如 dev 分支），并在该分支上不断开发。若在开发的过程中发现原项目（C3）存在 bug，在可以在 C3 再创建一个 bug 分支，并在该分支上修改 bug。当 dev 分支与 bug 分支上的工作都已完成，再将这两分支合并到 Master 上。（Master 是 git 版本管理的默认主干）
+分支可以创建一个相互隔离的环境，从而让开发者各自完成工作再合并。
+2. 分支命令 继续以 ~/Documents/git_test 为例，如下是版本历史：
+(base) wanghaoming@localhost git_test % git log commit 1954fae802221ffd98fa26512275a4817ff3dc5d (HEAD -&amp;gt; master) Author: git_username &amp;lt;git_username@163.</description>
+    </item>
+    
     <item>
       <title>Git - Intro</title>
       <link>/post/2019/07/23/git-intro/</link>

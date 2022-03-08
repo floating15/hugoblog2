@@ -8,32 +8,32 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 12 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="/tags/matplotlib/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Matplotlib - 04. Configure graphics</title>
-      <link>/post/2018/06/12/matplotlib-04.-configure-graphics/</link>
+      <title>Matplotlib - 04. Configure graphics (in Chinese)</title>
+      <link>/post/2018/06/12/matplotlib-04.-configure-graphics-in-chinese/</link>
       <pubDate>Tue, 12 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018/06/12/matplotlib-04.-configure-graphics/</guid>
+      <guid>/post/2018/06/12/matplotlib-04.-configure-graphics-in-chinese/</guid>
       <description>import matplotlib.pyplot as plt import numpy as np %matplotlib inline plt.style.use(&amp;#39;seaborn-whitegrid&amp;#39;) 1. 配置图例 1.1 图例风格 plt.legend()命令会自动创建一个包含每个图形元素的图例，这些图例将根据图形元素的 color，style，marker，label生成：
 x = np.linspace(-1, 1, 200) func = lambda x: 2*x**3 - x**2 - 2*x plt.figure(figsize=(8,6)) plt.plot(x, func(x), &amp;#39;-b&amp;#39;, label=&amp;#39;func&amp;#39;) plt.plot(x, func(x)*3, &amp;#39;--r&amp;#39;, label=&amp;#39;func * 3&amp;#39;) plt.axis(&amp;#39;tight&amp;#39;) plt.legend() &amp;lt;matplotlib.legend.Legend at 0x7f7ec2969550&amp;gt;  y_1 = 2*x + np.random.rand(*x.shape)*0.3 y_2 = x**2+np.random.randn(*x.shape)*0.3 plt.figure(figsize=(8,6)) plt.plot(x, y_1, &amp;#39;rv&amp;#39;, label=&amp;#39;red&amp;#39;) plt.plot(x, y_2, &amp;#39;bo&amp;#39;, label=&amp;#39;bule&amp;#39; ) plt.legend() &amp;lt;matplotlib.legend.Legend at 0x7f7e817749a0&amp;gt;  通过对 plt.</description>
     </item>
     
     <item>
-      <title>Matplotlib - 02. Line  and Scatter Diagram</title>
-      <link>/post/2018/06/09/matplotlib-02.-line-and-scatter-diagram/</link>
+      <title>Matplotlib - 03. Error Lines, Contour Plots and Histograms (in Chinese)</title>
+      <link>/post/2018/06/09/matplotlib-03.-error-lines-contour-plots-and-histograms-in-chinese/</link>
       <pubDate>Sat, 09 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018/06/09/matplotlib-02.-line-and-scatter-diagram/</guid>
+      <guid>/post/2018/06/09/matplotlib-03.-error-lines-contour-plots-and-histograms-in-chinese/</guid>
       <description>1. 误差线 import numpy as np import matplotlib.pyplot as plt plt.style.use(&amp;#39;seaborn-white&amp;#39;) %matplotlib inline 误差线可以通过 plt.errorbar() 函数来创建：
 plt.errorbar(x, y, yerr=None, xerr=None, fmt=&amp;#39;&amp;#39;, ecolor=None, elinewidth=None, capsize=None, capthick=None ) 主要参数：
  x, y: 列表，数据点的位置坐标 xerr, yerr: 标量或列表，数据的误差范围 fmt: 数据点的标记样式以及相互之间连接线样式，与 plt.plot 的缩写代码一致 ecolor: 误差棒的线条颜色 elinewidth: 误差棒的线条粗细 capsize: 误差棒边界横杠的大小 capthick: 误差棒边界横杠的厚度 ms: 数据点的大小 mfc: 数据点的颜色 mec: 数据点边缘的颜色  x = np.linspace(0, 10, 50) dy = 0.8 y = np.sin(x) + 0.5 * x + dy * np.</description>
     </item>
     
     <item>
-      <title>Matplotlib - 02. Line  and Scatter Diagram</title>
-      <link>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram/</link>
+      <title>Matplotlib - 02. Line  and Scatter Diagram (in Chinese)</title>
+      <link>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram-in-chinese/</link>
       <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram/</guid>
+      <guid>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram-in-chinese/</guid>
       <description>1. 简单线形图 import matplotlib.pyplot as plt %matplotlib inline import numpy as np plt.style.use(&amp;#39;seaborn-whitegrid&amp;#39;) 1.1 绘制线形图 Matplotlib 利用面向对象接口作图时，需要需要先创建一个图形对象 fig 和一个坐标轴对象 ax：
 fig = plt.figure() ax = plt.axes() 在 Matplotlib 中，fig (plt.figure 类的一个实例) 可以看成是一个能容纳各种坐标轴、图形、文字、标签的容器；ax (plt.axes 类的一个实例) 是一个带有刻度和标签的矩形，最终包含所有可视化的图形元素。创建好坐标轴后就可以用 ax.plot 作图了（ax.plot 必须与创建的 fig，ax 对象在一起）。在 plt.figure() 中设置参数figuresize可以指定图形的大小，指定参数 dpi可以指定分辨率。
 x = np.linspace(0, 10, 1000) fig = plt.figure(figsize=(8, 6)) ax = plt.axes() ax.plot(x, np.sin(x)) [&amp;lt;matplotlib.lines.Line2D at 0x7f8630237ca0&amp;gt;]  观察到图片上方的标识 [&amp;lt;matplotlib.lines.Line2D at 0x7f8670fc8130&amp;gt;]，这说明 plot 函数生成了一个 plt.Line2D 实例。
@@ -41,11 +41,11 @@ x = np.linspace(0, 10, 1000) fig = plt.figure(figsize=(8, 6)) ax = plt.axes() ax
     </item>
     
     <item>
-      <title>Matplotlib - 01. Intro</title>
-      <link>/post/2018/06/05/matplotlib-01.-intro/</link>
+      <title>Matplotlib - 01. Intro (in Chinese)</title>
+      <link>/post/2018/06/05/matplotlib-01.-intro-in-chinese/</link>
       <pubDate>Tue, 05 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2018/06/05/matplotlib-01.-intro/</guid>
+      <guid>/post/2018/06/05/matplotlib-01.-intro-in-chinese/</guid>
       <description>import numpy as np import pandas as pd 1. Matplotlib 介绍 1.1 导入Matplotlib plt 是 Matplotlib 最常用的接口
 import matplotlib as mpl import matplotlib.pyplot as plt 1.2 设置绘图样式 使用 plt.style.use 来选择图形的绘图风格
 plt.style.use(&amp;#39;classic&amp;#39;) 1.3 关于 show() 方法 Matplotlib 是否使用 show() 方法取决于开发环境，一般而言有三种开发环境：1）script；2）IPython Shell；3）IPython Notebook

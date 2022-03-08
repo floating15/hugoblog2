@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matplotlib - 03. Error Lines, Contour Plots and Histograms (in Chinese) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Matplotlib - 03. Error Lines, Contour Plots and Histograms (in Chinese)</span></h1>
+
+<h2 class="date">2018/06/09</h2>
+</div>
+
+<main>
+<h1 id="1-误差线">1. 误差线</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+plt<span style="color:#666">.</span>style<span style="color:#666">.</span>use(<span style="color:#ba2121">&#39;seaborn-white&#39;</span>)
+<span style="color:#666">%</span>matplotlib inline
+</code></pre></div><p>误差线可以通过 <code>plt.errorbar()</code> 函数来创建：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>errorbar(x, 
+	y, 
+	yerr<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+	xerr<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+	fmt<span style="color:#666">=</span><span style="color:#ba2121">&#39;&#39;</span>, 
+	ecolor<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+	elinewidth<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+	capsize<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+	capthick<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+</code></pre></div><p>主要参数：</p>
+<ul>
+<li><code>x</code>, <code>y</code>: 列表，数据点的位置坐标</li>
+<li><code>xerr</code>, <code>yerr</code>: 标量或列表，数据的误差范围</li>
+<li><code>fmt</code>: 数据点的标记样式以及相互之间连接线样式，与 <code>plt.plot</code> 的缩写代码一致</li>
+<li><code>ecolor</code>: 误差棒的线条颜色</li>
+<li><code>elinewidth</code>: 误差棒的线条粗细</li>
+<li><code>capsize</code>: 误差棒边界横杠的大小</li>
+<li><code>capthick</code>: 误差棒边界横杠的厚度</li>
+<li><code>ms</code>: 数据点的大小</li>
+<li><code>mfc</code>: 数据点的颜色</li>
+<li><code>mec</code>: 数据点边缘的颜色</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">10</span>, <span style="color:#666">50</span>)
+dy <span style="color:#666">=</span> <span style="color:#666">0.8</span>
+y <span style="color:#666">=</span> np<span style="color:#666">.</span>sin(x) <span style="color:#666">+</span> <span style="color:#666">0.5</span> <span style="color:#666">*</span> x <span style="color:#666">+</span> dy <span style="color:#666">*</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">50</span>)
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>errorbar(
+    x, y,
+    yerr<span style="color:#666">=</span> <span style="color:#666">0.1</span> <span style="color:#666">*</span> y,
+    fmt<span style="color:#666">=</span><span style="color:#ba2121">&#39;xr&#39;</span>,
+    ecolor<span style="color:#666">=</span><span style="color:#ba2121">&#39;k&#39;</span>,
+    elinewidth<span style="color:#666">=</span><span style="color:#666">1</span>,
+    capsize<span style="color:#666">=</span><span style="color:#666">3</span>,
+    capthick<span style="color:#666">=</span><span style="color:#666">1</span>
+)
+</code></pre></div><pre><code>&lt;ErrorbarContainer object of 3 artists&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_3_1.png" alt="png"></p>
+<p>设置参数 <code>yerr/xerr</code>  为列表的列表，可以分别设置每个散点的下置信度与上置信度：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x<span style="color:#666">=</span>np<span style="color:#666">.</span>linspace(<span style="color:#666">0.1</span>,<span style="color:#666">0.5</span>,<span style="color:#666">10</span>) <span style="color:#408080;font-style:italic"># 生成[0.1,0.5]等间隔的十个数据</span>
+y<span style="color:#666">=</span>np<span style="color:#666">.</span>exp(x)
+
+error<span style="color:#666">=</span><span style="color:#666">0.05</span><span style="color:#666">+</span><span style="color:#666">0.5</span><span style="color:#666">*</span>x <span style="color:#408080;font-style:italic"># 误差范围函数</span>
+error_range<span style="color:#666">=</span>[error<span style="color:#666">*</span><span style="color:#666">0.3</span>, error] <span style="color:#408080;font-style:italic"># 下置信度和上置信度</span>
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>errorbar(
+    x, y,
+    yerr<span style="color:#666">=</span>error_range,
+    fmt<span style="color:#666">=</span><span style="color:#ba2121">&#39;or:&#39;</span>,
+    linewidth<span style="color:#666">=</span><span style="color:#666">1.5</span>,
+    ecolor<span style="color:#666">=</span><span style="color:#ba2121">&#39;gray&#39;</span>,
+	elinewidth<span style="color:#666">=</span><span style="color:#666">1</span>,
+    capsize<span style="color:#666">=</span><span style="color:#666">3</span>
+)
+</code></pre></div><pre><code>&lt;ErrorbarContainer object of 3 artists&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_5_1.png" alt="png"></p>
+<h1 id="2-等高线图">2. 等高线图</h1>
+<p>Matplotlib 提供三个函数绘制等高线图：</p>
+<ul>
+<li><code>plt.contour</code> 画等高线图</li>
+<li><code>plt.contourf</code> 画带有填充色的等高线图</li>
+<li><code>plt.imshow</code> 显示图形</li>
+</ul>
+<h2 id="21-pltcontour">2.1 <code>plt.contour</code></h2>
+<p><code>plt.contour</code> 函数如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>contour([X, Y,] Z, [levels], <span style="color:#666">**</span>kwargs)
+</code></pre></div><ul>
+<li><code>X</code>, <code>Y</code>：表示的是坐标位置（这里是可选的，但是如果不传入的话就是python根据传入的高度数组(Z)的大小自动生成的坐标）</li>
+<li>
+<ul>
+<li><code>X</code>, <code>Y</code> 可以是二维数组，可以使用 <code>np.meshgrid</code> 函数从两个一维数组生产二维数组；</li>
+</ul>
+</li>
+<li>
+<ul>
+<li><code>X</code>, <code>Y</code> 也可以是一维数组，这就需要在生产 Z 的时候利用 numpy 矢量运算广播升维。</li>
+</ul>
+</li>
+<li><code>Z</code>：代表每个坐标对应的高度值，是一个二维数组</li>
+<li><code>levels</code>：有两种传入形式。一种是传入一个整数 n，Matplotlib 将数据范围分为 n 份。另一种方式就是传入一个包含高度值的一维数组，这样 Matplotlib 便会画出传入的高度值对应的等高线。</li>
+<li>其余的参数还有 <code>colors</code>, <code>cmap</code>, <code>linewidths</code>, <code>linestyles</code>：当图形中只有一种颜色时，默认使用虚线表示负数。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">f</span>(x, y):
+    z <span style="color:#666">=</span> np<span style="color:#666">.</span>sin(x) <span style="color:#666">**</span> <span style="color:#666">10</span> <span style="color:#666">+</span> np<span style="color:#666">.</span>cos(<span style="color:#666">10</span> <span style="color:#666">+</span> y <span style="color:#666">*</span> x) <span style="color:#666">*</span> np<span style="color:#666">.</span>cos(x)
+    <span style="color:#008000;font-weight:bold">return</span> z
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">5</span>, <span style="color:#666">50</span>)
+y <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>,<span style="color:#666">5</span>, <span style="color:#666">50</span>)
+X, Y <span style="color:#666">=</span> np<span style="color:#666">.</span>meshgrid(x, y)
+Z <span style="color:#666">=</span> f(X, Y)
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>contour(
+    X, Y, Z, 
+    levels<span style="color:#666">=</span><span style="color:#666">10</span>,
+    colors<span style="color:#666">=</span><span style="color:#ba2121">&#39;black&#39;</span>,
+    linewidths<span style="color:#666">=</span><span style="color:#666">1</span>
+    )
+</code></pre></div><pre><code>&lt;matplotlib.contour.QuadContourSet at 0x7fafd0a1a100&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_8_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Z <span style="color:#666">=</span> f(x, y[:, np<span style="color:#666">.</span>newaxis])
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>contour(
+    x, y, Z, 
+    levels<span style="color:#666">=</span><span style="color:#666">20</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>BrBG, 
+    linewidths<span style="color:#666">=</span><span style="color:#666">1</span>
+    )
+</code></pre></div><pre><code>&lt;matplotlib.contour.QuadContourSet at 0x7fb001139d90&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_9_1.png" alt="png"></p>
+<p>若要生成数据标签，可以使用 <code>plt.clabel</code> 函数：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+contour <span style="color:#666">=</span> plt<span style="color:#666">.</span>contour(
+    X, Y, Z,
+    <span style="color:#666">3</span>, colors<span style="color:#666">=</span><span style="color:#ba2121">&#39;k&#39;</span>,
+    linewidths<span style="color:#666">=</span><span style="color:#666">1</span>
+)  <span style="color:#408080;font-style:italic"># 此时等高线图已经画出来了</span>
+
+plt<span style="color:#666">.</span>clabel(contour, inline<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, fontsize<span style="color:#666">=</span><span style="color:#666">8</span>)
+</code></pre></div><pre><code>&lt;a list of 18 text.Text objects&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_11_1.png" alt="png"></p>
+<h2 id="22-pltcontourf">2.2 <code>plt.contourf</code></h2>
+<p><code>plt.contourf</code> 的语法与 <code>plt.contour</code> 一致。另外可以通过 <code>plt.colorbar</code> 自动创建一个颜色条，若要给颜色条加标签有两种方式：</p>
+<ol>
+<li><code>plt.colorbar(label='content')</code></li>
+<li><code>cb = plt.colorbar(); cb.set_label('content')</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>contourf(
+    X, Y, Z,  
+    <span style="color:#666">10</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>winter,
+    linewidths<span style="color:#666">=</span><span style="color:#666">1</span>
+    )
+plt<span style="color:#666">.</span>colorbar(label<span style="color:#666">=</span><span style="color:#ba2121">&#39;content&#39;</span>)
+</code></pre></div><pre><code>&lt;ipython-input-11-e732fb4df579&gt;:2: UserWarning: linewidths is ignored by contourf
+  plt.contourf(
+
+
+
+
+
+&lt;matplotlib.colorbar.Colorbar at 0x7fafd0e167f0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_13_2.png" alt="png"></p>
+<p>这样画出的图不够流畅，虽然可以通过设置 <code>levels</code> 参数来提高连续的程度，但是会使得图形性能下降。为此可以通过 <code>plt.imshow</code> 函数来处理。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>contourf(
+    X, Y, Z,  
+    <span style="color:#666">100</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>winter,
+    linewidths<span style="color:#666">=</span><span style="color:#666">1</span>
+    )
+plt<span style="color:#666">.</span>colorbar()
+</code></pre></div><pre><code>&lt;ipython-input-12-6105d2bad5ce&gt;:2: UserWarning: linewidths is ignored by contourf
+  plt.contourf(
+
+
+
+
+
+&lt;matplotlib.colorbar.Colorbar at 0x7fb0012ca160&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_15_2.png" alt="png"></p>
+<h2 id="23-pltimshow">2.3 <code>plt.imshow</code></h2>
+<p>函数参数如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>imshow(
+    X,
+    cmap<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    norm<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    aspect<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    interpolation<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    alpha<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    vmin<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    vmax<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    origin<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    extent<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    shape<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    filternorm<span style="color:#666">=</span><span style="color:#666">1</span>,
+    filterrad<span style="color:#666">=</span><span style="color:#666">4.0</span>,
+    imlim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    resample<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    url<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    <span style="color:#666">*</span>,
+    data<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    <span style="color:#666">**</span>kwargs,
+)
+</code></pre></div><p>重点强调几个参数</p>
+<ul>
+<li><code>X</code>：即是 $Z=f(X, Y)$ 中的 $Z$；</li>
+<li><code>extent</code>：<code>plt.imshow()</code> 不支持 x 轴和 y 轴的数据格式网格，必须通过 <code>extent=[xmin, xmax, ymin, ymax]</code> 参数设置图形坐标范围；</li>
+<li><code>origin</code>：<code>plt.imshow()</code> 默认使用标准的图形数组定义，即原点在左上角，设置参数 <code>origin=lower</code> 使原点位于左下角；</li>
+<li><code>aspect</code>：控制轴的纵横比；</li>
+<li><code>interpolation</code>：使用的插值方法，支持的值有：’none’, ‘nearest’, ‘bilinear’, ‘bicubic’,’spline16′, ‘spline36’, ‘hanning’, ‘hamming’, ‘hermite’, ‘kaiser’,
+‘quadric’, ‘catrom’, ‘gaussian’, ‘bessel’, ‘mitchell’, ‘sinc’,’lanczos’.</li>
+</ul>
+<p><img src="../../../../img_mpl/MPL03/03-08-15-52-15-065.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>imshow(
+    Z,
+    extent<span style="color:#666">=</span>[<span style="color:#666">0</span>, <span style="color:#666">5</span>, <span style="color:#666">0</span>, <span style="color:#666">5</span>],
+    origin<span style="color:#666">=</span><span style="color:#ba2121">&#39;lower&#39;</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>YlGn,
+)
+plt<span style="color:#666">.</span>colorbar()
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+</code></pre></div><pre><code>(0.0, 5.0, 0.0, 5.0)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_17_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>imshow(
+    Z,
+    extent<span style="color:#666">=</span>[<span style="color:#666">0</span>, <span style="color:#666">8</span>, <span style="color:#666">0</span>, <span style="color:#666">6</span>],
+    origin<span style="color:#666">=</span><span style="color:#ba2121">&#39;lower&#39;</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>YlGn,
+    interpolation<span style="color:#666">=</span><span style="color:#ba2121">&#39;lanczos&#39;</span>
+)
+plt<span style="color:#666">.</span>colorbar()
+</code></pre></div><pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7fafe0ffd4f0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_18_1.png" alt="png"></p>
+<p>还可以结合等高线图与彩色图：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+contour <span style="color:#666">=</span> plt<span style="color:#666">.</span>contour(
+    X, Y, Z,
+    <span style="color:#666">3</span>, colors<span style="color:#666">=</span><span style="color:#ba2121">&#39;k&#39;</span>,
+    linewidths<span style="color:#666">=</span><span style="color:#666">1</span>
+)
+plt<span style="color:#666">.</span>clabel(contour, inline<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, fontsize<span style="color:#666">=</span><span style="color:#666">8</span>)
+
+plt<span style="color:#666">.</span>imshow(
+    Z,
+    extent<span style="color:#666">=</span>[<span style="color:#666">0</span>, <span style="color:#666">5</span>, <span style="color:#666">0</span>, <span style="color:#666">5</span>],
+    origin<span style="color:#666">=</span><span style="color:#ba2121">&#39;lower&#39;</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>YlGn,
+    interpolation<span style="color:#666">=</span><span style="color:#ba2121">&#39;bilinear&#39;</span>
+)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+plt<span style="color:#666">.</span>colorbar()
+</code></pre></div><pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7fb0014f0af0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_20_1.png" alt="png"></p>
+<p>在 Scikit-Learn 模块中有一份 8×8 手写数字的缩略图，每个数字都由 8×8=64 像素的色相构成：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.datasets</span> <span style="color:#008000;font-weight:bold">import</span> load_digits
+digits <span style="color:#666">=</span> load_digits(n_class<span style="color:#666">=</span><span style="color:#666">6</span>)
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>keys())
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>images<span style="color:#666">.</span>shape)
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>images[<span style="color:#666">0</span>])
+</code></pre></div><pre><code>dict_keys(['data', 'target', 'frame', 'feature_names', 'target_names', 'images', 'DESCR'])
+(1083, 8, 8)
+[[ 0.  0.  5. 13.  9.  1.  0.  0.]
+ [ 0.  0. 13. 15. 10. 15.  5.  0.]
+ [ 0.  3. 15.  2.  0. 11.  8.  0.]
+ [ 0.  4. 12.  0.  0.  8.  8.  0.]
+ [ 0.  5.  8.  0.  0.  9.  8.  0.]
+ [ 0.  4. 11.  0.  1. 12.  7.  0.]
+ [ 0.  2. 14.  5. 10. 12.  0.  0.]
+ [ 0.  0.  6. 13. 10.  0.  0.  0.]]
+</code></pre>
+<p><code>digits.images[0]</code>是<code>digits.images</code>中的第一张手写数字的缩略图，可以看到该数字由64 个色相构成，因此该数字可以看为一个位于 64 维空间中的一点，每个维度表示一个像素的亮度。这是一种图形的编码方式，我们可以通过 <code>plt.imshow()</code> 函数将该图像解析出来：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>imshow(digits<span style="color:#666">.</span>images[<span style="color:#666">0</span>])
+</code></pre></div><pre><code>&lt;matplotlib.image.AxesImage at 0x7fca1962ed60&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_24_1.png" alt="png"></p>
+<p>可以看出，这个数字是 0</p>
+<h1 id="3-直方图与分布密度">3. 直方图与分布密度</h1>
+<h2 id="31-一维直方图">3.1 一维直方图</h2>
+<p>可以使用 <code>plt.hist</code> 绘制一维直方图：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>hist(
+    x,
+    bins<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    <span style="color:#008000">range</span><span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    density<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    weights<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    cumulative<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    bottom<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    histtype<span style="color:#666">=</span><span style="color:#ba2121">&#39;bar&#39;</span>,
+    align<span style="color:#666">=</span><span style="color:#ba2121">&#39;mid&#39;</span>,
+    orientation<span style="color:#666">=</span><span style="color:#ba2121">&#39;vertical&#39;</span>,
+    rwidth<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    log<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    color<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    label<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    stacked<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    <span style="color:#666">*</span>,
+    data<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    <span style="color:#666">**</span>kwargs,
+)
+</code></pre></div><p>强调几个参数：</p>
+<ul>
+<li><code>x</code>: 作直方图所要用的数据，必须是一维数组；多维数组可以先进行扁平化再作图；必选参数；</li>
+<li><code>bins</code>: 直方图的柱数，即要分的组数，默认为10；</li>
+<li><code>range</code>：元组(tuple)或None；剔除较大和较小的离群值，给出全局范围；如果为None，则默认为(x.min(), x.max())；即x轴的范围；</li>
+<li><code>cumulative</code>：布尔值；如果为True，则计算累计频数；如果 <code>normed</code> 或 <code>density</code> 取值为True，则计算累计频率；</li>
+<li><code>align</code>：{‘left’, ‘mid’, ‘right’}；‘left’：柱子的中心位于bins的左边缘；‘mid’：柱子位于bins左右边缘之间；‘right’：柱子的中心位于bins的右边缘；</li>
+<li><code>histtype</code>：{‘bar’, ‘barstacked’, ‘step’, ‘stepfilled’}；&lsquo;bar’是传统的条形直方图；&lsquo;barstacked’是堆叠的条形直方图；&lsquo;step’是未填充的条形直方图，只有外边框；‘stepfilled’是有填充的直方图；当histtype取值为’step’或’stepfilled’，rwidth设置失效，即不能指定柱子之间的间隔，默认连接在一起；</li>
+<li><code>orientation</code>：{‘horizontal’, ‘vertical’}：如果取值为horizontal，则条形图将以y轴为基线，水平排列；简单理解为类似bar()转换成barh()，旋转90°；</li>
+<li><code>rwidth</code>：标量值或None。柱子的宽度占bins宽的比例；</li>
+<li><code>log</code>：布尔值。如果取值为True，则坐标轴的刻度为对数刻度；如果log为True且x是一维数组，则计数为0的取值将被剔除，仅返回非空的(frequency, bins, patches）；</li>
+<li><code>label</code>：字符串（序列）或None；有多个数据集时，用label参数做标注区分；</li>
+<li><code>edgecolor</code>: 直方图最外层边框颜色；</li>
+<li><code>patches</code>：返回每个bin里面包含的数据，是一个list。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">100</span>)
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">10</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>hist(
+    data,
+    bins<span style="color:#666">=</span><span style="color:#666">30</span>,
+    <span style="color:#408080;font-style:italic"># normed=True,</span>
+    alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>,
+    histtype<span style="color:#666">=</span><span style="color:#ba2121">&#39;bar&#39;</span>,
+    color<span style="color:#666">=</span><span style="color:#ba2121">&#39;steelblue&#39;</span>,
+    edgecolor<span style="color:#666">=</span><span style="color:#ba2121">&#39;k&#39;</span>,
+    cumulative<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>
+)
+</code></pre></div><pre><code>(array([  1.,   2.,   2.,   3.,   4.,   5.,   5.,   7.,   8.,  11.,  13.,
+         17.,  21.,  25.,  27.,  31.,  38.,  46.,  52.,  59.,  62.,  68.,
+         71.,  73.,  81.,  86.,  92.,  95.,  97., 100.]),
+ array([-2.50365446, -2.36995558, -2.2362567 , -2.10255781, -1.96885893,
+        -1.83516004, -1.70146116, -1.56776228, -1.43406339, -1.30036451,
+        -1.16666562, -1.03296674, -0.89926786, -0.76556897, -0.63187009,
+        -0.49817121, -0.36447232, -0.23077344, -0.09707455,  0.03662433,
+         0.17032321,  0.3040221 ,  0.43772098,  0.57141986,  0.70511875,
+         0.83881763,  0.97251652,  1.1062154 ,  1.23991428,  1.37361317,
+         1.50731205]),
+ &lt;BarContainer object of 30 artists&gt;)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_27_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x1 <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>normal(<span style="color:#666">0</span>, <span style="color:#666">1</span>, <span style="color:#666">5000</span>)
+x2 <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>normal(<span style="color:#666">3</span>, <span style="color:#666">2</span>, <span style="color:#666">5000</span>)
+x3 <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>normal(<span style="color:#666">-</span><span style="color:#666">2</span>, <span style="color:#666">1.5</span>, <span style="color:#666">5000</span>)
+
+param <span style="color:#666">=</span> {
+    <span style="color:#ba2121">&#39;histtype&#39;</span>: <span style="color:#ba2121">&#39;stepfilled&#39;</span>,
+    <span style="color:#ba2121">&#39;alpha&#39;</span>: <span style="color:#666">0.3</span>,
+    <span style="color:#ba2121">&#39;bins&#39;</span>: <span style="color:#666">40</span>,
+    <span style="color:#ba2121">&#39;edgecolor&#39;</span>: <span style="color:#ba2121">&#39;r&#39;</span>
+}
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>hist(x1, <span style="color:#666">**</span>param, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;r&#39;</span>)
+plt<span style="color:#666">.</span>hist(x2, <span style="color:#666">**</span>param, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;g&#39;</span>)
+plt<span style="color:#666">.</span>hist(x3, <span style="color:#666">**</span>param, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;b&#39;</span>)
+</code></pre></div><pre><code>(array([  6.,   1.,   6.,  13.,  14.,  27.,  53.,  41.,  72., 111., 133.,
+        200., 205., 264., 294., 299., 372., 391., 370., 395., 316., 316.,
+        248., 202., 190., 129., 104.,  75.,  53.,  41.,  23.,  16.,   9.,
+          4.,   1.,   3.,   2.,   0.,   0.,   1.]),
+ array([-7.03486692, -6.75292275, -6.47097857, -6.18903439, -5.90709022,
+        -5.62514604, -5.34320187, -5.06125769, -4.77931351, -4.49736934,
+        -4.21542516, -3.93348098, -3.65153681, -3.36959263, -3.08764846,
+        -2.80570428, -2.5237601 , -2.24181593, -1.95987175, -1.67792757,
+        -1.3959834 , -1.11403922, -0.83209505, -0.55015087, -0.26820669,
+         0.01373748,  0.29568166,  0.57762584,  0.85957001,  1.14151419,
+         1.42345837,  1.70540254,  1.98734672,  2.26929089,  2.55123507,
+         2.83317925,  3.11512342,  3.3970676 ,  3.67901178,  3.96095595,
+         4.24290013]),
+ [&lt;matplotlib.patches.Polygon at 0x7fb021b1a9d0&gt;])
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_28_1.png" alt="png"></p>
+<p>若不想画图显示，只想计算频次，则可以用 <code>np.histogram</code> 函数：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">counts, bin_edges <span style="color:#666">=</span> np<span style="color:#666">.</span>histogram(x1, bins<span style="color:#666">=</span><span style="color:#666">5</span>)
+<span style="color:#008000">print</span>(counts, <span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#39;</span>, bin_edges)
+</code></pre></div><pre><code>[ 40 305 470 168  17] 
+ [-3.16196772 -1.80581128 -0.44965484  0.90650161  2.26265805  3.6188145 ]
+</code></pre>
+<h2 id="32-二维直方图">3.2 二维直方图</h2>
+<p>可使用 <code>plt.hist2d</code> 函数绘制二维直方图。首先创建一个二元高斯分布样本，其中 x, y 均为二维数组：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mean <span style="color:#666">=</span> [<span style="color:#666">0</span>, <span style="color:#666">0</span>]
+cov <span style="color:#666">=</span> [
+    [<span style="color:#666">1</span>, <span style="color:#666">1</span>],
+    [<span style="color:#666">1</span>, <span style="color:#666">2</span>]
+]
+
+x, y <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>multivariate_normal(mean, cov, <span style="color:#666">10000</span>)<span style="color:#666">.</span>T
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>hist2d(
+    x, y,
+    bins<span style="color:#666">=</span><span style="color:#666">50</span>, <span style="color:#408080;font-style:italic"># nx=ny=bins</span>
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>Blues
+)
+cb <span style="color:#666">=</span> plt<span style="color:#666">.</span>colorbar()
+cb<span style="color:#666">.</span>set_label(<span style="color:#ba2121">&#39;counts in bin&#39;</span>)
+</code></pre></div><p><img src="../../../../img_mpl/MPL03/output_33_0.png" alt="png"></p>
+<p>如果只希望计算结果而不显示图形则可以使用 <code>np.histogram2d</code> 函数：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">counts, xedges, yedges <span style="color:#666">=</span> np<span style="color:#666">.</span>histogram2d(x, y, bins<span style="color:#666">=</span>[<span style="color:#666">50</span>, <span style="color:#666">60</span>]) <span style="color:#408080;font-style:italic"># nx=50, ny=60</span>
+<span style="color:#008000">print</span>(counts, <span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#39;</span>, xedges, <span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#39;</span>, yedges)
+</code></pre></div><pre><code>[[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 1.]
+ [0. 0. 0. ... 0. 0. 0.]] 
+ [-3.88857568 -3.72687381 -3.56517195 -3.40347008 -3.24176822 -3.08006635
+ -2.91836449 -2.75666262 -2.59496076 -2.43325889 -2.27155703 -2.10985516
+ -1.9481533  -1.78645143 -1.62474956 -1.4630477  -1.30134583 -1.13964397
+ -0.9779421  -0.81624024 -0.65453837 -0.49283651 -0.33113464 -0.16943278
+ -0.00773091  0.15397095  0.31567282  0.47737468  0.63907655  0.80077841
+  0.96248028  1.12418215  1.28588401  1.44758588  1.60928774  1.77098961
+  1.93269147  2.09439334  2.2560952   2.41779707  2.57949893  2.7412008
+  2.90290266  3.06460453  3.22630639  3.38800826  3.54971012  3.71141199
+  3.87311386  4.03481572  4.19651759] 
+ [-4.94009168 -4.75480949 -4.56952729 -4.38424509 -4.1989629  -4.0136807
+ -3.82839851 -3.64311631 -3.45783412 -3.27255192 -3.08726972 -2.90198753
+ -2.71670533 -2.53142314 -2.34614094 -2.16085874 -1.97557655 -1.79029435
+ -1.60501216 -1.41972996 -1.23444776 -1.04916557 -0.86388337 -0.67860118
+ -0.49331898 -0.30803678 -0.12275459  0.06252761  0.2478098   0.433092
+  0.6183742   0.80365639  0.98893859  1.17422078  1.35950298  1.54478517
+  1.73006737  1.91534957  2.10063176  2.28591396  2.47119615  2.65647835
+  2.84176055  3.02704274  3.21232494  3.39760713  3.58288933  3.76817153
+  3.95345372  4.13873592  4.32401811  4.50930031  4.69458251  4.8798647
+  5.0651469   5.25042909  5.43571129  5.62099348  5.80627568  5.99155788
+  6.17684007]
+</code></pre>
+<p>可以使用 <code>plt.hexbin</code> 函数画六边形二维直方图：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>hexbin(
+    x, y,
+    gridsize<span style="color:#666">=</span><span style="color:#666">30</span>,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>Blues,
+)
+plt<span style="color:#666">.</span>colorbar(label<span style="color:#666">=</span><span style="color:#ba2121">&#39;counts in bin&#39;</span>)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+</code></pre></div><pre><code>(-4.247995571840621, 4.299372584500895, -6.704709574740832, 5.564158846057719)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL03/output_37_1.png" alt="png"></p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+

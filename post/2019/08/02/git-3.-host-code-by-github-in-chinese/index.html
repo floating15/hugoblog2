@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git - 3. Host code by Github (in Chinese) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Git - 3. Host code by Github (in Chinese)</span></h1>
+
+<h2 class="date">2019/08/02</h2>
+</div>
+
+<main>
+<h2 id="1-github">1. Github</h2>
+<h3 id="11-上传-push">1.1 上传 push</h3>
+<p>git push 命用于从将本地的分支版本上传到远程并合并。命令格式如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;
+</code></pre></div><p>如果本地分支名与远程分支名相同，则可以省略冒号：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git push &lt;远程主机名&gt; &lt;本地分支名&gt;
+</code></pre></div><p>删除主机的分支可以使用 &ndash;delete 参数，以下命令表示删除 origin 主机的 master 分支：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git push origin --delete master
+</code></pre></div><hr>
+<p>首先创建一个 github 仓库 <code>git_exercise</code>，复制其地址。在 git 中设置该 github 仓库的地址：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git remote add origin https://github.com/git_username/git_exercise.git
+</code></pre></div><p>这行命令为对该 git_exercise 仓库起一个别名 origin（也可以取其他别名），这一点在 <code>git_test/.git/config</code> 文件中可以看到：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % cat ./.git/config
+<span style="color:#666">[</span>core<span style="color:#666">]</span>
+	<span style="color:#19177c">repositoryformatversion</span> <span style="color:#666">=</span> <span style="color:#666">0</span>
+	<span style="color:#19177c">filemode</span> <span style="color:#666">=</span> <span style="color:#008000">true</span>
+	<span style="color:#19177c">bare</span> <span style="color:#666">=</span> <span style="color:#008000">false</span>
+	<span style="color:#19177c">logallrefupdates</span> <span style="color:#666">=</span> <span style="color:#008000">true</span>
+	<span style="color:#19177c">ignorecase</span> <span style="color:#666">=</span> <span style="color:#008000">true</span>
+	<span style="color:#19177c">precomposeunicode</span> <span style="color:#666">=</span> <span style="color:#008000">true</span>
+<span style="color:#666">[</span>remote <span style="color:#ba2121">&#34;origin&#34;</span><span style="color:#666">]</span>
+	<span style="color:#19177c">url</span> <span style="color:#666">=</span> https://github.com/git_username/git_exercise.git
+	<span style="color:#19177c">fetch</span> <span style="color:#666">=</span> +refs/heads/*:refs/remotes/origin/*
+</code></pre></div><p>然后将本地版本推送到 git_exercise 仓库中：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git push -u origin master
+Enumerating objects: 12, <span style="color:#008000;font-weight:bold">done</span>.
+Counting objects: 100% <span style="color:#666">(</span>12/12<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Delta compression using up to <span style="color:#666">8</span> threads
+Compressing objects: 100% <span style="color:#666">(</span>8/8<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Writing objects: 100% <span style="color:#666">(</span>12/12<span style="color:#666">)</span>, <span style="color:#666">890</span> bytes | 890.00 KiB/s, <span style="color:#008000;font-weight:bold">done</span>.
+Total <span style="color:#666">12</span> <span style="color:#666">(</span>delta 1<span style="color:#666">)</span>, reused <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+remote: Resolving deltas: 100% <span style="color:#666">(</span>1/1<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+remote: 
+remote: Create a pull request <span style="color:#008000;font-weight:bold">for</span> <span style="color:#ba2121">&#39;master&#39;</span> on GitHub by visiting:
+remote:      https://github.com/git_username/git_exercise/pull/new/master
+remote: 
+To https://github.com/git_username/git_exercise.git
+ * <span style="color:#666">[</span>new branch<span style="color:#666">]</span>      master -&gt; master
+Branch <span style="color:#ba2121">&#39;master&#39;</span> <span style="color:#008000">set</span> up to track remote branch <span style="color:#ba2121">&#39;master&#39;</span> from <span style="color:#ba2121">&#39;origin&#39;</span>.
+</code></pre></div><p>这行命令为将本地的 master 分支上的<strong>所有版本</strong>推送到 origin 仓库中（git_exercise 仓库）。</p>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li>在推送之前必须有本地的 git 版本库，否则需要先 <code>git init</code>，<code>git add</code>，<code>git  commit</code> 建立本地版本库。</li>
+<li>如果第一次使用 github，在 push 这一步过程中还需要填写 github 账户的用户名和密码。</li>
+<li>github 默认分支为 main，我们需要在 git_exercise 仓库-Setting-Branches 中将其修改为 master。</li>
+</ol>
+</blockquote>
+<p>此时在 github 中的 git_exercise 仓库就可以看到推送上去的文件了：</p>
+<p><img src="../../../../img_git/03-06-14-08-15-260.png" alt=""></p>
+<p>也可以推送其他分支：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git push -u origin dev1
+Total <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, reused <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+remote: 
+remote: Create a pull request <span style="color:#008000;font-weight:bold">for</span> <span style="color:#ba2121">&#39;dev1&#39;</span> on GitHub by visiting:
+remote:      https://github.com/git_username/git_exercise/pull/new/dev1
+remote: 
+To https://github.com/git_username/git_exercise.git
+ * <span style="color:#666">[</span>new branch<span style="color:#666">]</span>      dev1 -&gt; dev1
+Branch <span style="color:#ba2121">&#39;dev1&#39;</span> <span style="color:#008000">set</span> up to track remote branch <span style="color:#ba2121">&#39;dev1&#39;</span> from <span style="color:#ba2121">&#39;origin&#39;</span>.
+</code></pre></div><p>在 github 中也可以看到：</p>
+<p><img src="../../../../img_git/03-06-14-09-27-061.png" alt=""></p>
+<h3 id="12-下载-clone">1.2 下载 clone</h3>
+<p>git clone 拷贝一个 Git 仓库到本地，让自己能够查看该项目，或者进行修改。拷贝项目命令格式如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> git clone <span style="color:#666">[</span>url<span style="color:#666">]</span>
+</code></pre></div><p><code>[url]</code> 是要拷贝的项目。拷贝完成后，在当前目录下会生成一个目录，目录中将复制该项目的全部记录。</p>
+<p>默认情况下，Git 会按照提供的 URL 所指向的项目的名称创建你的本地项目目录。 通常就是该 URL 最后一个 / 之后的项目名称。如果你想要一个不一样的名字， 可以在该命令后加上你想要的名称：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone <span style="color:#666">[</span>url<span style="color:#666">]</span> &lt;dir_name&gt;
+</code></pre></div><hr>
+<p>下面换到另一个目录下将 github 中 git_exercise 仓库下载到本地：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost ~ % <span style="color:#008000">cd</span> ~/Documents/git_test0
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test0 % git clone https://github.com/git_username/git_exercise.git
+Cloning into <span style="color:#ba2121">&#39;git_exercise&#39;</span>...
+remote: Enumerating objects: 15, <span style="color:#008000;font-weight:bold">done</span>.
+remote: Counting objects: 100% <span style="color:#666">(</span>15/15<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+remote: Compressing objects: 100% <span style="color:#666">(</span>8/8<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+remote: Total <span style="color:#666">15</span> <span style="color:#666">(</span>delta 1<span style="color:#666">)</span>, reused <span style="color:#666">12</span> <span style="color:#666">(</span>delta 1<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+Receiving objects: 100% <span style="color:#666">(</span>15/15<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Resolving deltas: 100% <span style="color:#666">(</span>1/1<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+</code></pre></div><blockquote>
+<p>在 <code>git clone &lt;url&gt;</code> 的过程中，git 会自动给 <code>&lt;url&gt;</code> 起别名 origin。因此之后若要向该远程仓库推送代码，则不需要再 <code>git remote add</code> 了。</p>
+</blockquote>
+<p>git 会将 git_exercise 仓库作为目录下载到 git_test0 目录中：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test0 % tree
+.
+└── git_exercise
+    └── items.py
+
+<span style="color:#666">1</span> directory, <span style="color:#666">1</span> file
+</code></pre></div><p>进入 git_exercise 目录，会发现只有一个 master 分支</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test0 % <span style="color:#008000">cd</span> git_exercise 
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git branch
+* master
+</code></pre></div><p>但事实上 git 将 git_exercise 仓库中的所有分支（包括 main 分支）都下载下来了，我们可以直接切换：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git checkout main 
+Branch <span style="color:#ba2121">&#39;main&#39;</span> <span style="color:#008000">set</span> up to track remote branch <span style="color:#ba2121">&#39;main&#39;</span> from <span style="color:#ba2121">&#39;origin&#39;</span>.
+Switched to a new branch <span style="color:#ba2121">&#39;main&#39;</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git checkout dev1
+Branch <span style="color:#ba2121">&#39;dev1&#39;</span> <span style="color:#008000">set</span> up to track remote branch <span style="color:#ba2121">&#39;dev1&#39;</span> from <span style="color:#ba2121">&#39;origin&#39;</span>.
+Switched to a new branch <span style="color:#ba2121">&#39;dev1&#39;</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git log  
+commit 67b08c5cf97d0207b9627d0de34a59299a010956 <span style="color:#666">(</span>HEAD -&gt; dev1, origin/dev1<span style="color:#666">)</span>
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Wed Mar <span style="color:#666">6</span> 13:53:31 <span style="color:#666">2019</span> +0800
+
+    v2
+
+commit 8890993a85e501523b5bc997599d76ea96835dff
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Wed Mar <span style="color:#666">6</span> 13:52:43 <span style="color:#666">2019</span> +0800
+
+    v1
+</code></pre></div><h3 id="13-更新-pull">1.3 更新 pull</h3>
+<p>git pull 命令用于从远程获取代码并合并本地的版本。 命令格式如下：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;
+</code></pre></div><p>如果远程分支是与当前分支合并，则冒号后面的部分可以省略：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git pull &lt;远程主机名&gt; &lt;远程分支名&gt;
+</code></pre></div><p>git pull 其实就是 <code>git fetch</code> 和 <code>git merge FETCH_HEAD</code> 的简写，因此若产生冲突，需要手动解决。</p>
+<hr>
+<p>现在在本地的 git_exercise 目录中新写入一个文件 a1.py，将其推送到 github 的对应分支中：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % touch a1.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git status
+On branch dev1
+Your branch is up to date with <span style="color:#ba2121">&#39;origin/dev1&#39;</span>.
+
+Untracked files:
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to include in what will be committed<span style="color:#666">)</span>
+	a1.py
+
+nothing added to commit but untracked files present <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> to track<span style="color:#666">)</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git add .
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git commit -m <span style="color:#ba2121">&#34; 新增 a1.py&#34;</span>
+<span style="color:#666">[</span>dev1 18f2037<span style="color:#666">]</span>  新增 a1.py
+ <span style="color:#666">1</span> file changed, <span style="color:#666">0</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">0</span> deletions<span style="color:#666">(</span>-<span style="color:#666">)</span>
+ create mode <span style="color:#666">100644</span> a1.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % git push origin dev1
+Enumerating objects: 4, <span style="color:#008000;font-weight:bold">done</span>.
+Counting objects: 100% <span style="color:#666">(</span>4/4<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Delta compression using up to <span style="color:#666">8</span> threads
+Compressing objects: 100% <span style="color:#666">(</span>2/2<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Writing objects: 100% <span style="color:#666">(</span>3/3<span style="color:#666">)</span>, <span style="color:#666">280</span> bytes | 280.00 KiB/s, <span style="color:#008000;font-weight:bold">done</span>.
+Total <span style="color:#666">3</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, reused <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+To https://github.com/floating15/git_exercise.git
+   67b08c5..18f2037  dev1 -&gt; dev1
+</code></pre></div><p>切换到 git_test 目录中利用命令 <code>git pull origin &lt;branch name&gt;</code> 将 github 中的代码更新下来：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_exercise % <span style="color:#008000">cd</span> ~/Documents/git_test
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git pull origin dev1
+hint: Pulling without specifying how to reconcile divergent branches is
+hint: discouraged. You can squelch this message by running one of the following
+hint: commands sometime before your next pull:
+hint: 
+hint:   git config pull.rebase <span style="color:#008000">false</span>  <span style="color:#408080;font-style:italic"># merge (the default strategy)</span>
+hint:   git config pull.rebase <span style="color:#008000">true</span>   <span style="color:#408080;font-style:italic"># rebase</span>
+hint:   git config pull.ff only       <span style="color:#408080;font-style:italic"># fast-forward only</span>
+hint: 
+hint: You can replace <span style="color:#ba2121">&#34;git config&#34;</span> with <span style="color:#ba2121">&#34;git config --global&#34;</span> to <span style="color:#008000">set</span> a default
+hint: preference <span style="color:#008000;font-weight:bold">for</span> all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the <span style="color:#008000">command</span> line to override the configured default per
+hint: invocation.
+remote: Enumerating objects: 4, <span style="color:#008000;font-weight:bold">done</span>.
+remote: Counting objects: 100% <span style="color:#666">(</span>4/4<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+remote: Compressing objects: 100% <span style="color:#666">(</span>2/2<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+remote: Total <span style="color:#666">3</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, reused <span style="color:#666">3</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+Unpacking objects: 100% <span style="color:#666">(</span>3/3<span style="color:#666">)</span>, <span style="color:#666">260</span> bytes | 86.00 KiB/s, <span style="color:#008000;font-weight:bold">done</span>.
+From https://github.com/floating15/git_exercise
+ * branch            dev1       -&gt; FETCH_HEAD
+   67b08c5..18f2037  dev1       -&gt; origin/dev1
+Merge made by the <span style="color:#ba2121">&#39;recursive&#39;</span> strategy.
+ a1.py | <span style="color:#666">0</span>
+ <span style="color:#666">1</span> file changed, <span style="color:#666">0</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">0</span> deletions<span style="color:#666">(</span>-<span style="color:#666">)</span>
+ create mode <span style="color:#666">100644</span> a1.py
+ <span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % tree  
+.
+├── a1.py
+└── items.py
+
+<span style="color:#666">0</span> directories, <span style="color:#666">2</span> files
+</code></pre></div><p>可以看到 a1.py 文件已经被下载下来了。</p>
+<h3 id="14-补充-fetch">1.4 补充 fetch</h3>
+<p>假设你配置好了一个远程仓库，并且你想要提取更新的数据，你可以首先执行:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git fetch <span style="color:#666">[</span>alias<span style="color:#666">]</span> &lt;branchname&gt;
+</code></pre></div><p>[alias] 是远端主机的别名，默认为 origin，这一命令将远程分支下载到本地的版本库。该命令执行完后需要执行 git merge 将版本库的远程分支合并到工作区的当前分支。：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git merge <span style="color:#666">[</span>alias<span style="color:#666">]</span>/ &lt;branchname&gt;
+</code></pre></div><p><img src="../../../../img_git/03-07-16-18-04-393.jpg" alt=""></p>
+<hr>
+<h3 id="15-功能上线">1.5 功能上线</h3>
+<p>这一部分的内容不是新的知识。当在 git_test 目录中完成开发后可以将功能上线，并推送到远端，一般推荐以下流程：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout master  <span style="color:#408080;font-style:italic"># 1. 切换 master 分支</span>
+Switched to branch <span style="color:#ba2121">&#39;master&#39;</span>
+Your branch is up to date with <span style="color:#ba2121">&#39;origin/master&#39;</span>.
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git merge dev1  <span style="color:#408080;font-style:italic"># 2. 合并新功能</span>
+Merge made by the <span style="color:#ba2121">&#39;recursive&#39;</span> strategy.
+ at2.py | <span style="color:#666">0</span>
+ www.py | <span style="color:#666">0</span>
+ <span style="color:#666">2</span> files changed, <span style="color:#666">0</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">0</span> deletions<span style="color:#666">(</span>-<span style="color:#666">)</span>
+ create mode <span style="color:#666">100644</span> at2.py
+ create mode <span style="color:#666">100644</span> www.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add .  <span style="color:#408080;font-style:italic"># 3. 添加到暂存区</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git commit -m <span style="color:#ba2121">&#34;over dev&#34;</span>  <span style="color:#408080;font-style:italic"># 4. 生成新版本</span>
+On branch master
+Your branch is ahead of <span style="color:#ba2121">&#39;origin/master&#39;</span> by <span style="color:#666">3</span> commits.
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git push&#34;</span> to publish your <span style="color:#008000">local</span> commits<span style="color:#666">)</span>
+
+nothing to commit, working tree clean
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git push origin master  <span style="color:#408080;font-style:italic"># 5. 推导远程主机的 master 分支</span>
+Enumerating objects: 4, <span style="color:#008000;font-weight:bold">done</span>.
+Counting objects: 100% <span style="color:#666">(</span>4/4<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Delta compression using up to <span style="color:#666">8</span> threads
+Compressing objects: 100% <span style="color:#666">(</span>2/2<span style="color:#666">)</span>, <span style="color:#008000;font-weight:bold">done</span>.
+Writing objects: 100% <span style="color:#666">(</span>2/2<span style="color:#666">)</span>, <span style="color:#666">285</span> bytes | 285.00 KiB/s, <span style="color:#008000;font-weight:bold">done</span>.
+Total <span style="color:#666">2</span> <span style="color:#666">(</span>delta 1<span style="color:#666">)</span>, reused <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+remote: Resolving deltas: 100% <span style="color:#666">(</span>1/1<span style="color:#666">)</span>, completed with <span style="color:#666">1</span> <span style="color:#008000">local</span> object.
+To https://github.com/floating15/git_exercise.git
+   ae22352..ec2a5d8  master -&gt; master
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout dev1  <span style="color:#408080;font-style:italic"># 6. 切换至 dev1 分支</span>
+Switched to branch <span style="color:#ba2121">&#39;dev1&#39;</span>
+Your branch is up to date with <span style="color:#ba2121">&#39;origin/dev1&#39;</span>.
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git merge master  <span style="color:#408080;font-style:italic"># 7. 将 dev1 分支的代码更新至最新</span>
+Updating a343d3c..ec2a5d8
+Fast-forward
+ at.py    | <span style="color:#666">0</span>
+ items.py | <span style="color:#666">5</span> +++++
+ <span style="color:#666">2</span> files changed, <span style="color:#666">5</span> insertions<span style="color:#666">(</span>+<span style="color:#666">)</span>
+ create mode <span style="color:#666">100644</span> at.py
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add .  <span style="color:#408080;font-style:italic"># 8. 提交的暂存库</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git commit -m <span style="color:#ba2121">&#34;newest dev code&#34;</span>  <span style="color:#408080;font-style:italic"># 9. 生成版本</span>
+On branch dev1
+Your branch is ahead of <span style="color:#ba2121">&#39;origin/dev1&#39;</span> by <span style="color:#666">5</span> commits.
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git push&#34;</span> to publish your <span style="color:#008000">local</span> commits<span style="color:#666">)</span>
+
+nothing to commit, working tree clean
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git push origin dev1  <span style="color:#408080;font-style:italic"># 10. 推送至远端主机 dev1 分支</span>
+Total <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, reused <span style="color:#666">0</span> <span style="color:#666">(</span>delta 0<span style="color:#666">)</span>, pack-reused <span style="color:#666">0</span>
+To https://github.com/floating15/git_exercise.git
+   a343d3c..ec2a5d8  dev1 -&gt; dev1
+</code></pre></div><h2 id="2-总结">2. 总结</h2>
+<ul>
+<li><code>git remote add origin &lt;url&gt;</code>：给远程仓库起别名</li>
+<li><code>git push -u origin &lt;branch&gt;</code>：将本地 <code>&lt;branch&gt;</code> 分支推送到远程仓库</li>
+<li><code>git clone &lt;url&gt;</code>：克隆远程仓库到本地</li>
+<li><code>git pull origin &lt;branch&gt;</code>：将远程仓库 <code>&lt;branch&gt;</code> 分支更新到本地</li>
+</ul>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+

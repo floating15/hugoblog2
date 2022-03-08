@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matplotlib - 04. Configure graphics (in Chinese) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Matplotlib - 04. Configure graphics (in Chinese)</span></h1>
+
+<h2 class="date">2018/06/12</h2>
+</div>
+
+<main>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+<span style="color:#666">%</span>matplotlib inline
+plt<span style="color:#666">.</span>style<span style="color:#666">.</span>use(<span style="color:#ba2121">&#39;seaborn-whitegrid&#39;</span>)
+</code></pre></div><h1 id="1-配置图例">1. 配置图例</h1>
+<h2 id="11-图例风格">1.1 图例风格</h2>
+<p><code>plt.legend()</code>命令会自动创建一个包含每个图形元素的图例，这些图例将根据图形元素的 <code>color</code>，<code>style</code>，<code>marker</code>，<code>label</code>生成：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">-</span><span style="color:#666">1</span>, <span style="color:#666">1</span>, <span style="color:#666">200</span>)
+func <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">lambda</span> x: <span style="color:#666">2</span><span style="color:#666">*</span>x<span style="color:#666">**</span><span style="color:#666">3</span> <span style="color:#666">-</span> x<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">-</span> <span style="color:#666">2</span><span style="color:#666">*</span>x
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, func(x), <span style="color:#ba2121">&#39;-b&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;func&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, func(x)<span style="color:#666">*</span><span style="color:#666">3</span>, <span style="color:#ba2121">&#39;--r&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;func * 3&#39;</span>)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+plt<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f7ec2969550&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_2_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_1 <span style="color:#666">=</span> <span style="color:#666">2</span><span style="color:#666">*</span>x <span style="color:#666">+</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">*</span>x<span style="color:#666">.</span>shape)<span style="color:#666">*</span><span style="color:#666">0.3</span>
+y_2 <span style="color:#666">=</span> x<span style="color:#666">**</span><span style="color:#666">2</span><span style="color:#666">+</span>np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">*</span>x<span style="color:#666">.</span>shape)<span style="color:#666">*</span><span style="color:#666">0.3</span>
+ 
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, y_1, <span style="color:#ba2121">&#39;rv&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;red&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, y_2, <span style="color:#ba2121">&#39;bo&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;bule&#39;</span> )
+plt<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f7e817749a0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_3_1.png" alt="png"></p>
+<p>通过对 <code>plt.legend</code> 指定一些参数可以对图例进行个性化定制：</p>
+<ul>
+<li><code>loc</code>：设置图例的位置，先设置上下，再设置左右。有如下选项可选：
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">best
+upper right
+upper left
+lower left
+lower right
+right
+center left
+center right
+lower center
+upper center
+center
+</code></pre></div></li>
+<li><code>frameon</code>：bool，是否设置外框，<code>frameon=False</code>取消图例外框（默认），<code>frameon=True</code>设置图例外框</li>
+<li><code>ncol</code>：int，设置图例的标签列数；</li>
+<li><code>fancybox</code>：bool，是否设置圆角矩形图例外框；</li>
+<li><code>framealpha</code>：float，图例透明度；</li>
+<li><code>shadow</code>：bool，是否设置图例阴影</li>
+<li><code>borderpad</code>：float，图例边缘标签的间距</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, func(x), <span style="color:#ba2121">&#39;-b&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;func&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, func(x)<span style="color:#666">*</span><span style="color:#666">3</span>, <span style="color:#ba2121">&#39;--r&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;func * 3&#39;</span>)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+
+legendstyle <span style="color:#666">=</span> {
+    <span style="color:#ba2121">&#39;loc&#39;</span>: <span style="color:#ba2121">&#39;lower center&#39;</span>,
+    <span style="color:#ba2121">&#39;frameon&#39;</span>: <span style="color:#008000;font-weight:bold">True</span>,
+    <span style="color:#ba2121">&#39;fancybox&#39;</span>: <span style="color:#008000;font-weight:bold">True</span>, 
+    <span style="color:#ba2121">&#39;framealpha&#39;</span>: <span style="color:#666">1</span>, 
+    <span style="color:#ba2121">&#39;shadow&#39;</span>: <span style="color:#008000;font-weight:bold">True</span>, 
+    <span style="color:#ba2121">&#39;borderpad&#39;</span>: <span style="color:#666">3</span>, 
+    <span style="color:#ba2121">&#39;ncol&#39;</span>: <span style="color:#666">2</span>
+}
+plt<span style="color:#666">.</span>legend(<span style="color:#666">**</span>legendstyle)
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f7e81b45eb0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_5_1.png" alt="png"></p>
+<h2 id="12-选择图例显示元素">1.2 选择图例显示元素</h2>
+<p>有两种方法指定显示某些图形元素的图例：</p>
+<h3 id="121-为需要设置图例的线条设置标签">1.2.1 为需要设置图例的线条设置标签</h3>
+<p><code>plt.legend</code>会自动忽略不带标签的元素：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>plot(x, func(x), <span style="color:#ba2121">&#39;-b&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;func&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, func(x)<span style="color:#666">*</span><span style="color:#666">3</span>, <span style="color:#ba2121">&#39;--r&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;func * 3&#39;</span>)
+plt<span style="color:#666">.</span>plot(x, func(x)<span style="color:#666">*</span><span style="color:#666">5</span>, <span style="color:#ba2121">&#39;:g&#39;</span>)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+
+plt<span style="color:#666">.</span>legend(<span style="color:#666">**</span>legendstyle)
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f7e81430700&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_7_1.png" alt="png"></p>
+<h3 id="122-将需要显示的线条传入-pltlegend">1.2.2 将需要显示的线条传入 <code>plt.legend</code></h3>
+<p>每次 <code>plt.plot</code> 生成一个 plt.Line2D 实例对象，我们将所有的 plt.Line2D实例对象放在一个列表中，在通过索引的方式将其传入 <code>plt.legend([line1, line2, ...], [label1, label2, ...])</code>。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+y <span style="color:#666">=</span> func(x[:, np<span style="color:#666">.</span>newaxis]) <span style="color:#666">*</span> np<span style="color:#666">.</span>arange(<span style="color:#666">1</span>, <span style="color:#666">6</span>, <span style="color:#666">1</span>)
+lines <span style="color:#666">=</span> plt<span style="color:#666">.</span>plot(x, y)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+</code></pre></div><pre><code>(-1.1, 1.1, -6.53323878045311, 3.0145938145057247)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_9_1.png" alt="png"></p>
+<p>lines 是一组 plt.Line2D 实例，每个元素构成一条线：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lines
+</code></pre></div><pre><code>[&lt;matplotlib.lines.Line2D at 0x7f7e810f6670&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f7e810f6580&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f7e810f6520&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f7e810f6a00&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f7e810f69a0&gt;]
+</code></pre>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+lines <span style="color:#666">=</span> plt<span style="color:#666">.</span>plot(x, y)
+plt<span style="color:#666">.</span>legend(
+    [lines[<span style="color:#666">0</span>], lines[<span style="color:#666">-</span><span style="color:#666">1</span>]],
+    [<span style="color:#ba2121">&#39;first&#39;</span>, <span style="color:#ba2121">&#39;end&#39;</span>],
+    <span style="color:#666">**</span>legendstyle
+)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;tight&#39;</span>)
+</code></pre></div><pre><code>(-1.1, 1.1, -6.53323878045311, 3.0145938145057247)
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_12_1.png" alt="png"></p>
+<h2 id="13-在图例中显示不同尺寸的点">1.3 在图例中显示不同尺寸的点</h2>
+<p>若要对一个图形元素中的某些点显示图例，可以通过创建一些空图形元素来模拟这些点的性质（如 size,color 等）从而绘制图例。
+<img src="../../../../img_mpl/MPL04/03-08-21-59-16-372.png" alt=""></p>
+<p>下面以加州各城市的地理位置、面积和人口数量数据为例展示。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+cities <span style="color:#666">=</span>  pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#39;../PythonDataScienceHandbook-master/notebooks/data/california_cities.csv&#39;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cities
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>city</th>
+      <th>latd</th>
+      <th>longd</th>
+      <th>elevation_m</th>
+      <th>elevation_ft</th>
+      <th>population_total</th>
+      <th>area_total_sq_mi</th>
+      <th>area_land_sq_mi</th>
+      <th>area_water_sq_mi</th>
+      <th>area_total_km2</th>
+      <th>area_land_km2</th>
+      <th>area_water_km2</th>
+      <th>area_water_percent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Adelanto</td>
+      <td>34.576111</td>
+      <td>-117.432778</td>
+      <td>875.0</td>
+      <td>2871.0</td>
+      <td>31765</td>
+      <td>56.027</td>
+      <td>56.009</td>
+      <td>0.018</td>
+      <td>145.107</td>
+      <td>145.062</td>
+      <td>0.046</td>
+      <td>0.03</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>AgouraHills</td>
+      <td>34.153333</td>
+      <td>-118.761667</td>
+      <td>281.0</td>
+      <td>922.0</td>
+      <td>20330</td>
+      <td>7.822</td>
+      <td>7.793</td>
+      <td>0.029</td>
+      <td>20.260</td>
+      <td>20.184</td>
+      <td>0.076</td>
+      <td>0.37</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Alameda</td>
+      <td>37.756111</td>
+      <td>-122.274444</td>
+      <td>NaN</td>
+      <td>33.0</td>
+      <td>75467</td>
+      <td>22.960</td>
+      <td>10.611</td>
+      <td>12.349</td>
+      <td>59.465</td>
+      <td>27.482</td>
+      <td>31.983</td>
+      <td>53.79</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Albany</td>
+      <td>37.886944</td>
+      <td>-122.297778</td>
+      <td>NaN</td>
+      <td>43.0</td>
+      <td>18969</td>
+      <td>5.465</td>
+      <td>1.788</td>
+      <td>3.677</td>
+      <td>14.155</td>
+      <td>4.632</td>
+      <td>9.524</td>
+      <td>67.28</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Alhambra</td>
+      <td>34.081944</td>
+      <td>-118.135000</td>
+      <td>150.0</td>
+      <td>492.0</td>
+      <td>83089</td>
+      <td>7.632</td>
+      <td>7.631</td>
+      <td>0.001</td>
+      <td>19.766</td>
+      <td>19.763</td>
+      <td>0.003</td>
+      <td>0.01</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>477</th>
+      <td>477</td>
+      <td>Yountville</td>
+      <td>38.403056</td>
+      <td>-122.362222</td>
+      <td>30.0</td>
+      <td>98.0</td>
+      <td>2933</td>
+      <td>1.531</td>
+      <td>1.531</td>
+      <td>0.000</td>
+      <td>3.966</td>
+      <td>3.966</td>
+      <td>0.000</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>478</th>
+      <td>478</td>
+      <td>Yreka</td>
+      <td>41.726667</td>
+      <td>-122.637500</td>
+      <td>787.0</td>
+      <td>2582.0</td>
+      <td>7765</td>
+      <td>10.053</td>
+      <td>9.980</td>
+      <td>0.073</td>
+      <td>26.036</td>
+      <td>25.847</td>
+      <td>0.188</td>
+      <td>0.72</td>
+    </tr>
+    <tr>
+      <th>479</th>
+      <td>479</td>
+      <td>YubaCity</td>
+      <td>39.134722</td>
+      <td>-121.626111</td>
+      <td>18.0</td>
+      <td>59.0</td>
+      <td>64925</td>
+      <td>14.656</td>
+      <td>14.578</td>
+      <td>0.078</td>
+      <td>37.959</td>
+      <td>37.758</td>
+      <td>0.201</td>
+      <td>0.53</td>
+    </tr>
+    <tr>
+      <th>480</th>
+      <td>480</td>
+      <td>Yucaipa</td>
+      <td>34.030278</td>
+      <td>-117.048611</td>
+      <td>798.0</td>
+      <td>2618.0</td>
+      <td>51367</td>
+      <td>27.893</td>
+      <td>27.888</td>
+      <td>0.005</td>
+      <td>72.244</td>
+      <td>72.231</td>
+      <td>0.013</td>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>481</th>
+      <td>481</td>
+      <td>YuccaValley</td>
+      <td>34.133333</td>
+      <td>-116.416667</td>
+      <td>1027.0</td>
+      <td>3369.0</td>
+      <td>20700</td>
+      <td>40.015</td>
+      <td>40.015</td>
+      <td>0.000</td>
+      <td>103.639</td>
+      <td>103.639</td>
+      <td>0.000</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>482 rows × 14 columns</p>
+</div>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lat, lon <span style="color:#666">=</span> cities<span style="color:#666">.</span>latd, cities<span style="color:#666">.</span>longd
+popu, area <span style="color:#666">=</span> cities<span style="color:#666">.</span>population_total, cities<span style="color:#666">.</span>area_land_km2
+
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>scatter(
+    lon, lat,
+    c<span style="color:#666">=</span>np<span style="color:#666">.</span>log10(popu),
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>RdBu,
+    s<span style="color:#666">=</span>area,
+    alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>
+)
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;equal&#39;</span>)
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;longitude&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;latitude&#39;</span>)
+plt<span style="color:#666">.</span>title(<span style="color:#ba2121">&#39;California Cities: Area and Population&#39;</span>)
+plt<span style="color:#666">.</span>colorbar(label<span style="color:#666">=</span><span style="color:#ba2121">&#39;log$_</span><span style="color:#b68;font-weight:bold">{10}</span><span style="color:#ba2121">$ (population)&#39;</span>)
+plt<span style="color:#666">.</span>clim(<span style="color:#666">3</span>, <span style="color:#666">7</span>)
+
+
+<span style="color:#408080;font-style:italic"># 下面创建三个空图形元素，令其性质 size 模拟上面图形元素的三个点的 size，并为其创建 label</span>
+<span style="color:#008000;font-weight:bold">for</span> area <span style="color:#a2f;font-weight:bold">in</span> [<span style="color:#666">100</span>, <span style="color:#666">300</span>, <span style="color:#666">500</span>]:
+    plt<span style="color:#666">.</span>scatter(
+        [], [],
+        c<span style="color:#666">=</span><span style="color:#ba2121">&#39;k&#39;</span>,
+        s<span style="color:#666">=</span>area,
+        label<span style="color:#666">=</span><span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;</span><span style="color:#b68;font-weight:bold">{</span>area<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121"> km$^2$&#34;</span>
+    )
+plt<span style="color:#666">.</span>legend(
+    scatterpoints<span style="color:#666">=</span><span style="color:#666">1</span>,
+    frameon<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    labelspacing<span style="color:#666">=</span><span style="color:#666">1</span>,
+    title<span style="color:#666">=</span><span style="color:#ba2121">&#39;City Area&#39;</span>
+)
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f7e81c10fa0&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_16_1.png" alt="png"></p>
+<h2 id="14-同时显示多个图例">1.4 同时显示多个图例</h2>
+<p>可以通过创建一个Legend对象，并通过底层的 <code>ax.add_artist()</code> 方法再图上加第二个图例</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lines <span style="color:#666">=</span> []
+style <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;-r&#39;</span>, <span style="color:#ba2121">&#39;--g&#39;</span>, <span style="color:#ba2121">&#39;-.b&#39;</span>, <span style="color:#ba2121">&#39;:c&#39;</span>]
+x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">10</span>, <span style="color:#666">1000</span>)
+
+fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>axes()
+
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">4</span>):
+    lines <span style="color:#666">+=</span> ax<span style="color:#666">.</span>plot(
+        x, np<span style="color:#666">.</span>sin(x <span style="color:#666">-</span> i<span style="color:#666">*</span>np<span style="color:#666">.</span>pi<span style="color:#666">/</span><span style="color:#666">2</span>),
+        style[i]
+    )
+ax<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#39;equal&#39;</span>)
+
+ax<span style="color:#666">.</span>legend(
+    lines[:<span style="color:#666">2</span>],
+    [<span style="color:#ba2121">&#39;line A&#39;</span>, <span style="color:#ba2121">&#39;line B&#39;</span>],
+    loc<span style="color:#666">=</span><span style="color:#ba2121">&#39;upper right&#39;</span>,
+    frameon<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+
+<span style="color:#408080;font-style:italic"># 创建第二个图例</span>
+<span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">matplotlib.legend</span> <span style="color:#008000;font-weight:bold">import</span> Legend
+leg <span style="color:#666">=</span> Legend(
+    ax, lines[<span style="color:#666">2</span>:],
+    [<span style="color:#ba2121">&#39;line C&#39;</span>, <span style="color:#ba2121">&#39;line D&#39;</span>],
+    loc<span style="color:#666">=</span><span style="color:#ba2121">&#39;lower right&#39;</span>,
+    frameon<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+ax<span style="color:#666">.</span>add_artist(leg)
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f7e906d7160&gt;
+</code></pre>
+<p><img src="../../../../img_mpl/MPL04/output_18_1.png" alt="png"></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">leg
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7fd58027f3d0&gt;
+</code></pre>
+<h1 id="2-配置颜色条">2. 配置颜色条</h1>
+<p>可以通过 <code>plt.colorbar()</code> 命令创建一个颜色条。对于某些有很大的数值的数组，使用颜色条会使较小数值的信息缺失，这时可以通过 <code>plt.clim()</code> 对颜色条设置上下限；对于超出上下限的数据，通过 <code>extend</code>参数设置三角箭头来表示。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">0</span>, <span style="color:#666">10</span>, <span style="color:#666">1000</span>)
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>(x, y):
+    z <span style="color:#666">=</span> x <span style="color:#666">*</span> (y<span style="color:#666">-</span>x)<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">*</span> np<span style="color:#666">.</span>sin(x)
+    <span style="color:#008000;font-weight:bold">return</span> z
+z <span style="color:#666">=</span> func1(x, x[:, np<span style="color:#666">.</span>newaxis])
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">15</span>, <span style="color:#666">5.5</span>))
+
+plt<span style="color:#666">.</span>subplot(<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">1</span>)
+plt<span style="color:#666">.</span>imshow(z, cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>RdBu)
+plt<span style="color:#666">.</span>colorbar()
+
+plt<span style="color:#666">.</span>subplot(<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">2</span>)
+plt<span style="color:#666">.</span>imshow(z, cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>RdBu)
+plt<span style="color:#666">.</span>colorbar(extend<span style="color:#666">=</span><span style="color:#ba2121">&#39;both&#39;</span>)
+plt<span style="color:#666">.</span>clim(<span style="color:#666">-</span><span style="color:#666">10</span>, <span style="color:#666">10</span>)
+</code></pre></div><p><img src="../../../../img_mpl/MPL04/output_22_0.png" alt="png"></p>
+<p>通过设置参数 <code>cmap=plt.cm.get_cmap()</code>可以获得离散型数据条，只需要将配送方案名称和区间数量传递进去即可</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>imshow(z, cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>get_cmap(<span style="color:#ba2121">&#39;RdBu&#39;</span>, <span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>colorbar()
+plt<span style="color:#666">.</span>clim(<span style="color:#666">-</span><span style="color:#666">10</span>,<span style="color:#666">10</span>)
+</code></pre></div><p><img src="../../../../img_mpl/MPL04/output_24_0.png" alt="png"></p>
+<p>考虑 sklearn 中的手写数字案例。<code>digits</code> 中一共有 1083 个样本，每一个样本特征由 64 个像素构成，这些特征在<code>digits.data</code> 中。我们现在要通过可视化考察特征与目标之间的关系。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.datasets</span> <span style="color:#008000;font-weight:bold">import</span> load_digits
+digits <span style="color:#666">=</span> load_digits(n_class<span style="color:#666">=</span><span style="color:#666">6</span>)
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>keys())
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>data<span style="color:#666">.</span>shape, digits<span style="color:#666">.</span>images<span style="color:#666">.</span>shape, digits<span style="color:#666">.</span>target<span style="color:#666">.</span>shape, <span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#39;</span>)
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>data[<span style="color:#666">0</span>], <span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\n\n</span><span style="color:#ba2121">&#39;</span>, digits<span style="color:#666">.</span>images[<span style="color:#666">0</span>])
+</code></pre></div><pre><code>dict_keys(['data', 'target', 'frame', 'feature_names', 'target_names', 'images', 'DESCR'])
+(1083, 64) (1083, 8, 8) (1083,) 
+
+[ 0.  0.  5. 13.  9.  1.  0.  0.  0.  0. 13. 15. 10. 15.  5.  0.  0.  3.
+ 15.  2.  0. 11.  8.  0.  0.  4. 12.  0.  0.  8.  8.  0.  0.  5.  8.  0.
+  0.  9.  8.  0.  0.  4. 11.  0.  1. 12.  7.  0.  0.  2. 14.  5. 10. 12.
+  0.  0.  0.  0.  6. 13. 10.  0.  0.  0.] 
+
+ [[ 0.  0.  5. 13.  9.  1.  0.  0.]
+ [ 0.  0. 13. 15. 10. 15.  5.  0.]
+ [ 0.  3. 15.  2.  0. 11.  8.  0.]
+ [ 0.  4. 12.  0.  0.  8.  8.  0.]
+ [ 0.  5.  8.  0.  0.  9.  8.  0.]
+ [ 0.  4. 11.  0.  1. 12.  7.  0.]
+ [ 0.  2. 14.  5. 10. 12.  0.  0.]
+ [ 0.  0.  6. 13. 10.  0.  0.  0.]]
+</code></pre>
+<p>在 64 维特征空间中可视化很困难，因此我们需要对特征空间进行降维，这里通过流形学习进行降维。可以看到降维后特征为 2 维。</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.manifold</span> <span style="color:#008000;font-weight:bold">import</span> Isomap
+iso <span style="color:#666">=</span> Isomap(n_components<span style="color:#666">=</span><span style="color:#666">2</span>)
+projection <span style="color:#666">=</span> iso<span style="color:#666">.</span>fit_transform(digits<span style="color:#666">.</span>data)
+<span style="color:#008000">print</span>(digits<span style="color:#666">.</span>data<span style="color:#666">.</span>shape, projection<span style="color:#666">.</span>shape, digits<span style="color:#666">.</span>target<span style="color:#666">.</span>shape)
+</code></pre></div><pre><code>(1083, 64) (1083, 2) (1083,)
+</code></pre>
+<p>将二维特征标注出来，并以颜色标注目标值：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
+plt<span style="color:#666">.</span>scatter(
+    projection[:, <span style="color:#666">0</span>], projection[:, <span style="color:#666">1</span>],
+    lw<span style="color:#666">=</span><span style="color:#666">0.1</span>,
+    c<span style="color:#666">=</span>digits<span style="color:#666">.</span>target,
+    cmap<span style="color:#666">=</span>plt<span style="color:#666">.</span>cm<span style="color:#666">.</span>get_cmap(<span style="color:#ba2121">&#39;RdBu&#39;</span>, <span style="color:#666">6</span>) <span style="color:#408080;font-style:italic"># cmap 将 c=digits.target 映射到颜色</span>
+)
+plt<span style="color:#666">.</span>colorbar(ticks<span style="color:#666">=</span><span style="color:#008000">range</span>(<span style="color:#666">6</span>),label<span style="color:#666">=</span><span style="color:#ba2121">&#39;digit value&#39;</span>)
+plt<span style="color:#666">.</span>clim(<span style="color:#666">-</span><span style="color:#666">0.5</span>, <span style="color:#666">5.5</span>)
+</code></pre></div><p><img src="../../../../img_mpl/MPL04/output_30_0.png" alt="png"></p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+

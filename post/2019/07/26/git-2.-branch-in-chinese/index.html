@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git - 2. Branch (in Chinese) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Git - 2. Branch (in Chinese)</span></h1>
+
+<h2 class="date">2019/07/26</h2>
+</div>
+
+<main>
+<h2 id="1-分支简介">1. 分支简介</h2>
+<p>假设在版本 1 （V1）中一共写入 100 个文件；在 V2 中修改了 V1 中的 10 个文件，并新写入 20 个文件。则 Git 在生成 V2 时，会只生成新变化的 30 个文件，并通过指针指向 V1 从而链接未改变的 90 个文件，提升效率。</p>
+<p><img src="../../../../img_git/2022-03-04-15-09-45.png" alt=""></p>
+<p>扩展这一过程，此时 A，B 两台电脑可以在 V2 的基础上分别开发不同的功能，并生成 V3，V4，这一就形成了两个分支：</p>
+<p><img src="../../../../img_git/2022-03-04-15-15-28.png" alt=""></p>
+<p>当 A，B 完成开发后，可以将两分支汇合生成 V5：</p>
+<p><img src="../../../../img_git/2022-03-04-15-18-29.png" alt=""></p>
+<p>考虑如下一种工作流程：若项目（C3）目前需求开发一项新功能，则可以为其创建一个分支（如 dev 分支），并在该分支上不断开发。若在开发的过程中发现原项目（C3）存在 bug，在可以在 C3 再创建一个 bug 分支，并在该分支上修改 bug。当 dev 分支与 bug 分支上的工作都已完成，再将这两分支合并到 Master 上。（Master 是 git 版本管理的默认主干）</p>
+<p>分支可以创建一个相互隔离的环境，从而让开发者各自完成工作再合并。</p>
+<p><img src="../../../../img_git/2022-03-04-15-45-56.jpg" alt=""></p>
+<h2 id="2-分支命令">2. 分支命令</h2>
+<p>继续以 <code>~/Documents/git_test</code> 为例，如下是版本历史：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git log
+commit 1954fae802221ffd98fa26512275a4817ff3dc5d <span style="color:#666">(</span>HEAD -&gt; master<span style="color:#666">)</span>
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Sat Mar <span style="color:#666">5</span> 09:04:22 <span style="color:#666">2022</span> +0800
+
+    v2
+
+commit 2ecfd74d8ac144d1ee7a5a8ad1875013e56ebb72
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Sat Mar <span style="color:#666">5</span> 09:03:51 <span style="color:#666">2022</span> +0800
+
+    v1
+</code></pre></div><h3 id="21-查看分支-branch">2.1 查看分支 branch</h3>
+<p>几乎每一种版本控制系统都以某种形式支持分支。使用分支意味着你可以从开发主线上分离开来，然后在不影响主线的同时继续工作。</p>
+<p>列出分支基本命令：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git branch
+</code></pre></div><p>没有参数时，git branch 会列出你在本地的分支。当你执行 git init 的时候，默认情况下 Git 就会为你创建 master 分支。</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch
+* master
+</code></pre></div><p>此例的意思就是，我们有一个叫做 master 的分支，并且该分支是当前分支。</p>
+<h3 id="22-创建新分支">2.2 创建新分支</h3>
+<p>创建分支命令：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git branch <span style="color:#666">(</span>branchname<span style="color:#666">)</span>
+</code></pre></div><hr>
+<p>在 Master 下创建 dev1 分支：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch dev1
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch
+  dev1
+* master
+</code></pre></div><p>星号表明，此时文件仍在 master 上。</p>
+<h3 id="23-切换分支">2.3 切换分支</h3>
+<p>切换分支命令:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git checkout <span style="color:#666">(</span>branchname<span style="color:#666">)</span>
+</code></pre></div><p>当你切换分支的时候，Git 会用该分支的最后提交的快照替换你的工作目录的内容， 所以多个分支不需要多个目录。</p>
+<hr>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout dev1
+Switched to branch <span style="color:#ba2121">&#39;dev1&#39;</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch
+* dev1
+  master
+</code></pre></div><p><strong>当切换至 dev1 分支后，dev1 与 master 相互隔离，此时在 dev1 中进行开发，不会影响 master 中的内容。</strong></p>
+<p>在 dev1 分支中将 items.py 修改为 version 3，并生成版本 v3：</p>
+<p><img src="../../../../img_git/2022-03-04-21-38-32.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
+On branch dev1
+Changes not staged <span style="color:#008000;font-weight:bold">for</span> commit:
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to update what will be committed<span style="color:#666">)</span>
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git restore &lt;file&gt;...&#34;</span> to discard changes in working directory<span style="color:#666">)</span>
+	modified:   items.py
+
+no changes added to commit <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> and/or <span style="color:#ba2121">&#34;git commit -a&#34;</span><span style="color:#666">)</span>
+</code></pre></div><p>注意第二行，表明该文件在 dev1 分支上</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add .
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git commit -m <span style="color:#ba2121">&#34;v3&#34;</span>
+<span style="color:#666">[</span>dev1 f32e3c3<span style="color:#666">]</span> v3
+ <span style="color:#666">1</span> file changed, <span style="color:#666">1</span> insertion<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">1</span> deletion<span style="color:#666">(</span>-<span style="color:#666">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git log
+commit f32e3c3de4f0515585073c09d3b77ec75dbca118 <span style="color:#666">(</span>HEAD -&gt; dev1<span style="color:#666">)</span>
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Sat Mar <span style="color:#666">5</span> 09:10:11 <span style="color:#666">2022</span> +0800
+
+    v3
+
+commit 1954fae802221ffd98fa26512275a4817ff3dc5d <span style="color:#666">(</span>master<span style="color:#666">)</span>
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Sat Mar <span style="color:#666">5</span> 09:04:22 <span style="color:#666">2022</span> +0800
+
+    v2
+
+commit 2ecfd74d8ac144d1ee7a5a8ad1875013e56ebb72
+Author: git_username &lt;git_username@163.com&gt;
+Date:   Sat Mar <span style="color:#666">5</span> 09:03:51 <span style="color:#666">2022</span> +0800
+
+    v1
+</code></pre></div><p>由版本日志可以看到 v3 版本在 dev1 分支上。</p>
+<p>下面切换回 master 并创建新分支 dev2：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout master
+Switched to branch <span style="color:#ba2121">&#39;master&#39;</span>
+</code></pre></div><p>此时又恢复为 v2 版本：</p>
+<p><img src="../../../../img_git/2022-03-04-22-06-29.png" alt=""></p>
+<p>此时在 master 下创建第二个分支 dev2：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch dev2
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch
+  dev1
+  dev2
+* master
+</code></pre></div><p>进入 dev2 分支：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout dev2
+Switched to branch <span style="color:#ba2121">&#39;dev2&#39;</span>
+</code></pre></div><p>在 dev2 中进行如下开发</p>
+<p><img src="../../../../img_git/03-06-12-18-35-239.png" alt=""></p>
+<p>提交为 v4 版本：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
+On branch dev2
+Changes not staged <span style="color:#008000;font-weight:bold">for</span> commit:
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add &lt;file&gt;...&#34;</span> to update what will be committed<span style="color:#666">)</span>
+  <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git restore &lt;file&gt;...&#34;</span> to discard changes in working directory<span style="color:#666">)</span>
+	modified:   items.py
+
+no changes added to commit <span style="color:#666">(</span>use <span style="color:#ba2121">&#34;git add&#34;</span> and/or <span style="color:#ba2121">&#34;git commit -a&#34;</span><span style="color:#666">)</span>
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git add .
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git commit -m <span style="color:#ba2121">&#34;v4&#34;</span>
+<span style="color:#666">[</span>dev2 a4f0ad2<span style="color:#666">]</span> v4
+ <span style="color:#666">1</span> file changed, <span style="color:#666">1</span> insertion<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">1</span> deletion<span style="color:#666">(</span>-<span style="color:#666">)</span>
+</code></pre></div><h3 id="24-合并分支">2.4 合并分支</h3>
+<p>合并分支命令:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git merge <span style="color:#666">(</span>branchname<span style="color:#666">)</span>
+</code></pre></div><p>一旦某分支有了独立内容，你可以通过该命令将它合并回到你的主分支。 你可以多次合并到统一分支， 也可以选择在合并之后直接删除被并入的分支。</p>
+<hr>
+<p>master 就是我们常说的线上分支，将开发分支与 master合并即是上线。若要将分支上线，需要先切换到 master 上：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git checkout master
+Switched to branch <span style="color:#ba2121">&#39;master&#39;</span>
+</code></pre></div><p>然后执行合并命令：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git merge dev2
+Updating 1954fae..a4f0ad2
+Fast-forward
+ items.py | <span style="color:#666">2</span> +-
+ <span style="color:#666">1</span> file changed, <span style="color:#666">1</span> insertion<span style="color:#666">(</span>+<span style="color:#666">)</span>, <span style="color:#666">1</span> deletion<span style="color:#666">(</span>-<span style="color:#666">)</span>
+</code></pre></div><p>注意此时上线版本就是 v4，因为 git 没有检测出修改：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git status
+On branch master
+nothing to commit, working tree clean
+</code></pre></div><p>通过另一种方法也可以看出这一事实：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git reflog
+a4f0ad2 <span style="color:#666">(</span>dev2<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>4<span style="color:#666">}</span>: merge dev2: Fast-forward
+1954fae HEAD@<span style="color:#666">{</span>5<span style="color:#666">}</span>: checkout: moving from dev2 to master
+a4f0ad2 <span style="color:#666">(</span>dev2<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>6<span style="color:#666">}</span>: commit: v4
+1954fae HEAD@<span style="color:#666">{</span>7<span style="color:#666">}</span>: checkout: moving from master to dev2
+1954fae HEAD@<span style="color:#666">{</span>8<span style="color:#666">}</span>: checkout: moving from dev1 to master
+f32e3c3 <span style="color:#666">(</span>dev1<span style="color:#666">)</span> HEAD@<span style="color:#666">{</span>9<span style="color:#666">}</span>: commit: v3
+1954fae HEAD@<span style="color:#666">{</span>10<span style="color:#666">}</span>: checkout: moving from master to dev1
+1954fae HEAD@<span style="color:#666">{</span>11<span style="color:#666">}</span>: commit: v2
+2ecfd74 HEAD@<span style="color:#666">{</span>12<span style="color:#666">}</span>: commit <span style="color:#666">(</span>initial<span style="color:#666">)</span>: v1
+</code></pre></div><p>可以看到 <code>commit: v4</code> 与 <code>merge dev2: Fast-forward</code> 的版本号都是 a4f0ad2，这说明它们是同一文件。</p>
+<p>比较复杂的情况是当上线 dev2 后要再上线 dev1 的时候可能会报告冲突：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git merge dev1
+Auto-merging items.py
+CONFLICT <span style="color:#666">(</span>content<span style="color:#666">)</span>: Merge conflict in items.py
+Automatic merge failed; fix conflicts and <span style="color:#008000;font-weight:bold">then</span> commit the result.
+</code></pre></div><p>dev2(v4) 是从 master(v2) 分出并合并的，因此当两者合并时不会产生冲突，但是当 dev1(v3) 再与 master(v4) 合并时就有可能产生冲突，因为 v3 来自于 v2。（对于 Git 合并原理后续将再写一篇博客详述）</p>
+<p><img src="../../../../img_git/2019-03-05-09-58-46.png" alt=""></p>
+<p>此时 <code>items.py</code> 文件变为：</p>
+<p><img src="../../../../img_git/03-06-12-31-40-889.png" alt=""></p>
+<p>手动调整为需要的版本后，在提交为新版本即可。</p>
+<h3 id="25-删除分支">2.5 删除分支</h3>
+<p>删除分支命令：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git branch -d <span style="color:#666">(</span>branchname<span style="color:#666">)</span>
+</code></pre></div><hr>
+<p>对命令 <code>git branch</code> 设置 <code>-d</code> 选项可以删除分支：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch
+  dev1
+  dev2
+* master
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch -d dev2
+Deleted branch dev2 <span style="color:#666">(</span>was a4f0ad2<span style="color:#666">)</span>.
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost git_test % git branch
+  dev1
+* master
+</code></pre></div><h3 id="26-工作流">2.6 工作流</h3>
+<p>应该先在 dev 分支上开发任意新功能，待功能成熟后再合并到 master 分支上：</p>
+<p><img src="../../../../img_git/03-06-12-53-58-778.jpg" alt=""></p>
+<h2 id="3-命令总结">3. 命令总结</h2>
+<ul>
+<li><code>git branch</code>：查看分支</li>
+<li><code>git branch &lt;branch name&gt;</code>：创建分支</li>
+<li><code>git branch -d &lt;branch name&gt;</code>：删除分支</li>
+<li><code>git checkout &lt;branch name&gt;</code>：切换分支</li>
+<li><code>git merge &lt;branch name&gt;</code>：合并分支
+（若要将 B 分支合并到 A 分支上，则需要先切换至 A 分支，然后执行命令 <code>git merge B</code> ）</li>
+</ul>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
