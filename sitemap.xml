@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/</loc>
+    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/r/</loc>
+    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/2022/03/09/r-1.-base-r/</loc>
+    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2022-03-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/categories/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
@@ -11,9 +26,6 @@
     <loc>/other/fff/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/</loc>
-    <lastmod>2021-07-23T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/tags/kaggle/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
@@ -21,12 +33,6 @@
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/other/</loc>
-    <lastmod>2021-07-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2021-07-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/markdown/</loc>

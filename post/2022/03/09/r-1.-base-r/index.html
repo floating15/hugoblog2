@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>R - 1. Base R | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">R - 1. Base R</span></h1>
+
+<h2 class="date">2022/03/09</h2>
+</div>
+
+<main>
+<h2 id="1-vectors">1. Vectors</h2>
+<p>Vectors are one-dimension arrays that can hold numeric data, character data, or logical data. In other words, a vector is a simple tool to store data. For example, you can store your daily gains and losses in the casinos.</p>
+<p>In R, you create a vector with the combine function <code>c()</code>. You place the vector elements separated by a comma between the parentheses. For example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec1 <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>)
+vec2 <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#39;a&#39;</span>, <span style="color:#ba2121">&#39;b&#39;</span>, <span style="color:#ba2121">&#39;c&#39;</span>)
+vec3 <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#008000;font-weight:bold">TRUE</span>, <span style="color:#008000;font-weight:bold">FALSE</span>, <span style="color:#008000;font-weight:bold">TRUE</span>)
+</code></pre></div><p>You can give a name to the elements of a vector with the names() function. Have a look at this example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec4 <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;John Doe&#34;</span>, <span style="color:#ba2121">&#34;poker player&#34;</span>)
+<span style="color:#00f">names</span>(vec4) <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Name&#34;</span>, <span style="color:#ba2121">&#34;Profession&#34;</span>)
+vec4
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##           Name     Profession 
+##     &#34;John Doe&#34; &#34;poker player&#34;
+</code></pre></div><p>This code first creates a vector <code>vec4</code> and then gives the two elements a name. The first element is assigned the name Name, while the second element is labeled Profession.</p>
+<p>we can combine vectors by setting vectors in function <code>c()</code>,like:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec_combine <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(vec1, vec2, vec3)
+vec_combine
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] &#34;1&#34;     &#34;2&#34;     &#34;3&#34;     &#34;a&#34;     &#34;b&#34;     &#34;c&#34;     &#34;TRUE&#34;  &#34;FALSE&#34; &#34;TRUE&#34;
+</code></pre></div><p>It is important to know that if you sum two vectors in R, it takes the element-wise sum. For example, the following three statements are completely equivalent:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">c</span>(<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>) <span style="color:#666">+</span> <span style="color:#00f">c</span>(<span style="color:#666">4</span>, <span style="color:#666">5</span>, <span style="color:#666">6</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 5 7 9
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">c</span>(<span style="color:#666">1</span> <span style="color:#666">+</span> <span style="color:#666">4</span>, <span style="color:#666">2</span> <span style="color:#666">+</span> <span style="color:#666">5</span>, <span style="color:#666">3</span> <span style="color:#666">+</span> <span style="color:#666">6</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 5 7 9
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">c</span>(<span style="color:#666">5</span>, <span style="color:#666">7</span>, <span style="color:#666">9</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 5 7 9
+</code></pre></div><p>You can also do the calculations with variables that represent vectors:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">a <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>) 
+b <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">4</span>, <span style="color:#666">5</span>, <span style="color:#666">6</span>)
+c <span style="color:#666">&lt;-</span> a <span style="color:#666">+</span> b
+c
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 5 7 9
+</code></pre></div><p>A function <code>sum()</code>  calculates the sum of all elements of a vector.  for example, <code>sum(c)=21</code>. Calculate the average of the values in poker_start with the <code>mean()</code> function, and <code>mean(c)=7</code>.</p>
+<h3 id="vector-selection">Vector selection</h3>
+<p>you can use square brackets. Between the square brackets, you indicate what elements to select. For example, to select the first element of the vector, you type <code>vector[1]</code>. To select the second element of the vector, you type <code>vector[2]</code>, etc.</p>
+<blockquote>
+<p>Notice that the first element in a vector has index 1, not 0 as in many other programming languages.</p>
+</blockquote>
+<p>To select multiple elements from a vector, you can add square brackets at the end of it. You can indicate between the brackets what elements should be selected. For example: suppose you want to select the first and the fifth day of the week: use the vector <code>c(1, 5)</code> between the square brackets. For example, the code below selects the 2nd, 3rd and 4th element of poker_vector:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">names</span>(vec_combine) <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">1</span><span style="color:#666">:</span> <span style="color:#00f">length</span>(vec_combine))
+vec_combine
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##       1       2       3       4       5       6       7       8       9 
+##     &#34;1&#34;     &#34;2&#34;     &#34;3&#34;     &#34;a&#34;     &#34;b&#34;     &#34;c&#34;  &#34;TRUE&#34; &#34;FALSE&#34;  &#34;TRUE&#34;
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec_combine<span style="color:#00f">[c</span>(<span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">4</span>)]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##   2   3   4 
+## &#34;2&#34; &#34;3&#34; &#34;a&#34;
+</code></pre></div><p>Selecting multiple elements of poker_vector with <code>c(2, 3, 4)</code>is not very convenient. Many statisticians are lazy people by nature, so they created an easier way to do this: <code>c(2, 3, 4)</code> can be abbreviated to <code>2:4</code>, which generates a vector with all natural numbers from 2 up to 4.</p>
+<p>So, another way to find the mid-week results is</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec_combine[2<span style="color:#666">:</span><span style="color:#666">4</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##   2   3   4 
+## &#34;2&#34; &#34;3&#34; &#34;a&#34;
+</code></pre></div><p>Another way to tackle the previous exercise is by using the names of the vector elements instead of their numeric positions. For example,</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec_combine[<span style="color:#ba2121">&#34;7&#34;</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      7 
+## &#34;TRUE&#34;
+</code></pre></div><p>will select the first element of poker_vector since &ldquo;Monday&rdquo; is the name of that first element.</p>
+<p>Just like you did in the previous exercise with numerics, you can also use the element names to select multiple elements, for example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec_combine<span style="color:#00f">[c</span>(<span style="color:#ba2121">&#39;1&#39;</span>, <span style="color:#ba2121">&#39;8&#39;</span>)]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##       1       8 
+##     &#34;1&#34; &#34;FALSE&#34;
+</code></pre></div><h3 id="selection-by-comparison">Selection by comparison</h3>
+<p>The (logical) comparison operators known to R are:</p>
+<p><code>&lt;</code> for less than
+<code>&gt;</code> for greater than
+<code>&lt;=</code> for less than or equal to
+<code>&gt;=</code> for greater than or equal to
+<code>==</code> for equal to each other
+<code>!=</code> not equal to each other</p>
+<p>As seen in the previous chapter, stating <code>6 &gt; 5</code> returns <code>TRUE</code>. The nice thing about R is that you can use these comparison operators also on vectors, <strong>and return a bool type vector</strong>. For example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">c</span>(<span style="color:#666">4</span>, <span style="color:#666">5</span>, <span style="color:#666">6</span>) <span style="color:#666">&gt;</span> <span style="color:#666">5</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] FALSE FALSE  TRUE
+</code></pre></div><p>This command tests for every element of the vector if the condition stated by the comparison operator is <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>Working with comparisons will make your data analytical life easier. Instead of selecting a subset of days to investigate yourself (like before).</p>
+<p>You can select the desired elements, by putting returned bool vector between the square brackets that follow roulette_vector:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec5 <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">-24</span>, <span style="color:#666">-50</span>, <span style="color:#666">100</span>, <span style="color:#666">-350</span>, <span style="color:#666">10</span>)
+vec51 <span style="color:#666">&lt;-</span> vec5 <span style="color:#666">&gt;</span> <span style="color:#666">0</span>
+vec52 <span style="color:#666">&lt;-</span> vec5[vec51]
+vec52
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 100  10
+</code></pre></div><p>Simple to write</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec53 <span style="color:#666">&lt;-</span> vec5[vec5 <span style="color:#666">&gt;</span> <span style="color:#666">0</span>]
+vec53
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 100  10
+</code></pre></div><p>R knows what to do when you pass a logical vector in square brackets: it will only select the elements that correspond to <code>TRUE</code> in selection_vector.</p>
+<h2 id="2-matrix">2. Matrix</h2>
+<p>In R, a matrix is a collection of elements of the same data type (numeric, character, or logical) arranged into a fixed number of rows and columns. Since you are only working with rows and columns, a matrix is called two-dimensional.</p>
+<p>You can construct a matrix in R with the matrix() function. Consider the following example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">matrix</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">9</span>, byrow <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, nrow <span style="color:#666">=</span> <span style="color:#666">3</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## [3,]    7    8    9
+</code></pre></div><p>In the <code>matrix()</code> function:</p>
+<ul>
+<li>The first argument is the collection of elements that R will arrange into the rows and columns of the matrix. Here, we use <code>1:9</code> which is a shortcut for <code>c(1, 2, 3, 4, 5, 6, 7, 8, 9)</code>.</li>
+<li>The argument byrow indicates that the matrix is filled by the rows. If we want the matrix to be filled by the columns, we just place <code>byrow = FALSE</code>.</li>
+<li>The third argument <code>nrow</code> indicates that the matrix should have three rows.</li>
+</ul>
+<h3 id="naming-a-matrix">Naming a matrix</h3>
+<p>To help you remember what is stored in star_wars_matrix, you would like to add the names of the movies for the rows.</p>
+<p>Similar to vectors, you can add names for the rows and the columns of a matrix</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat1 <span style="color:#666">&lt;-</span> <span style="color:#00f">matrix</span>(
+  <span style="color:#00f">c</span>(vec1, vec2, vec3),
+  byrow <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>,
+  nrow <span style="color:#666">=</span> <span style="color:#666">3</span>
+)
+
+row_name_mat1 <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;m1r1&#34;</span>, <span style="color:#ba2121">&#34;m1r2&#34;</span>, <span style="color:#ba2121">&#34;m1r3&#34;</span>)
+col_name_mat1 <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;m1c1&#34;</span>, <span style="color:#ba2121">&#34;m1c2&#34;</span>, <span style="color:#ba2121">&#34;m1c3&#34;</span>)
+
+<span style="color:#00f">rownames</span>(mat1) <span style="color:#666">&lt;-</span> row_name_mat1
+<span style="color:#00f">colnames</span>(mat1) <span style="color:#666">&lt;-</span> col_name_mat1
+
+mat1
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      m1c1   m1c2    m1c3  
+## m1r1 &#34;1&#34;    &#34;2&#34;     &#34;3&#34;   
+## m1r2 &#34;a&#34;    &#34;b&#34;     &#34;c&#34;   
+## m1r3 &#34;TRUE&#34; &#34;FALSE&#34; &#34;TRUE&#34;
+</code></pre></div><h3 id="calculating">Calculating</h3>
+<p>In R, the function <code>rowSums()</code> conveniently calculates the totals for each row of a matrix. This function creates a new vector:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat2 <span style="color:#666">=</span> <span style="color:#00f">matrix</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">9</span>, byrow <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, nrow <span style="color:#666">=</span> <span style="color:#666">3</span>)
+<span style="color:#00f">rowSums</span>(mat2)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1]  6 15 24
+</code></pre></div><p>And you can calculate the totals for each columns of a matric by function <code>colSums()</code>.</p>
+<h3 id="adding-a-column-and-row">Adding a column and row</h3>
+<p>You can add a column or multiple columns to a matrix with the <code>cbind()</code> function, which merges matrices and/or vectors together by column. For example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat21 <span style="color:#666">&lt;-</span> <span style="color:#00f">cbind</span>(mat2, <span style="color:#00f">rowSums</span>(mat2))
+mat21
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    6
+## [2,]    4    5    6   15
+## [3,]    7    8    9   24
+</code></pre></div><p>Just like every action has a reaction, every <code>cbind()</code> has an <code>rbind()</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22 <span style="color:#666">&lt;-</span> <span style="color:#00f">rbind</span>(mat21, <span style="color:#00f">colSums</span>(mat21))
+mat22
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    6
+## [2,]    4    5    6   15
+## [3,]    7    8    9   24
+## [4,]   12   15   18   45
+</code></pre></div><h3 id="selection-of-matrix-elements">Selection of matrix elements</h3>
+<p>Similar to vectors, you can use the square brackets <code>[ ]</code> to select one or multiple elements from a matrix. Whereas vectors have one dimension, matrices have two dimensions. You should therefore use a comma to separate the rows you want to select from the columns. For example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22[1,<span style="color:#666">2</span>] <span style="color:#408080;font-style:italic"># selects the element at the first row and second column.</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 2
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22[1<span style="color:#666">:</span><span style="color:#666">3</span>,<span style="color:#666">2</span><span style="color:#666">:</span><span style="color:#666">4</span>] <span style="color:#408080;font-style:italic"># results in a matrix with the data on the rows 1, 2, 3 and columns 2, 3, 4.</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3]
+## [1,]    2    3    6
+## [2,]    5    6   15
+## [3,]    8    9   24
+</code></pre></div><p>If you want to select all elements of a row or a column, no number is needed before or after the comma, respectively:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22[,<span style="color:#666">1</span>] <span style="color:#408080;font-style:italic"># selects all elements of the first column.</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1]  1  4  7 12
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22[1,] <span style="color:#408080;font-style:italic"># selects all elements of the first row.</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 1 2 3 6
+</code></pre></div><h3 id="arithmetic-with-matrices">arithmetic with matrices</h3>
+<p>Similar to what you have learned with vectors, the standard operators like <code>+, -, /, *</code>, etc. work in an element-wise way on matrices in R.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22 <span style="color:#666">+</span> mat22
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3] [,4]
+## [1,]    2    4    6   12
+## [2,]    8   10   12   30
+## [3,]   14   16   18   48
+## [4,]   24   30   36   90
+</code></pre></div><p>For example, <code>2 * mat</code> multiplies each element of <code>mat</code> by two. Correspondingly, <code>mat1 * mat2</code> creates a matrix where each element is the product of the corresponding elements in <code>mat1</code> and <code>mat2</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22 <span style="color:#666">*</span> mat22
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    9   36
+## [2,]   16   25   36  225
+## [3,]   49   64   81  576
+## [4,]  144  225  324 2025
+</code></pre></div><h2 id="3-factor">3. Factor</h2>
+<p>The term factor refers to a statistical data type used to store categorical variables. The difference between a categorical variable and a continuous variable is that a categorical variable can belong to a <em>limited number of categories</em>. A good example of a categorical variable is sex. In many circumstances you can limit the sex categories to &ldquo;Male&rdquo; or &ldquo;Female&rdquo;. A continuous variable, on the other hand, can correspond to an infinite number of values.</p>
+<p>It is important that R knows whether it is dealing with a continuous or a categorical variable, as the statistical models you will develop in the future treat both types differently.</p>
+<p>To create factors in R, you make use of the function factor(). First thing that you have to do is create a vector that contains all the observations that belong to a limited number of categories. For example, sex_vector contains the sex of 5 different individuals:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">sex_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Male&#34;</span>,<span style="color:#ba2121">&#34;Female&#34;</span>,<span style="color:#ba2121">&#34;Female&#34;</span>,<span style="color:#ba2121">&#34;Male&#34;</span>,<span style="color:#ba2121">&#34;Male&#34;</span>)
+sex_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] &#34;Male&#34;   &#34;Female&#34; &#34;Female&#34; &#34;Male&#34;   &#34;Male&#34;
+</code></pre></div><p>It is clear that there are two categories, or in R-terms &lsquo;factor levels&rsquo;, at work here: &ldquo;Male&rdquo; and &ldquo;Female&rdquo;.</p>
+<p>The function factor() will encode the vector as a factor:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">factor_sex_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(sex_vector)
+factor_sex_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] Male   Female Female Male   Male  
+## Levels: Female Male
+</code></pre></div><p>There are two types of categorical variables: a nominal categorical variable and an ordinal categorical variable.</p>
+<p>A nominal variable is a categorical variable without an implied order. This means that it is impossible to say that &lsquo;one is worth more than the other&rsquo;. For example, think of the categorical variable animals_vector with the categories &ldquo;Elephant&rdquo;, &ldquo;Giraffe&rdquo;, &ldquo;Donkey&rdquo; and &ldquo;Horse&rdquo;. Here, it is impossible to say that one stands above or below the other. (Note that some of you might disagree ;-) ).</p>
+<p>In contrast, ordinal variables do have a natural ordering. Consider for example the categorical variable temperature_vector with the categories: &ldquo;Low&rdquo;, &ldquo;Medium&rdquo; and &ldquo;High&rdquo;. Here it is obvious that &ldquo;Medium&rdquo; stands above &ldquo;Low&rdquo;, and &ldquo;High&rdquo; stands above &ldquo;Medium&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Animals</span>
+animals_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Elephant&#34;</span>, <span style="color:#ba2121">&#34;Giraffe&#34;</span>, <span style="color:#ba2121">&#34;Donkey&#34;</span>, <span style="color:#ba2121">&#34;Horse&#34;</span>)
+factor_animals_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(animals_vector)
+factor_animals_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] Elephant Giraffe  Donkey   Horse   
+## Levels: Donkey Elephant Giraffe Horse
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Temperature</span>
+temperature_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;High&#34;</span>, <span style="color:#ba2121">&#34;Low&#34;</span>, <span style="color:#ba2121">&#34;High&#34;</span>,<span style="color:#ba2121">&#34;Low&#34;</span>, <span style="color:#ba2121">&#34;Medium&#34;</span>)
+factor_temperature_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(temperature_vector, order <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, levels <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Low&#34;</span>, <span style="color:#ba2121">&#34;Medium&#34;</span>, <span style="color:#ba2121">&#34;High&#34;</span>))
+factor_temperature_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] High   Low    High   Low    Medium
+## Levels: Low &lt; Medium &lt; High
+</code></pre></div><h3 id="factor-levels">Factor levels</h3>
+<p>hen you first get a dataset, you will often notice that it contains factors with specific factor levels. However, sometimes you will want to change the names of these levels for clarity or other reasons. R allows you to do this with the function levels():</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Code to build factor_survey_vector</span>
+survey_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>)
+factor_survey_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(survey_vector)
+
+<span style="color:#408080;font-style:italic"># Specify the levels of factor_survey_vector</span>
+<span style="color:#00f">levels</span>(factor_survey_vector) <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Female&#34;</span>, <span style="color:#ba2121">&#34;Male&#34;</span>)
+
+factor_survey_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] Male   Female Female Male   Male  
+## Levels: Female Male
+</code></pre></div><p>Watch out: the order with which you assign the levels is important. If you type levels(factor_survey_vector), you&rsquo;ll see that it outputs [1] &ldquo;F&rdquo; &ldquo;M&rdquo;. If you don&rsquo;t specify the levels of the factor when creating the vector, R will automatically assign them alphabetically.</p>
+<blockquote>
+<p>Notice: To correctly map &ldquo;F&rdquo; to &ldquo;Female&rdquo; and &ldquo;M&rdquo; to &ldquo;Male&rdquo;, the levels should be set to c(&ldquo;Female&rdquo;, &ldquo;Male&rdquo;), in this order.</p>
+</blockquote>
+<h3 id="summarizing-a-factor">Summarizing a factor</h3>
+<p>After finishing this course, one of your favorite functions in R will be summary(). This will give you a quick overview of the contents of a variable:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Build factor_survey_vector with clean levels</span>
+survey_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>)
+factor_survey_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(survey_vector)
+<span style="color:#00f">levels</span>(factor_survey_vector) <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Female&#34;</span>, <span style="color:#ba2121">&#34;Male&#34;</span>)
+factor_survey_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] Male   Female Female Male   Male  
+## Levels: Female Male
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Generate summary for survey_vector</span>
+<span style="color:#00f">summary</span>(survey_vector)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##    Length     Class      Mode 
+##         5 character character
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Generate summary for factor_survey_vector</span>
+<span style="color:#00f">summary</span>(factor_survey_vector)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## Female   Male 
+##      2      3
+</code></pre></div><p>You might wonder what happens when you try to compare elements of a factor. In factor_survey_vector you have a factor with two levels: &ldquo;Male&rdquo; and &ldquo;Female&rdquo;.</p>
+<h3 id="ordered-factors">Ordered factors</h3>
+<p>speed_vector should be converted to an ordinal factor since its categories have a natural ordering. By default, the function <code>factor()</code> transforms speed_vector into an unordered factor. To create an ordered factor, you have to add two additional arguments: ordered and levels.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">factor</span>(some_vector,
+       ordered <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>,
+       levels <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;lev1&#34;</span>, <span style="color:#ba2121">&#34;lev2&#34;</span> <span style="color:#008000;font-weight:bold">...</span>))
+</code></pre></div><p>By setting the argument ordered to TRUE in the function <code>factor()</code>, you indicate that the factor is ordered. With the argument levels you give the values of the factor in the correct order.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Create speed_vector</span>
+speed_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;fast&#34;</span>)
+
+<span style="color:#408080;font-style:italic"># Convert speed_vector to ordered factor vector</span>
+factor_speed_vector <span style="color:#666">&lt;-</span><span style="color:#00f">factor</span>(
+    speed_vector,
+    ordered <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>,
+    levels <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;fast&#34;</span>)
+)
+
+<span style="color:#408080;font-style:italic"># Print factor_speed_vector</span>
+factor_speed_vector
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] medium slow   slow   medium fast  
+## Levels: slow &lt; medium &lt; fast
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">summary</span>(factor_speed_vector)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##   slow medium   fast 
+##      2      2      1
+</code></pre></div><h3 id="comparing-ordered-factors">Comparing ordered factors</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Create factor_speed_vector</span>
+speed_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;fast&#34;</span>)
+factor_speed_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(speed_vector, ordered <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, levels <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;fast&#34;</span>))
+
+<span style="color:#408080;font-style:italic"># Factor value for second data analyst</span>
+da2 <span style="color:#666">&lt;-</span> factor_speed_vector[2]
+
+<span style="color:#408080;font-style:italic"># Factor value for fifth data analyst</span>
+da5 <span style="color:#666">&lt;-</span> factor_speed_vector[5]
+
+<span style="color:#408080;font-style:italic"># Is data analyst 2 faster than data analyst 5?</span>
+da2 <span style="color:#666">&gt;</span> da5
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] FALSE
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">factor_speed_vector[
+  factor_speed_vector <span style="color:#666">&gt;</span> factor_speed_vector[2]
+]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] medium medium fast  
+## Levels: slow &lt; medium &lt; fast
+</code></pre></div><h2 id="4-dataframe">4. data.frame</h2>
+<h3 id="explore-a-dataframe">Explore a data.frame</h3>
+<p>You may remember from the chapter about matrices that all the elements that you put in a matrix should be of the same type. Otherwise R will automatically adjust them to the same type.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mtcars
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+## Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+## Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+## Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+## Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+## Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+## Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+## AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+## Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+## Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+## Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+## Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+</code></pre></div><p>the function <code>head()</code> enables you to show the first observations of a data frame. Similarly, the function <code>tail()</code> prints out the last observations in your dataset.</p>
+<p>Both <code>head()</code> and <code>tail()</code> print a top line called the &lsquo;header&rsquo;, which contains the names of the different variables in your dataset.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">head</span>(mtcars)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+</code></pre></div><p>Another method that is often used to get a rapid overview of your data is the function <code>str()</code>. The function <code>str()</code> shows you the structure of your dataset. For a data frame it tells you:</p>
+<ul>
+<li>The total number of observations, i.e. rows number (e.g. 32 car types)</li>
+<li>The total number of variables, i.e. columns number (e.g. 11 car features)</li>
+<li>A full list of the variables names (e.g. mpg, cyl … )</li>
+<li>The data type of each variable (e.g. num)</li>
+<li>The first observations</li>
+</ul>
+<p>Applying the <code>str()</code> function will often be the first thing that you do when receiving a new dataset or data frame. It is a great way to get more insight in your dataset before diving into the real analysis.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">str</span>(mtcars)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## &#39;data.frame&#39;:	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+</code></pre></div><h3 id="creating-a-dataframe">Creating a data.frame</h3>
+<p>As a first goal, you want to construct a data frame that describes the main characteristics of eight planets in our solar system. According to your good friend Buzz, the main features of a planet are:</p>
+<ul>
+<li><code>name</code></li>
+<li><code>type</code>: The type of planet (Terrestrial or Gas Giant).</li>
+<li><code>diameter</code>: The planet&rsquo;s diameter relative to the diameter of the Earth.</li>
+<li><code>rotation</code>: The planet&rsquo;s rotation across the sun relative to that of the Earth.</li>
+<li><code>rings</code>: `If the planet has rings or not (TRUE or FALSE).</li>
+</ul>
+<p>You construct a data frame with the <code>data.frame()</code> function. As arguments, you pass the vectors from before: they will become the <em>different columns</em> of your data frame. Because every column has the same length, the vectors you pass should also have the <em>same length</em>. But don&rsquo;t forget that it is possible (and likely) that they contain <em>different types</em> of data.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Definition of vectors</span>
+name <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Mercury&#34;</span>, <span style="color:#ba2121">&#34;Venus&#34;</span>, <span style="color:#ba2121">&#34;Earth&#34;</span>, 
+          <span style="color:#ba2121">&#34;Mars&#34;</span>, <span style="color:#ba2121">&#34;Jupiter&#34;</span>, <span style="color:#ba2121">&#34;Saturn&#34;</span>, 
+          <span style="color:#ba2121">&#34;Uranus&#34;</span>, <span style="color:#ba2121">&#34;Neptune&#34;</span>)
+type <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;Terrestrial planet&#34;</span>, 
+          <span style="color:#ba2121">&#34;Terrestrial planet&#34;</span>, 
+          <span style="color:#ba2121">&#34;Terrestrial planet&#34;</span>, 
+          <span style="color:#ba2121">&#34;Terrestrial planet&#34;</span>, <span style="color:#ba2121">&#34;Gas giant&#34;</span>, 
+          <span style="color:#ba2121">&#34;Gas giant&#34;</span>, <span style="color:#ba2121">&#34;Gas giant&#34;</span>, <span style="color:#ba2121">&#34;Gas giant&#34;</span>)
+diameter <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">0.382</span>, <span style="color:#666">0.949</span>, <span style="color:#666">1</span>, <span style="color:#666">0.532</span>, 
+              <span style="color:#666">11.209</span>, <span style="color:#666">9.449</span>, <span style="color:#666">4.007</span>, <span style="color:#666">3.883</span>)
+rotation <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">58.64</span>, <span style="color:#666">-243.02</span>, <span style="color:#666">1</span>, <span style="color:#666">1.03</span>, 
+              <span style="color:#666">0.41</span>, <span style="color:#666">0.43</span>, <span style="color:#666">-0.72</span>, <span style="color:#666">0.67</span>)
+rings <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#008000;font-weight:bold">FALSE</span>, <span style="color:#008000;font-weight:bold">FALSE</span>, <span style="color:#008000;font-weight:bold">FALSE</span>, <span style="color:#008000;font-weight:bold">FALSE</span>, <span style="color:#008000;font-weight:bold">TRUE</span>, <span style="color:#008000;font-weight:bold">TRUE</span>, <span style="color:#008000;font-weight:bold">TRUE</span>, <span style="color:#008000;font-weight:bold">TRUE</span>)
+
+<span style="color:#408080;font-style:italic"># Create a data frame from the vectors</span>
+planets_df <span style="color:#666">&lt;-</span> <span style="color:#00f">data.frame</span>(
+    name,
+    type,
+    diameter,
+    rotation,
+    rings
+)
+
+<span style="color:#00f">str</span>(planets_df)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## &#39;data.frame&#39;:	8 obs. of  5 variables:
+##  $ name    : chr  &#34;Mercury&#34; &#34;Venus&#34; &#34;Earth&#34; &#34;Mars&#34; ...
+##  $ type    : chr  &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34; ...
+##  $ diameter: num  0.382 0.949 1 0.532 11.209 ...
+##  $ rotation: num  58.64 -243.02 1 1.03 0.41 ...
+##  $ rings   : logi  FALSE FALSE FALSE FALSE TRUE TRUE ...
+</code></pre></div><h3 id="selection-of-dataframe-elements">Selection of data.frame elements</h3>
+<p>Similar to vectors and matrices, you select elements from a data frame with the help of square brackets <code>[ ]</code>. By using a comma, you can indicate what to select from the rows and the columns respectively. For example:</p>
+<ul>
+<li><code>my_df[1,2]</code> selects the value at the first row and second column in my_df.</li>
+<li><code>my_df[1:3,2:4]</code> selects rows 1, 2, 3 and columns 2, 3, 4 in my_df.</li>
+</ul>
+<p>Sometimes you want to select all elements of a row or column. For example, <code>my_df[1, ]</code> selects all elements of the first row.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># The planets_df data frame from the previous exercise is pre-loaded</span>
+
+<span style="color:#408080;font-style:italic"># Print out diameter of Mercury (row 1, column 3)</span>
+planets_df[1, <span style="color:#666">3</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 0.382
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Print out data for Mars (entire fourth row)</span>
+planets_df[4,]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##   name               type diameter rotation rings
+## 4 Mars Terrestrial planet    0.532     1.03 FALSE
+</code></pre></div><p>Instead of using numerics to select elements of a data frame, you can also use the variable names to select columns of a data frame.</p>
+<p>Suppose you want to select the first three elements of the <code>type</code> column. One way to do this is</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df[1<span style="color:#666">:</span><span style="color:#666">3</span>,<span style="color:#666">2</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34;
+</code></pre></div><p>A possible disadvantage of this approach is that you have to know (or look up) the column number of <code>type</code>, which gets hard if you have a lot of variables. It is often easier to just make use of the variable name:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df[1<span style="color:#666">:</span><span style="color:#666">3</span>,<span style="color:#ba2121">&#34;type&#34;</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34; &#34;Terrestrial planet&#34;
+</code></pre></div><p>If you want to select all elements of the variable `rings``, for example, both of these will do the trick:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df[,<span style="color:#666">5</span>]
+planets_df[,<span style="color:#ba2121">&#34;rings&#34;</span>]
+</code></pre></div><p>However, there is a short-cut. If your columns have names, you can use the <code>$</code> sign:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df<span style="color:#666">$</span>rings
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+</code></pre></div><p>you can use mask selection, if you want to get a nice overview of the names of planets with rings:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df[planets_df<span style="color:#666">$</span>rings, <span style="color:#ba2121">&#34;name&#34;</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] &#34;Jupiter&#34; &#34;Saturn&#34;  &#34;Uranus&#34;  &#34;Neptune&#34;
+</code></pre></div><p>By mask selection, you can select planets that have a diameter smaller than Earth:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df[
+  planets_df<span style="color:#666">$</span>diameter <span style="color:#666">&lt;</span> <span style="color:#666">1</span>,
+]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      name               type diameter rotation rings
+## 1 Mercury Terrestrial planet    0.382    58.64 FALSE
+## 2   Venus Terrestrial planet    0.949  -243.02 FALSE
+## 4    Mars Terrestrial planet    0.532     1.03 FALSE
+</code></pre></div><p>However, This operation is somewhat troublesome. You should see the <code>subset()</code> function as a short-cut to do exactly the same as what you did in the previous exercises.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">subset</span>(my_df, subset <span style="color:#666">=</span> some_condition)
+</code></pre></div><p>The first argument of <code>subset()</code> specifies the dataset for which you want a subset. By adding the second argument, you give R the necessary information and conditions to select the correct subset.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Select planets with diameter &lt; 1</span>
+<span style="color:#00f">subset</span>(
+    planets_df,
+    subset <span style="color:#666">=</span> diameter <span style="color:#666">&lt;</span> <span style="color:#666">1</span>
+)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      name               type diameter rotation rings
+## 1 Mercury Terrestrial planet    0.382    58.64 FALSE
+## 2   Venus Terrestrial planet    0.949  -243.02 FALSE
+## 4    Mars Terrestrial planet    0.532     1.03 FALSE
+</code></pre></div><h3 id="sorting">Sorting</h3>
+<p>In data analysis you can sort your data according to a certain variable in the dataset. In R, this is done with the help of the function <code>order()</code>.</p>
+<p><code>order()</code> is a function that gives you the <em>ranked position of each element</em> when it is applied on a variable, such as a vector for example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">a <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">100</span>, <span style="color:#666">10</span>, <span style="color:#666">1000</span>)
+<span style="color:#00f">order</span>(a)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 2 1 3
+</code></pre></div><p>This means we can use the output of <code>order(a)</code> to reshuffle <code>a</code>:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">a<span style="color:#00f">[order</span>(a)]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1]   10  100 1000
+</code></pre></div><p>Now reshuffle planets_df with the diameter column of planets_df:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">planets_df[
+  <span style="color:#00f">order</span>(planets_df<span style="color:#666">$</span>diameter),
+]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      name               type diameter rotation rings
+## 1 Mercury Terrestrial planet    0.382    58.64 FALSE
+## 4    Mars Terrestrial planet    0.532     1.03 FALSE
+## 2   Venus Terrestrial planet    0.949  -243.02 FALSE
+## 3   Earth Terrestrial planet    1.000     1.00 FALSE
+## 8 Neptune          Gas giant    3.883     0.67  TRUE
+## 7  Uranus          Gas giant    4.007    -0.72  TRUE
+## 6  Saturn          Gas giant    9.449     0.43  TRUE
+## 5 Jupiter          Gas giant   11.209     0.41  TRUE
+</code></pre></div><h2 id="5-lists">5. Lists</h2>
+<p>A list in R allows you to gather a variety of objects under one name (that is, the name of the list) in an ordered way. These objects can be matrices, vectors, data frames, even other lists, etc. It is not even required that these objects are related to each other in any way.</p>
+<p>You could say that a list is some kind super data type: you can store practically any piece of information in it!</p>
+<h3 id="creating-a-list">Creating a list</h3>
+<p>To construct a list you use the function list():</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list <span style="color:#666">&lt;-</span> <span style="color:#00f">list</span>(comp1, comp2 <span style="color:#008000;font-weight:bold">...</span>)
+</code></pre></div><p>The arguments to the list function are the list components. Remember, these components can be matrices, vectors, other lists, …</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Vector with numerics from 1 up to 10</span>
+my_vector <span style="color:#666">&lt;-</span> <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">10</span> 
+
+<span style="color:#408080;font-style:italic"># Matrix with numerics from 1 up to 9</span>
+my_matrix <span style="color:#666">&lt;-</span> <span style="color:#00f">matrix</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">9</span>, ncol <span style="color:#666">=</span> <span style="color:#666">3</span>)
+
+<span style="color:#408080;font-style:italic"># First 10 elements of the built-in data frame mtcars</span>
+my_df <span style="color:#666">&lt;-</span> mtcars[1<span style="color:#666">:</span><span style="color:#666">10</span>,]
+
+<span style="color:#408080;font-style:italic"># Construct list with these different elements:</span>
+my_list <span style="color:#666">&lt;-</span> <span style="color:#00f">list</span>(
+    my_vector,
+    my_matrix,
+    my_df
+)
+
+my_list
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [[1]]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+## 
+## [[2]]
+##      [,1] [,2] [,3]
+## [1,]    1    4    7
+## [2,]    2    5    8
+## [3,]    3    6    9
+## 
+## [[3]]
+##                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360        14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+</code></pre></div><p>If you want to avoid not knowing or remembering what the components of your list stand for, you should give names to them:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list <span style="color:#666">&lt;-</span> <span style="color:#00f">list</span>(name1 <span style="color:#666">=</span> your_comp1, 
+                name2 <span style="color:#666">=</span> your_comp2)
+</code></pre></div><p>This creates a list with components that are named <code>name1</code>, <code>name2</code>, and so on. If you want to name your lists after you&rsquo;ve created them, you can use the <code>names()</code> function as you did with vectors. The following commands are fully equivalent to the assignment above:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list <span style="color:#666">&lt;-</span> <span style="color:#00f">list</span>(your_comp1, your_comp2)
+<span style="color:#00f">names</span>(my_list) <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;name1&#34;</span>, <span style="color:#ba2121">&#34;name2&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Adapt list() call to give the components names</span>
+<span style="color:#00f">names</span>(my_list) <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;vec&#34;</span>, <span style="color:#ba2121">&#34;mat&#34;</span>, <span style="color:#ba2121">&#34;df&#34;</span>)
+my_list
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## $vec
+##  [1]  1  2  3  4  5  6  7  8  9 10
+## 
+## $mat
+##      [,1] [,2] [,3]
+## [1,]    1    4    7
+## [2,]    2    5    8
+## [3,]    3    6    9
+## 
+## $df
+##                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360        14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+</code></pre></div><h3 id="selecting-elements-from-a-list">Selecting elements from a list</h3>
+<p>One way to select a component is using the numbered position of that component. For example, to &ldquo;grab&rdquo; the first component of <code>my_list</code> you type</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list[[1]]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##  [1]  1  2  3  4  5  6  7  8  9 10
+</code></pre></div><blockquote>
+<p>Important to remember: to select elements from vectors, you use single square brackets: [ ]</p>
+</blockquote>
+<p>You can also refer to the names of the components, with <code>[[ ]]</code> or with the <code>$</code> sign. Both will select the components of list:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list[[<span style="color:#ba2121">&#34;mat&#34;</span>]]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3]
+## [1,]    1    4    7
+## [2,]    2    5    8
+## [3,]    3    6    9
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list<span style="color:#666">$</span>df
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##                    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360        14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+</code></pre></div><p>Besides selecting components, you often need to select specific elements out of these components. This is the same as the corresponding selection syntax：</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list[[<span style="color:#ba2121">&#34;df&#34;</span>]][,<span style="color:#ba2121">&#34;hp&#34;</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##  [1] 110 110  93 110 175 105 245  62  95 123
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list<span style="color:#666">$</span>df<span style="color:#666">$</span>hp
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##  [1] 110 110  93 110 175 105 245  62  95 123
+</code></pre></div>
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
