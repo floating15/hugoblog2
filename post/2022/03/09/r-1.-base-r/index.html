@@ -33,13 +33,54 @@
 
 
 <div class="article-meta">
-<h1><span class="title">R - 1. Base R</span></h1>
+<h1><span class="title">R - 1. Base R</span></h1>  
 
 <h2 class="date">2022/03/09</h2>
 </div>
 
+
 <main>
-<h2 id="1-vectors">1. Vectors</h2>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-vectors">1. Vectors</a>
+      <ul>
+        <li><a href="#11-vector-selection">1.1 Vector selection</a></li>
+        <li><a href="#12-selection-by-comparison">1.2 Selection by comparison</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-matrix">2. Matrix</a>
+      <ul>
+        <li><a href="#21-naming-a-matrix">2.1 Naming a matrix</a></li>
+        <li><a href="#23-adding-a-column-and-row">2.3 Adding a column and row</a></li>
+        <li><a href="#24-selection-of-matrix-elements">2.4 Selection of matrix elements</a></li>
+        <li><a href="#25-arithmetic-with-matrices">2.5 arithmetic with matrices</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-factor">3. Factor</a>
+      <ul>
+        <li><a href="#31-factor-levels">3.1 Factor levels</a></li>
+        <li><a href="#32-summarizing-a-factor">3.2 Summarizing a factor</a></li>
+        <li><a href="#33-ordered-factors">3.3 Ordered factors</a></li>
+        <li><a href="#34-comparing-ordered-factors">3.4 Comparing ordered factors</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-dataframe">4. data.frame</a>
+      <ul>
+        <li><a href="#41-explore-a-dataframe">4.1 Explore a data.frame</a></li>
+        <li><a href="#42-creating-a-dataframe">4.2 Creating a data.frame</a></li>
+        <li><a href="#43-selection-of-dataframe-elements">4.3 Selection of data.frame elements</a></li>
+        <li><a href="#44-sorting">4.4 Sorting</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-lists">5. Lists</a>
+      <ul>
+        <li><a href="#51-creating-a-list">5.1 Creating a list</a></li>
+        <li><a href="#52-selecting-elements-from-a-list">5.2 Selecting elements from a list</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>   
+<h1 id="1-vectors">1. Vectors</h1>
 <p>Vectors are one-dimension arrays that can hold numeric data, character data, or logical data. In other words, a vector is a simple tool to store data. For example, you can store your daily gains and losses in the casinos.</p>
 <p>In R, you create a vector with the combine function <code>c()</code>. You place the vector elements separated by a comma between the parentheses. For example:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec1 <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>)
@@ -70,7 +111,7 @@ c <span style="color:#666">&lt;-</span> a <span style="color:#666">+</span> b
 c
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 5 7 9
 </code></pre></div><p>A function <code>sum()</code>  calculates the sum of all elements of a vector.  for example, <code>sum(c)=21</code>. Calculate the average of the values in poker_start with the <code>mean()</code> function, and <code>mean(c)=7</code>.</p>
-<h3 id="vector-selection">Vector selection</h3>
+<h2 id="11-vector-selection">1.1 Vector selection</h2>
 <p>you can use square brackets. Between the square brackets, you indicate what elements to select. For example, to select the first element of the vector, you type <code>vector[1]</code>. To select the second element of the vector, you type <code>vector[2]</code>, etc.</p>
 <blockquote>
 <p>Notice that the first element in a vector has index 1, not 0 as in many other programming languages.</p>
@@ -97,7 +138,7 @@ vec_combine
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">vec_combine<span style="color:#00f">[c</span>(<span style="color:#ba2121">&#39;1&#39;</span>, <span style="color:#ba2121">&#39;8&#39;</span>)]
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##       1       8 
 ##     &#34;1&#34; &#34;FALSE&#34;
-</code></pre></div><h3 id="selection-by-comparison">Selection by comparison</h3>
+</code></pre></div><h2 id="12-selection-by-comparison">1.2 Selection by comparison</h2>
 <p>The (logical) comparison operators known to R are:</p>
 <p><code>&lt;</code> for less than
 <code>&gt;</code> for greater than
@@ -121,7 +162,7 @@ vec52
 vec53
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 100  10
 </code></pre></div><p>R knows what to do when you pass a logical vector in square brackets: it will only select the elements that correspond to <code>TRUE</code> in selection_vector.</p>
-<h2 id="2-matrix">2. Matrix</h2>
+<h1 id="2-matrix">2. Matrix</h1>
 <p>In R, a matrix is a collection of elements of the same data type (numeric, character, or logical) arranged into a fixed number of rows and columns. Since you are only working with rows and columns, a matrix is called two-dimensional.</p>
 <p>You can construct a matrix in R with the matrix() function. Consider the following example:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">matrix</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">9</span>, byrow <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, nrow <span style="color:#666">=</span> <span style="color:#666">3</span>)
@@ -135,7 +176,7 @@ vec53
 <li>The argument byrow indicates that the matrix is filled by the rows. If we want the matrix to be filled by the columns, we just place <code>byrow = FALSE</code>.</li>
 <li>The third argument <code>nrow</code> indicates that the matrix should have three rows.</li>
 </ul>
-<h3 id="naming-a-matrix">Naming a matrix</h3>
+<h2 id="21-naming-a-matrix">2.1 Naming a matrix</h2>
 <p>To help you remember what is stored in star_wars_matrix, you would like to add the names of the movies for the rows.</p>
 <p>Similar to vectors, you can add names for the rows and the columns of a matrix</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat1 <span style="color:#666">&lt;-</span> <span style="color:#00f">matrix</span>(
@@ -155,13 +196,13 @@ mat1
 ## m1r1 &#34;1&#34;    &#34;2&#34;     &#34;3&#34;   
 ## m1r2 &#34;a&#34;    &#34;b&#34;     &#34;c&#34;   
 ## m1r3 &#34;TRUE&#34; &#34;FALSE&#34; &#34;TRUE&#34;
-</code></pre></div><h3 id="calculating">Calculating</h3>
+</code></pre></div><h3 id="22-calculating">2.2 Calculating</h3>
 <p>In R, the function <code>rowSums()</code> conveniently calculates the totals for each row of a matrix. This function creates a new vector:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat2 <span style="color:#666">=</span> <span style="color:#00f">matrix</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">9</span>, byrow <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, nrow <span style="color:#666">=</span> <span style="color:#666">3</span>)
 <span style="color:#00f">rowSums</span>(mat2)
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1]  6 15 24
 </code></pre></div><p>And you can calculate the totals for each columns of a matric by function <code>colSums()</code>.</p>
-<h3 id="adding-a-column-and-row">Adding a column and row</h3>
+<h2 id="23-adding-a-column-and-row">2.3 Adding a column and row</h2>
 <p>You can add a column or multiple columns to a matrix with the <code>cbind()</code> function, which merges matrices and/or vectors together by column. For example:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat21 <span style="color:#666">&lt;-</span> <span style="color:#00f">cbind</span>(mat2, <span style="color:#00f">rowSums</span>(mat2))
 mat21
@@ -177,7 +218,7 @@ mat22
 ## [2,]    4    5    6   15
 ## [3,]    7    8    9   24
 ## [4,]   12   15   18   45
-</code></pre></div><h3 id="selection-of-matrix-elements">Selection of matrix elements</h3>
+</code></pre></div><h2 id="24-selection-of-matrix-elements">2.4 Selection of matrix elements</h2>
 <p>Similar to vectors, you can use the square brackets <code>[ ]</code> to select one or multiple elements from a matrix. Whereas vectors have one dimension, matrices have two dimensions. You should therefore use a comma to separate the rows you want to select from the columns. For example:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22[1,<span style="color:#666">2</span>] <span style="color:#408080;font-style:italic"># selects the element at the first row and second column.</span>
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 2
@@ -191,7 +232,7 @@ mat22
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1]  1  4  7 12
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22[1,] <span style="color:#408080;font-style:italic"># selects all elements of the first row.</span>
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] 1 2 3 6
-</code></pre></div><h3 id="arithmetic-with-matrices">arithmetic with matrices</h3>
+</code></pre></div><h2 id="25-arithmetic-with-matrices">2.5 arithmetic with matrices</h2>
 <p>Similar to what you have learned with vectors, the standard operators like <code>+, -, /, *</code>, etc. work in an element-wise way on matrices in R.</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mat22 <span style="color:#666">+</span> mat22
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##      [,1] [,2] [,3] [,4]
@@ -206,7 +247,7 @@ mat22
 ## [2,]   16   25   36  225
 ## [3,]   49   64   81  576
 ## [4,]  144  225  324 2025
-</code></pre></div><h2 id="3-factor">3. Factor</h2>
+</code></pre></div><h1 id="3-factor">3. Factor</h1>
 <p>The term factor refers to a statistical data type used to store categorical variables. The difference between a categorical variable and a continuous variable is that a categorical variable can belong to a <em>limited number of categories</em>. A good example of a categorical variable is sex. In many circumstances you can limit the sex categories to &ldquo;Male&rdquo; or &ldquo;Female&rdquo;. A continuous variable, on the other hand, can correspond to an infinite number of values.</p>
 <p>It is important that R knows whether it is dealing with a continuous or a categorical variable, as the statistical models you will develop in the future treat both types differently.</p>
 <p>To create factors in R, you make use of the function factor(). First thing that you have to do is create a vector that contains all the observations that belong to a limited number of categories. For example, sex_vector contains the sex of 5 different individuals:</p>
@@ -234,7 +275,7 @@ factor_temperature_vector <span style="color:#666">&lt;-</span> <span style="col
 factor_temperature_vector
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] High   Low    High   Low    Medium
 ## Levels: Low &lt; Medium &lt; High
-</code></pre></div><h3 id="factor-levels">Factor levels</h3>
+</code></pre></div><h2 id="31-factor-levels">3.1 Factor levels</h2>
 <p>hen you first get a dataset, you will often notice that it contains factors with specific factor levels. However, sometimes you will want to change the names of these levels for clarity or other reasons. R allows you to do this with the function levels():</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Code to build factor_survey_vector</span>
 survey_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>)
@@ -250,7 +291,7 @@ factor_survey_vector
 <blockquote>
 <p>Notice: To correctly map &ldquo;F&rdquo; to &ldquo;Female&rdquo; and &ldquo;M&rdquo; to &ldquo;Male&rdquo;, the levels should be set to c(&ldquo;Female&rdquo;, &ldquo;Male&rdquo;), in this order.</p>
 </blockquote>
-<h3 id="summarizing-a-factor">Summarizing a factor</h3>
+<h2 id="32-summarizing-a-factor">3.2 Summarizing a factor</h2>
 <p>After finishing this course, one of your favorite functions in R will be summary(). This will give you a quick overview of the contents of a variable:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Build factor_survey_vector with clean levels</span>
 survey_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;F&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>, <span style="color:#ba2121">&#34;M&#34;</span>)
@@ -268,7 +309,7 @@ factor_survey_vector
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## Female   Male 
 ##      2      3
 </code></pre></div><p>You might wonder what happens when you try to compare elements of a factor. In factor_survey_vector you have a factor with two levels: &ldquo;Male&rdquo; and &ldquo;Female&rdquo;.</p>
-<h3 id="ordered-factors">Ordered factors</h3>
+<h2 id="33-ordered-factors">3.3 Ordered factors</h2>
 <p>speed_vector should be converted to an ordinal factor since its categories have a natural ordering. By default, the function <code>factor()</code> transforms speed_vector into an unordered factor. To create an ordered factor, you have to add two additional arguments: ordered and levels.</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">factor</span>(some_vector,
        ordered <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>,
@@ -291,7 +332,7 @@ factor_speed_vector
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00f">summary</span>(factor_speed_vector)
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##   slow medium   fast 
 ##      2      2      1
-</code></pre></div><h3 id="comparing-ordered-factors">Comparing ordered factors</h3>
+</code></pre></div><h2 id="34-comparing-ordered-factors">3.4 Comparing ordered factors</h2>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#408080;font-style:italic"># Create factor_speed_vector</span>
 speed_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;fast&#34;</span>)
 factor_speed_vector <span style="color:#666">&lt;-</span> <span style="color:#00f">factor</span>(speed_vector, ordered <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">TRUE</span>, levels <span style="color:#666">=</span> <span style="color:#00f">c</span>(<span style="color:#ba2121">&#34;slow&#34;</span>, <span style="color:#ba2121">&#34;medium&#34;</span>, <span style="color:#ba2121">&#34;fast&#34;</span>))
@@ -310,8 +351,8 @@ da2 <span style="color:#666">&gt;</span> da5
 ]
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## [1] medium medium fast  
 ## Levels: slow &lt; medium &lt; fast
-</code></pre></div><h2 id="4-dataframe">4. data.frame</h2>
-<h3 id="explore-a-dataframe">Explore a data.frame</h3>
+</code></pre></div><h1 id="4-dataframe">4. data.frame</h1>
+<h2 id="41-explore-a-dataframe">4.1 Explore a data.frame</h2>
 <p>You may remember from the chapter about matrices that all the elements that you put in a matrix should be of the same type. Otherwise R will automatically adjust them to the same type.</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mtcars
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
@@ -379,7 +420,7 @@ da2 <span style="color:#666">&gt;</span> da5
 ##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
 ##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
 ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
-</code></pre></div><h3 id="creating-a-dataframe">Creating a data.frame</h3>
+</code></pre></div><h2 id="42-creating-a-dataframe">4.2 Creating a data.frame</h2>
 <p>As a first goal, you want to construct a data frame that describes the main characteristics of eight planets in our solar system. According to your good friend Buzz, the main features of a planet are:</p>
 <ul>
 <li><code>name</code></li>
@@ -420,7 +461,7 @@ planets_df <span style="color:#666">&lt;-</span> <span style="color:#00f">data.f
 ##  $ diameter: num  0.382 0.949 1 0.532 11.209 ...
 ##  $ rotation: num  58.64 -243.02 1 1.03 0.41 ...
 ##  $ rings   : logi  FALSE FALSE FALSE FALSE TRUE TRUE ...
-</code></pre></div><h3 id="selection-of-dataframe-elements">Selection of data.frame elements</h3>
+</code></pre></div><h2 id="43-selection-of-dataframe-elements">4.3 Selection of data.frame elements</h2>
 <p>Similar to vectors and matrices, you select elements from a data frame with the help of square brackets <code>[ ]</code>. By using a comma, you can indicate what to select from the rows and the columns respectively. For example:</p>
 <ul>
 <li><code>my_df[1,2]</code> selects the value at the first row and second column in my_df.</li>
@@ -472,7 +513,7 @@ planets_df[,<span style="color:#ba2121">&#34;rings&#34;</span>]
 ## 1 Mercury Terrestrial planet    0.382    58.64 FALSE
 ## 2   Venus Terrestrial planet    0.949  -243.02 FALSE
 ## 4    Mars Terrestrial planet    0.532     1.03 FALSE
-</code></pre></div><h3 id="sorting">Sorting</h3>
+</code></pre></div><h2 id="44-sorting">4.4 Sorting</h2>
 <p>In data analysis you can sort your data according to a certain variable in the dataset. In R, this is done with the help of the function <code>order()</code>.</p>
 <p><code>order()</code> is a function that gives you the <em>ranked position of each element</em> when it is applied on a variable, such as a vector for example:</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">a <span style="color:#666">&lt;-</span> <span style="color:#00f">c</span>(<span style="color:#666">100</span>, <span style="color:#666">10</span>, <span style="color:#666">1000</span>)
@@ -494,10 +535,10 @@ planets_df[,<span style="color:#ba2121">&#34;rings&#34;</span>]
 ## 7  Uranus          Gas giant    4.007    -0.72  TRUE
 ## 6  Saturn          Gas giant    9.449     0.43  TRUE
 ## 5 Jupiter          Gas giant   11.209     0.41  TRUE
-</code></pre></div><h2 id="5-lists">5. Lists</h2>
+</code></pre></div><h1 id="5-lists">5. Lists</h1>
 <p>A list in R allows you to gather a variety of objects under one name (that is, the name of the list) in an ordered way. These objects can be matrices, vectors, data frames, even other lists, etc. It is not even required that these objects are related to each other in any way.</p>
 <p>You could say that a list is some kind super data type: you can store practically any piece of information in it!</p>
-<h3 id="creating-a-list">Creating a list</h3>
+<h2 id="51-creating-a-list">5.1 Creating a list</h2>
 <p>To construct a list you use the function list():</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list <span style="color:#666">&lt;-</span> <span style="color:#00f">list</span>(comp1, comp2 <span style="color:#008000;font-weight:bold">...</span>)
 </code></pre></div><p>The arguments to the list function are the list components. Remember, these components can be matrices, vectors, other lists, …</p>
@@ -569,7 +610,7 @@ my_list
 ## Merc 240D         24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
 ## Merc 230          22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
 ## Merc 280          19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
-</code></pre></div><h3 id="selecting-elements-from-a-list">Selecting elements from a list</h3>
+</code></pre></div><h2 id="52-selecting-elements-from-a-list">5.2 Selecting elements from a list</h2>
 <p>One way to select a component is using the numbered position of that component. For example, to &ldquo;grab&rdquo; the first component of <code>my_list</code> you type</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">my_list[[1]]
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">##  [1]  1  2  3  4  5  6  7  8  9 10
@@ -615,6 +656,7 @@ my_list
   </footer>
   </body>
 </html>
+
 
 
 

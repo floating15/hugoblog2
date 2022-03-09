@@ -33,12 +33,24 @@
 
 
 <div class="article-meta">
-<h1><span class="title">Git - 2. Branch (in Chinese)</span></h1>
+<h1><span class="title">Git - 2. Branch (in Chinese)</span></h1>  
 
 <h2 class="date">2019/07/26</h2>
 </div>
 
+
 <main>
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-分支简介">1. 分支简介</a></li>
+        <li><a href="#2-分支命令">2. 分支命令</a></li>
+        <li><a href="#3-命令总结">3. 命令总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>   
 <h2 id="1-分支简介">1. 分支简介</h2>
 <p>假设在版本 1 （V1）中一共写入 100 个文件；在 V2 中修改了 V1 中的 10 个文件，并新写入 20 个文件。则 Git 在生成 V2 时，会只生成新变化的 30 个文件，并通过指针指向 V1 从而链接未改变的 90 个文件，提升效率。</p>
 <p><img src="../../../../img_git/2022-03-04-15-09-45.png" alt=""></p>
@@ -238,6 +250,7 @@ Deleted branch dev2 <span style="color:#666">(</span>was a4f0ad2<span style="col
   </footer>
   </body>
 </html>
+
 
 
 
