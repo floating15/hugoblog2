@@ -103,6 +103,17 @@ git push origin --delete master  首先创建一个 github 仓库 git_exercise�
     </item>
     
     <item>
+      <title>Python - 1. Data Manipulation with pandas</title>
+      <link>/post/2018/08/08/python-1.-data-manipulation-with-pandas/</link>
+      <pubDate>Wed, 08 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018/08/08/python-1.-data-manipulation-with-pandas/</guid>
+      <description>import pandas as pd import numpy as np 1. Transforming DataFrames 1.1 Introducing DataFrames Inspecting a DataFrame When you get a new DataFrame to work with, the first thing you need to do is explore it and see what it contains. pandas has several methods for this.
+head method (.head()) returns the first few rows of the DataFrame.
+# create a DataFrame cate = [&amp;#34;Py&amp;#34;, &amp;#34;R&amp;#34;, &amp;#34;Matlab&amp;#34; ] df = pd.</description>
+    </item>
+    
+    <item>
       <title>操作目录和文件</title>
       <link>/post/2018/07/23/%E6%93%8D%E4%BD%9C%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6/</link>
       <pubDate>Mon, 23 Jul 2018 00:00:00 +0000</pubDate>

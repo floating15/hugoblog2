@@ -1,0 +1,4314 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Python - 1. Data Manipulation with pandas | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Python - 1. Data Manipulation with pandas</span></h1>  
+
+<h2 class="date">2018/08/08</h2>
+</div>
+
+
+<main>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-transforming-dataframes">1. Transforming DataFrames</a>
+      <ul>
+        <li><a href="#11-introducing-dataframes">1.1 Introducing DataFrames</a></li>
+        <li><a href="#12-sorting-and-subsetting">1.2 Sorting and subsetting</a></li>
+        <li><a href="#13-new-columns">1.3 New columns</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-aggregating-dataframes">2. Aggregating DataFrames</a>
+      <ul>
+        <li><a href="#21-summary-statistics">2.1 Summary statistics</a></li>
+        <li><a href="#22-counting">2.2 Counting</a></li>
+        <li><a href="#23-grouped-summary-statistics">2.3 Grouped summary statistics</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-slicing-and-indexing-dataframes">3. Slicing and Indexing DataFrames</a>
+      <ul>
+        <li><a href="#31-explicit-indexes">3.1 Explicit indexes</a></li>
+        <li><a href="#32-slicing-and-subsetting-with-loc-and-iloc">3.2 Slicing and subsetting with <code>.loc</code> and <code>.iloc</code></a></li>
+        <li><a href="#33-slicing-pivot-tables">3.3 Slicing pivot tables</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-creating-and-visualizing-dataframes">4. Creating and Visualizing DataFrames</a>
+      <ul>
+        <li><a href="#41-visualizing-data">4.1 Visualizing data</a></li>
+        <li><a href="#42-missing-values">4.2 Missing values</a></li>
+        <li><a href="#43-creating-dataframes">4.3 Creating DataFrames</a></li>
+        <li><a href="#44-reading-and-writing-csvs">4.4 Reading and writing CSVs</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>   
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+</code></pre></div><h1 id="1-transforming-dataframes">1. Transforming DataFrames</h1>
+<h2 id="11-introducing-dataframes">1.1 Introducing DataFrames</h2>
+<h3 id="inspecting-a-dataframe">Inspecting a DataFrame</h3>
+<p>When you get a new DataFrame to work with, the first thing you need to do is explore it and see what it contains. pandas has several methods for this.</p>
+<p><strong>head method</strong> (<code>.head()</code>) returns the first few rows of the DataFrame.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># create a DataFrame</span>
+cate <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>, <span style="color:#ba2121">&#34;Matlab&#34;</span> ]
+df  <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;a&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">1000</span>),
+        <span style="color:#ba2121">&#34;b&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">1000</span>),
+        <span style="color:#ba2121">&#34;c&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">1000</span>),
+        <span style="color:#ba2121">&#34;d&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">1000</span>),
+        <span style="color:#ba2121">&#34;e&#34;</span>: [cate[np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint(<span style="color:#666">0</span>,<span style="color:#666">3</span>)] <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">1000</span>)]
+    }
+)
+df<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1.172136</td>
+      <td>2.051149</td>
+      <td>0.873085</td>
+      <td>-0.282962</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.170465</td>
+      <td>-0.478174</td>
+      <td>0.064987</td>
+      <td>-0.430026</td>
+      <td>Py</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.118497</td>
+      <td>0.764664</td>
+      <td>0.536967</td>
+      <td>-0.082693</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.723871</td>
+      <td>0.640578</td>
+      <td>-0.229919</td>
+      <td>0.991052</td>
+      <td>Py</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.076573</td>
+      <td>0.357888</td>
+      <td>-1.142489</td>
+      <td>0.934957</td>
+      <td>R</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>The <strong>info method</strong> (<code>.info()</code>) displays the names of columns, the data types they contain, and whether they have any missing values.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df<span style="color:#666">.</span>info()
+</code></pre></div><pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 1000 entries, 0 to 999
+Data columns (total 5 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   a       1000 non-null   float64
+ 1   b       1000 non-null   float64
+ 2   c       1000 non-null   float64
+ 3   d       1000 non-null   float64
+ 4   e       1000 non-null   object 
+dtypes: float64(4), object(1)
+memory usage: 39.2+ KB
+</code></pre>
+<p>A DataFrame&rsquo;s <strong>shape attribute</strong> (<code>.shape</code>) contains a tuple that holds the number of rows followed by the number of columns.</p>
+<blockquote>
+<p>Notice: shape is an attribute instead of a method, you write it <strong>without parentheses</strong>.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df<span style="color:#666">.</span>shape
+</code></pre></div><pre><code>(1000, 5)
+</code></pre>
+<p>The <strong>describe method</strong> (<code>.describe()</code>) computes some summary statistics for numerical columns, like mean and median. &ldquo;count&rdquo; is the number of non-missing values in each column.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df<span style="color:#666">.</span>describe()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.000344</td>
+      <td>0.002620</td>
+      <td>0.000161</td>
+      <td>-0.017356</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.994638</td>
+      <td>0.997447</td>
+      <td>1.005753</td>
+      <td>0.988075</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-3.625356</td>
+      <td>-3.868120</td>
+      <td>-3.627746</td>
+      <td>-4.127387</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.657855</td>
+      <td>-0.654089</td>
+      <td>-0.684824</td>
+      <td>-0.687108</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.026767</td>
+      <td>0.023429</td>
+      <td>-0.005229</td>
+      <td>-0.002055</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.649783</td>
+      <td>0.667233</td>
+      <td>0.696990</td>
+      <td>0.651392</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.766836</td>
+      <td>3.202574</td>
+      <td>3.020571</td>
+      <td>3.019016</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>DataFrames consist of three different components, accessible using attributes. The <strong>values attribute</strong> (<code>.value</code>), as you might expect, contains the data values in a 2-dimensional NumPy array.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000">print</span>(df<span style="color:#666">.</span>values)
+</code></pre></div><pre><code>[[-1.1721357672501687 2.051149175001613 0.8730845444425417
+  -0.2829622927958 'R']
+ [0.17046505093485348 -0.47817377411751383 0.0649866820973667
+  -0.4300264491808214 'Py']
+ [2.1184968617007476 0.7646639337499493 0.5369672045498988
+  -0.08269255233146043 'Matlab']
+ ...
+ [0.426522629732619 0.4345608969061307 -0.1426825637011513
+  -0.10519507894863925 'Matlab']
+ [-0.6569331318513875 -0.856828242229444 -0.932854764371868
+  -0.900709374857083 'Matlab']
+ [0.9495204746243522 1.0195373445242275 -1.0270316426040502
+  0.3038939091613208 'Matlab']]
+</code></pre>
+<p>The other two components of a DataFrame are labels for columns and rows. The <strong>columns attribute</strong> (<code>.columns</code>) contains column names, and the <strong>index attribute</strong> (<code>.index</code>) contains row numbers or row names.</p>
+<blockquote>
+<p>Be careful, since row labels are stored in dot-index, not in dot-rows. Notice that these are Index objects.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000">print</span>(df<span style="color:#666">.</span>columns)
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>index)
+</code></pre></div><pre><code>Index(['a', 'b', 'c', 'd', 'e'], dtype='object')
+RangeIndex(start=0, stop=1000, step=1)
+</code></pre>
+<h2 id="12-sorting-and-subsetting">1.2 Sorting and subsetting</h2>
+<h3 id="sorting">sorting</h3>
+<p>The first thing you can do is change the order of the rows by sorting them so that the most interesting data is at the top of the DataFrame. You can sort rows using the <strong>sort_values method</strong> :</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sort_values(
+    by,
+    axis<span style="color:#666">=</span><span style="color:#666">0</span>,
+    ascending<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+    inplace<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+)
+</code></pre></div><p>Setting the ascending argument to False will sort the data from largest to smallest.  Setting argument <code>inplace=True</code> will change the DataFrame perpetually when Applying sort_values method on it.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df<span style="color:#666">.</span>sort_values(
+    by<span style="color:#666">=</span> <span style="color:#ba2121">&#34;b&#34;</span>,
+    ascending<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    inplace<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>
+)
+df<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>398</th>
+      <td>-0.431660</td>
+      <td>3.202574</td>
+      <td>-0.314291</td>
+      <td>-0.186943</td>
+      <td>Py</td>
+    </tr>
+    <tr>
+      <th>825</th>
+      <td>-0.159995</td>
+      <td>2.943859</td>
+      <td>-1.034372</td>
+      <td>0.252384</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>531</th>
+      <td>0.650551</td>
+      <td>2.872788</td>
+      <td>-0.193481</td>
+      <td>0.267928</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>0.030544</td>
+      <td>2.829655</td>
+      <td>-1.549369</td>
+      <td>0.752019</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>-0.959370</td>
+      <td>2.672384</td>
+      <td>-1.030693</td>
+      <td>-2.267169</td>
+      <td>R</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>We can sort by multiple variables by passing a <strong>list of column names</strong> to argument <code>by</code>. To change the direction values are sorted in, pass a list to the ascending argument to specify which direction sorting should be done for each variable.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df<span style="color:#666">.</span>sort_values(
+    by<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;c&#34;</span>, <span style="color:#ba2121">&#34;d&#34;</span>],
+    ascending<span style="color:#666">=</span>[<span style="color:#008000;font-weight:bold">True</span>, <span style="color:#008000;font-weight:bold">False</span>]
+)<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>363</th>
+      <td>-0.768857</td>
+      <td>0.027611</td>
+      <td>-3.627746</td>
+      <td>1.432825</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>976</th>
+      <td>0.385393</td>
+      <td>-1.643112</td>
+      <td>-3.006845</td>
+      <td>0.305332</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>877</th>
+      <td>0.708099</td>
+      <td>-0.842795</td>
+      <td>-2.967742</td>
+      <td>-0.292479</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>985</th>
+      <td>0.868211</td>
+      <td>0.665344</td>
+      <td>-2.858335</td>
+      <td>1.316567</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>500</th>
+      <td>-2.097605</td>
+      <td>-0.659382</td>
+      <td>-2.819653</td>
+      <td>0.071752</td>
+      <td>R</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>Here, we sort first by &ldquo;c&rdquo; from largest to smallest, then by &ldquo;d&rdquo; from smallest to largest.</p>
+<h3 id="subsetting-by-column">subsetting by column</h3>
+<p>We can subset column by two ways:</p>
+<ol>
+<li>the name of the DataFrame, followed by square brackets with a column name inside.</li>
+<li>the name of the DataFrame, followed by a dot with a column name.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000">print</span>(df[<span style="color:#ba2121">&#34;a&#34;</span>]<span style="color:#666">.</span>head())
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>a<span style="color:#666">.</span>head())
+</code></pre></div><pre><code>398   -0.431660
+825   -0.159995
+531    0.650551
+387    0.030544
+214   -0.959370
+Name: a, dtype: float64
+398   -0.431660
+825   -0.159995
+531    0.650551
+387    0.030544
+214   -0.959370
+Name: a, dtype: float64
+</code></pre>
+<p>To select multiple columns, you need two pairs of square brackets.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[[<span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;b&#34;</span>]]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>398</th>
+      <td>-0.431660</td>
+      <td>3.202574</td>
+    </tr>
+    <tr>
+      <th>825</th>
+      <td>-0.159995</td>
+      <td>2.943859</td>
+    </tr>
+    <tr>
+      <th>531</th>
+      <td>0.650551</td>
+      <td>2.872788</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>0.030544</td>
+      <td>2.829655</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>-0.959370</td>
+      <td>2.672384</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>In this code, the inner and outer square brackets are performing different tasks. The outer square brackets are responsible for subsetting the DataFrame, and the inner square brackets are creating a list of column names to subset. This means you could provide a separate list of column names as a variable and then use that list to perform the same subsetting.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">subset <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;b&#34;</span>]
+df[subset]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>398</th>
+      <td>-0.431660</td>
+      <td>3.202574</td>
+    </tr>
+    <tr>
+      <th>825</th>
+      <td>-0.159995</td>
+      <td>2.943859</td>
+    </tr>
+    <tr>
+      <th>531</th>
+      <td>0.650551</td>
+      <td>2.872788</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>0.030544</td>
+      <td>2.829655</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>-0.959370</td>
+      <td>2.672384</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="subsetting-by-row">subsetting by row</h3>
+<p>There are lots of different ways to subset rows. The most common way to do this is by creating a <strong>logical condition</strong> to filter against, which is called mask Filter.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[df<span style="color:#666">.</span>a <span style="color:#666">&gt;</span> <span style="color:#666">0</span>]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>531</th>
+      <td>0.650551</td>
+      <td>2.872788</td>
+      <td>-0.193481</td>
+      <td>0.267928</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>0.030544</td>
+      <td>2.829655</td>
+      <td>-1.549369</td>
+      <td>0.752019</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>845</th>
+      <td>1.108394</td>
+      <td>2.650719</td>
+      <td>-0.657826</td>
+      <td>0.442141</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>968</th>
+      <td>0.306394</td>
+      <td>2.610860</td>
+      <td>-0.660540</td>
+      <td>0.341361</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>445</th>
+      <td>1.375566</td>
+      <td>2.547500</td>
+      <td>-0.977935</td>
+      <td>-0.600358</td>
+      <td>R</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>To subset the rows that meet multiple conditions, you can combine conditions using <strong>logical operators</strong>, such as the <code>&amp;, |, !</code>, etc.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[
+    (df<span style="color:#666">.</span>a <span style="color:#666">&gt;</span> df<span style="color:#666">.</span>b) <span style="color:#666">&amp;</span>
+    (df<span style="color:#666">.</span>c <span style="color:#666">&gt;</span> df<span style="color:#666">.</span>d)
+]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>685</th>
+      <td>2.005725</td>
+      <td>1.808596</td>
+      <td>0.242737</td>
+      <td>-0.707237</td>
+      <td>Py</td>
+    </tr>
+    <tr>
+      <th>615</th>
+      <td>1.821178</td>
+      <td>1.712322</td>
+      <td>-0.414216</td>
+      <td>-1.859492</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>962</th>
+      <td>2.475041</td>
+      <td>1.586639</td>
+      <td>0.993200</td>
+      <td>-2.121185</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>566</th>
+      <td>2.409229</td>
+      <td>1.359745</td>
+      <td>1.166001</td>
+      <td>0.051350</td>
+      <td>Matlab</td>
+    </tr>
+    <tr>
+      <th>463</th>
+      <td>1.590993</td>
+      <td>1.343280</td>
+      <td>1.289821</td>
+      <td>0.690417</td>
+      <td>R</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>If you want to filter on multiple values of a categorical variable, the easiest way is to use the <strong>isin method</strong> (<code>.isin()</code>) This takes in a <strong>list</strong> of values to filter for.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df<span style="color:#666">.</span>e<span style="color:#666">.</span>isin([<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>])<span style="color:#666">.</span>head()
+</code></pre></div><pre><code>398     True
+825    False
+531    False
+387     True
+214     True
+Name: e, dtype: bool
+</code></pre>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[
+    df<span style="color:#666">.</span>e<span style="color:#666">.</span>isin([<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>])
+]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>398</th>
+      <td>-0.431660</td>
+      <td>3.202574</td>
+      <td>-0.314291</td>
+      <td>-0.186943</td>
+      <td>Py</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>0.030544</td>
+      <td>2.829655</td>
+      <td>-1.549369</td>
+      <td>0.752019</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>-0.959370</td>
+      <td>2.672384</td>
+      <td>-1.030693</td>
+      <td>-2.267169</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>968</th>
+      <td>0.306394</td>
+      <td>2.610860</td>
+      <td>-0.660540</td>
+      <td>0.341361</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>487</th>
+      <td>-1.026339</td>
+      <td>2.588706</td>
+      <td>0.388510</td>
+      <td>-1.321296</td>
+      <td>R</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="13-new-columns">1.3 New columns</h2>
+<p>On the left-hand side of the equals, we use square brackets with the name of the new column we want to create. On the right-hand side, we have the calculation. Notice that both the existing column and the new column we just created are in the DataFrame.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[<span style="color:#ba2121">&#34;a*b/c&#34;</span>] <span style="color:#666">=</span> (df[<span style="color:#ba2121">&#34;a&#34;</span>] <span style="color:#666">*</span> df[<span style="color:#ba2121">&#34;b&#34;</span>]) <span style="color:#666">/</span> df[<span style="color:#ba2121">&#34;c&#34;</span>]
+df<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+      <th>d</th>
+      <th>e</th>
+      <th>a*b/c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>398</th>
+      <td>-0.431660</td>
+      <td>3.202574</td>
+      <td>-0.314291</td>
+      <td>-0.186943</td>
+      <td>Py</td>
+      <td>4.398544</td>
+    </tr>
+    <tr>
+      <th>825</th>
+      <td>-0.159995</td>
+      <td>2.943859</td>
+      <td>-1.034372</td>
+      <td>0.252384</td>
+      <td>Matlab</td>
+      <td>0.455352</td>
+    </tr>
+    <tr>
+      <th>531</th>
+      <td>0.650551</td>
+      <td>2.872788</td>
+      <td>-0.193481</td>
+      <td>0.267928</td>
+      <td>Matlab</td>
+      <td>-9.659306</td>
+    </tr>
+    <tr>
+      <th>387</th>
+      <td>0.030544</td>
+      <td>2.829655</td>
+      <td>-1.549369</td>
+      <td>0.752019</td>
+      <td>R</td>
+      <td>-0.055783</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>-0.959370</td>
+      <td>2.672384</td>
+      <td>-1.030693</td>
+      <td>-2.267169</td>
+      <td>R</td>
+      <td>2.487455</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>The real power of pandas comes in when you combine all the skills you&rsquo;ve learned so far. for example.</p>
+<ul>
+<li>First,  we select all cases that a&rsquo;s value is grater than 0;</li>
+<li>Secondly, we sort the column a*b/c from the largest to the smallest;</li>
+<li>Finally, we select the columns we&rsquo;re interested in:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[df<span style="color:#666">.</span>a <span style="color:#666">&gt;</span> <span style="color:#666">0</span>]<span style="color:#666">.</span>sort_values(by<span style="color:#666">=</span><span style="color:#ba2121">&#34;a*b/c&#34;</span>, ascending<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>)[[<span style="color:#ba2121">&#34;d&#34;</span>, <span style="color:#ba2121">&#34;a*b/c&#34;</span>]]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>d</th>
+      <th>a*b/c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5</th>
+      <td>-1.220885</td>
+      <td>109.336611</td>
+    </tr>
+    <tr>
+      <th>360</th>
+      <td>-0.417578</td>
+      <td>79.057749</td>
+    </tr>
+    <tr>
+      <th>217</th>
+      <td>-0.054230</td>
+      <td>38.692726</td>
+    </tr>
+    <tr>
+      <th>698</th>
+      <td>0.511448</td>
+      <td>34.976581</td>
+    </tr>
+    <tr>
+      <th>749</th>
+      <td>-0.721838</td>
+      <td>28.953417</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h1 id="2-aggregating-dataframes">2. Aggregating DataFrames</h1>
+<h2 id="21-summary-statistics">2.1 Summary statistics</h2>
+<h3 id="summarizing-numerical-data">Summarizing numerical data</h3>
+<p>One of the most common summary statistics for numeric data is the <strong>mean</strong> You can calculate the mean of a column by selecting the column with square brackets and calling <code>.mean()</code>:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[<span style="color:#ba2121">&#34;a&#34;</span>]<span style="color:#666">.</span>mean()
+</code></pre></div><pre><code>-0.0003441862571331211
+</code></pre>
+<p>There are lots of other summary statistics that you can compute on columns, like <code>.median()</code> and <code>.mode()</code>, <code>.min()</code> and <code>.max()</code>, and <code>.var()</code> and <code>.std()</code> . You can also take <code>.sum()</code> and calculate <code>.quantile()</code>. You can also get summary statistics for date columns.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Crate the datetime colum </span>
+rng <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint
+df[<span style="color:#ba2121">&#34;date&#34;</span>] <span style="color:#666">=</span> [
+    <span style="color:#ba2121">&#34;</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#ba2121">-</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#ba2121">-</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#ba2121">&#34;</span><span style="color:#666">.</span>format(rng(<span style="color:#666">1950</span>, <span style="color:#666">2023</span>), rng(<span style="color:#666">1</span>, <span style="color:#666">13</span>), rng(<span style="color:#666">1</span>, <span style="color:#666">30</span>)) <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">1000</span>) 
+]
+
+<span style="color:#008000">print</span>(
+    df<span style="color:#666">.</span>date<span style="color:#666">.</span>max(), 
+    <span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#34;</span>,
+    df<span style="color:#666">.</span>date<span style="color:#666">.</span>min()
+)
+</code></pre></div><pre><code>2022-8-21 
+ 1950-1-4
+</code></pre>
+<h3 id="agg-method"><code>.agg()</code> method</h3>
+<p>The aggregate, or <strong>agg method</strong> allows you to compute custom summary statistics. Here, we create a function called <code>pct30</code> that computes the thirtieth percentile of a DataFrame column.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">pct30</span>(col):
+    <span style="color:#008000;font-weight:bold">return</span> col<span style="color:#666">.</span>quantile(<span style="color:#666">0.3</span>)
+</code></pre></div><p>Now we can subset the column <code>a</code> and call <code>.agg()</code>, passing in the <strong>name</strong> of our function, <code>pct30</code>. It gives us the thirtieth percentile of the datas.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[<span style="color:#ba2121">&#34;a&#34;</span>]<span style="color:#666">.</span>agg(pct30)
+</code></pre></div><pre><code>-0.5187773240903909
+</code></pre>
+<p>agg can also be used on more than one column. By selecting the columns <code>a</code> and <code>b</code> before calling agg, we get the thirtieth percentile for both columns.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[[<span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;b&#34;</span>]]<span style="color:#666">.</span>agg(pct30)
+</code></pre></div><pre><code>a   -0.518777
+b   -0.492294
+dtype: float64
+</code></pre>
+<p>We can also use agg to get multiple summary statistics at once, by passing a <strong>list</strong> of functions into agg:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[[<span style="color:#ba2121">&#34;a&#34;</span>, <span style="color:#ba2121">&#34;b&#34;</span>]]<span style="color:#666">.</span>agg([<span style="color:#008000">sum</span>, np<span style="color:#666">.</span>mean, np<span style="color:#666">.</span>median, <span style="color:#008000">max</span>, <span style="color:#008000">min</span>, pct30])
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>sum</th>
+      <td>-0.344186</td>
+      <td>2.619994</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.000344</td>
+      <td>0.002620</td>
+    </tr>
+    <tr>
+      <th>median</th>
+      <td>0.026767</td>
+      <td>0.023429</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.766836</td>
+      <td>3.202574</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-3.625356</td>
+      <td>-3.868120</td>
+    </tr>
+    <tr>
+      <th>pct30</th>
+      <td>-0.518777</td>
+      <td>-0.492294</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="cumulative-statistics">Cumulative statistics</h3>
+<p>pandas also has methods for other cumulative statistics, such as the cumulative maximum (<code>.cumsum()</code>), cumulative minimum (<code>.cummin()</code>), and the cumulative product (<code>.cumprod()</code>). These all return an entire column of a DataFrame, rather than a single number.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df[<span style="color:#ba2121">&#34;a&#34;</span>]<span style="color:#666">.</span>cumsum
+</code></pre></div><pre><code>&lt;bound method Series.cumsum of 398   -0.431660
+825   -0.159995
+531    0.650551
+387    0.030544
+214   -0.959370
+         ...   
+603   -0.467711
+492    1.587120
+6     -0.269957
+665    1.180349
+207   -0.833932
+Name: a, Length: 1000, dtype: float64&gt;
+</code></pre>
+<h2 id="22-counting">2.2 Counting</h2>
+<h3 id="dropping-duplicate-items">Dropping duplicate items</h3>
+<p>We can do this using the <strong>drop_duplicates method</strong> (<code>.drop_duplicates()</code>). It takes an argument, <code>subset</code>, which is the column we want to find our duplicates based on. we now crate a DataFrame.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lang <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>, <span style="color:#ba2121">&#34;Matlab&#34;</span>, <span style="color:#ba2121">&#34;Julia&#34;</span>]
+vers <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;1&#34;</span>, <span style="color:#ba2121">&#34;2&#34;</span>, <span style="color:#ba2121">&#34;3&#34;</span>]
+uslc <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;US&#34;</span>, <span style="color:#ba2121">&#34;CN&#34;</span>, <span style="color:#ba2121">&#34;DE&#34;</span>]
+rng <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint
+
+df2 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;lang&#34;</span>: [lang[rng(<span style="color:#666">0</span>, <span style="color:#008000">len</span>(lang))] <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">2000</span>)],
+        <span style="color:#ba2121">&#34;vers&#34;</span>: [vers[rng(<span style="color:#666">0</span>, <span style="color:#008000">len</span>(vers))] <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">2000</span>)],
+        <span style="color:#ba2121">&#34;uslc&#34;</span>: [uslc[rng(<span style="color:#666">0</span>, <span style="color:#008000">len</span>(uslc))] <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">2000</span>)],
+        <span style="color:#ba2121">&#34;hour&#34;</span>: [rng(<span style="color:#666">100</span>, <span style="color:#666">1000</span>) <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">2000</span>)]
+    }
+)
+df2<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>R</td>
+      <td>1</td>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>R</td>
+      <td>2</td>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>R</td>
+      <td>2</td>
+      <td>US</td>
+      <td>415</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Julia</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Py</td>
+      <td>1</td>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>drop the duplicate language items:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>drop_duplicates(subset<span style="color:#666">=</span><span style="color:#ba2121">&#34;lang&#34;</span>)
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Py</td>
+      <td>2</td>
+      <td>CN</td>
+      <td>362</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Matlab</td>
+      <td>2</td>
+      <td>US</td>
+      <td>116</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Julia</td>
+      <td>2</td>
+      <td>US</td>
+      <td>996</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>R</td>
+      <td>3</td>
+      <td>US</td>
+      <td>211</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>We found that this would remove all other vers and uslc of each lang.
+Because we often have two different items with the same name (e.g. Py 2 and Py 3, which we want to take apart), we&rsquo;ll need to consider more columns than just one when dropping duplicates. To base our duplicate dropping on multiple columns, we can pass a <strong>list</strong> of column names to the <code>subset</code> argument.</p>
+<p>If we want to see complete information about lang and vers:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>drop_duplicates(subset<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>])<span style="color:#666">.</span>sort_values(by<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>])
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11</th>
+      <td>Julia</td>
+      <td>1</td>
+      <td>DE</td>
+      <td>239</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Julia</td>
+      <td>2</td>
+      <td>US</td>
+      <td>996</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Julia</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>958</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Matlab</td>
+      <td>1</td>
+      <td>CN</td>
+      <td>295</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Matlab</td>
+      <td>2</td>
+      <td>US</td>
+      <td>116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Matlab</td>
+      <td>3</td>
+      <td>US</td>
+      <td>392</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Py</td>
+      <td>1</td>
+      <td>CN</td>
+      <td>712</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Py</td>
+      <td>2</td>
+      <td>CN</td>
+      <td>362</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>US</td>
+      <td>136</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>R</td>
+      <td>1</td>
+      <td>CN</td>
+      <td>808</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>R</td>
+      <td>2</td>
+      <td>US</td>
+      <td>742</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>R</td>
+      <td>3</td>
+      <td>US</td>
+      <td>211</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="value-counts">value counts</h3>
+<p>when finish droping, we can start counting. To count the elements of some column, we&rsquo;ll subset the column from the DataFrame and use the <strong>value_counts method</strong>. We can also use the <code>sort</code> argument to get the breeds with the biggest counts on top.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>uslc<span style="color:#666">.</span>value_counts(sort<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+</code></pre></div><pre><code>CN    701
+US    674
+DE    625
+Name: uslc, dtype: int64
+</code></pre>
+<p>The <code>normalize</code> argument can be used to turn the counts into proportions of the total. 25% of the dogs that go to this vet are Labradors.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>lang<span style="color:#666">.</span>value_counts(sort<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, normalize<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+</code></pre></div><pre><code>Matlab    0.2635
+Julia     0.2525
+Py        0.2505
+R         0.2335
+Name: lang, dtype: float64
+</code></pre>
+<h2 id="23-grouped-summary-statistics">2.3 Grouped summary statistics</h2>
+<p>While computing summary statistics of entire columns may be useful, you can gain many insights from summaries of individual groups. That&rsquo;s where the groupby method comes in, we can firstly drop the duplicated rows of the column, and then subset rows from DataFrame manually, and take the mean of each. like :</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df[df[<span style="color:#ba2121">&#34;col1&#34;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#34;cate1&#34;</span>][<span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>mean()
+df[df[<span style="color:#ba2121">&#34;col1&#34;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#34;cate2&#34;</span>][<span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>mean()
+df[df[<span style="color:#ba2121">&#34;col1&#34;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#34;cate3&#34;</span>][<span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>mean()
+<span style="color:#666">...</span>
+</code></pre></div><p>But that&rsquo;s a lot of work, that&rsquo;s where the <strong>groupby method</strong> (<code>.groupby()</code>) comes in. We can group by the DataFrame just in one line of code.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;lang&#34;</span>)[<span style="color:#ba2121">&#34;hour&#34;</span>]<span style="color:#666">.</span>max()
+</code></pre></div><pre><code>lang
+Julia     999
+Matlab    999
+Py        997
+R         999
+Name: hour, dtype: int64
+</code></pre>
+<p>Just like with ungrouped summary statistics, we can use the agg method to get multiple statistics. Here, we pass a list of functions into agg after grouping by lang, it gives us the minimum, maximum, and sum user numbers of the different language :</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;lang&#34;</span>)[<span style="color:#ba2121">&#34;hour&#34;</span>]<span style="color:#666">.</span>agg([<span style="color:#008000">max</span>, <span style="color:#008000">min</span>, np<span style="color:#666">.</span>mean, np<span style="color:#666">.</span>median, <span style="color:#008000">sum</span>])
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>max</th>
+      <th>min</th>
+      <th>mean</th>
+      <th>median</th>
+      <th>sum</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Julia</th>
+      <td>999</td>
+      <td>105</td>
+      <td>543.550308</td>
+      <td>528</td>
+      <td>264709</td>
+    </tr>
+    <tr>
+      <th>Matlab</th>
+      <td>999</td>
+      <td>102</td>
+      <td>576.159596</td>
+      <td>588</td>
+      <td>285199</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>997</td>
+      <td>100</td>
+      <td>548.984762</td>
+      <td>555</td>
+      <td>288217</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>999</td>
+      <td>108</td>
+      <td>552.338742</td>
+      <td>543</td>
+      <td>272303</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>You can also group by multiple columns and calculate summary statistics</p>
+<blockquote>
+<p>remember pass the columns names into a list, just like the syntax of agg method.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>groupby([<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>, <span style="color:#ba2121">&#34;uslc&#34;</span>])[<span style="color:#ba2121">&#34;hour&#34;</span>]<span style="color:#666">.</span>agg([<span style="color:#008000">max</span>, <span style="color:#008000">min</span>, np<span style="color:#666">.</span>mean, np<span style="color:#666">.</span>median, <span style="color:#008000">sum</span>])
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>max</th>
+      <th>min</th>
+      <th>mean</th>
+      <th>median</th>
+      <th>sum</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="9" valign="top">Julia</th>
+      <th rowspan="3" valign="top">1</th>
+      <th>CN</th>
+      <td>998</td>
+      <td>109</td>
+      <td>560.240000</td>
+      <td>522.0</td>
+      <td>28012</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>999</td>
+      <td>130</td>
+      <td>583.500000</td>
+      <td>546.5</td>
+      <td>25674</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>929</td>
+      <td>184</td>
+      <td>553.037736</td>
+      <td>540.0</td>
+      <td>29311</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">2</th>
+      <th>CN</th>
+      <td>988</td>
+      <td>113</td>
+      <td>551.365385</td>
+      <td>548.0</td>
+      <td>28671</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>995</td>
+      <td>105</td>
+      <td>508.656250</td>
+      <td>434.0</td>
+      <td>32554</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>996</td>
+      <td>116</td>
+      <td>597.857143</td>
+      <td>610.5</td>
+      <td>33480</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">3</th>
+      <th>CN</th>
+      <td>994</td>
+      <td>107</td>
+      <td>508.303571</td>
+      <td>449.5</td>
+      <td>28465</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>962</td>
+      <td>110</td>
+      <td>534.296296</td>
+      <td>472.5</td>
+      <td>28852</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>999</td>
+      <td>111</td>
+      <td>511.896552</td>
+      <td>511.5</td>
+      <td>29690</td>
+    </tr>
+    <tr>
+      <th rowspan="9" valign="top">Matlab</th>
+      <th rowspan="3" valign="top">1</th>
+      <th>CN</th>
+      <td>991</td>
+      <td>153</td>
+      <td>526.630435</td>
+      <td>481.5</td>
+      <td>24225</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>991</td>
+      <td>122</td>
+      <td>633.083333</td>
+      <td>652.5</td>
+      <td>30388</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>982</td>
+      <td>109</td>
+      <td>604.629630</td>
+      <td>629.0</td>
+      <td>32650</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">2</th>
+      <th>CN</th>
+      <td>995</td>
+      <td>105</td>
+      <td>589.345455</td>
+      <td>582.0</td>
+      <td>32414</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>999</td>
+      <td>111</td>
+      <td>561.791667</td>
+      <td>575.5</td>
+      <td>26966</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>998</td>
+      <td>102</td>
+      <td>543.333333</td>
+      <td>528.0</td>
+      <td>32600</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">3</th>
+      <th>CN</th>
+      <td>995</td>
+      <td>104</td>
+      <td>515.175439</td>
+      <td>526.0</td>
+      <td>29365</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>996</td>
+      <td>119</td>
+      <td>596.092308</td>
+      <td>632.0</td>
+      <td>38746</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>989</td>
+      <td>105</td>
+      <td>610.403226</td>
+      <td>662.0</td>
+      <td>37845</td>
+    </tr>
+    <tr>
+      <th rowspan="9" valign="top">Py</th>
+      <th rowspan="3" valign="top">1</th>
+      <th>CN</th>
+      <td>988</td>
+      <td>101</td>
+      <td>604.046875</td>
+      <td>661.0</td>
+      <td>38659</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>979</td>
+      <td>100</td>
+      <td>472.193548</td>
+      <td>399.0</td>
+      <td>29276</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>977</td>
+      <td>113</td>
+      <td>544.900000</td>
+      <td>553.5</td>
+      <td>32694</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">2</th>
+      <th>CN</th>
+      <td>969</td>
+      <td>152</td>
+      <td>486.212766</td>
+      <td>491.0</td>
+      <td>22852</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>986</td>
+      <td>137</td>
+      <td>531.750000</td>
+      <td>502.5</td>
+      <td>29778</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>996</td>
+      <td>103</td>
+      <td>584.375000</td>
+      <td>624.5</td>
+      <td>32725</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">3</th>
+      <th>CN</th>
+      <td>991</td>
+      <td>125</td>
+      <td>610.118644</td>
+      <td>647.0</td>
+      <td>35997</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>975</td>
+      <td>105</td>
+      <td>490.274194</td>
+      <td>483.5</td>
+      <td>30397</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>997</td>
+      <td>128</td>
+      <td>607.440678</td>
+      <td>631.0</td>
+      <td>35839</td>
+    </tr>
+    <tr>
+      <th rowspan="9" valign="top">R</th>
+      <th rowspan="3" valign="top">1</th>
+      <th>CN</th>
+      <td>984</td>
+      <td>131</td>
+      <td>571.730159</td>
+      <td>542.0</td>
+      <td>36019</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>967</td>
+      <td>134</td>
+      <td>555.465517</td>
+      <td>562.5</td>
+      <td>32217</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>999</td>
+      <td>109</td>
+      <td>505.754098</td>
+      <td>523.0</td>
+      <td>30851</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">2</th>
+      <th>CN</th>
+      <td>947</td>
+      <td>120</td>
+      <td>566.950820</td>
+      <td>572.0</td>
+      <td>34584</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>986</td>
+      <td>132</td>
+      <td>542.872340</td>
+      <td>496.0</td>
+      <td>25515</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>988</td>
+      <td>138</td>
+      <td>597.729167</td>
+      <td>627.0</td>
+      <td>28691</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">3</th>
+      <th>CN</th>
+      <td>990</td>
+      <td>108</td>
+      <td>548.288889</td>
+      <td>498.0</td>
+      <td>24673</td>
+    </tr>
+    <tr>
+      <th>DE</th>
+      <td>970</td>
+      <td>110</td>
+      <td>570.150943</td>
+      <td>563.0</td>
+      <td>30218</td>
+    </tr>
+    <tr>
+      <th>US</th>
+      <td>997</td>
+      <td>120</td>
+      <td>518.157895</td>
+      <td>500.0</td>
+      <td>29535</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="pivot-tables">Pivot tables</h3>
+<p>we grouped the df2 by <code>lang</code> and calculated their mean <code>hour</code>. We can do the same thing using the pivot_table method:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">DataFrame<span style="color:#666">.</span>pivot_table(
+    values<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    columns<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    aggfunc<span style="color:#666">=</span><span style="color:#ba2121">&#39;mean&#39;</span>, 
+    fill_value<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    margins<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, 
+    dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, 
+    margins_name<span style="color:#666">=</span><span style="color:#ba2121">&#39;All&#39;</span>
+)
+</code></pre></div><ul>
+<li>The <code>values</code> argument is the column that you want to summarize</li>
+<li>the <code>index</code> column is the column that you want to group by.</li>
+<li>If we want a different summary statistic, we can use the <code>aggfunc</code> argument and pass it a function, By default, pivot_table takes the <strong>mean</strong> value for each group.; To get multiple summary statistics at a time, we can pass a list of functions to the <code>aggfunc</code> argument.</li>
+<li>To group by two variables, we can pass a second variable name into the <code>columns</code> argument.</li>
+</ul>
+<blockquote>
+<p>you can set columns in a list and send it to <code>index</code> or <code>columns</code> arguments.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>pivot_table(
+    values<span style="color:#666">=</span><span style="color:#ba2121">&#34;hour&#34;</span>,
+    index<span style="color:#666">=</span><span style="color:#ba2121">&#34;lang&#34;</span>,
+    columns<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;vers&#34;</span>, <span style="color:#ba2121">&#34;uslc&#34;</span>],
+)
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead tr th {
+    text-align: left;
+}
+
+.dataframe thead tr:last-of-type th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>vers</th>
+      <th colspan="3" halign="left">1</th>
+      <th colspan="3" halign="left">2</th>
+      <th colspan="3" halign="left">3</th>
+    </tr>
+    <tr>
+      <th>uslc</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Julia</th>
+      <td>520.603448</td>
+      <td>553.153846</td>
+      <td>558.160714</td>
+      <td>566.450000</td>
+      <td>537.583333</td>
+      <td>594.666667</td>
+      <td>585.796296</td>
+      <td>560.238095</td>
+      <td>556.250000</td>
+    </tr>
+    <tr>
+      <th>Matlab</th>
+      <td>521.413043</td>
+      <td>567.775862</td>
+      <td>566.062500</td>
+      <td>548.824561</td>
+      <td>557.285714</td>
+      <td>542.683333</td>
+      <td>588.163636</td>
+      <td>526.254545</td>
+      <td>568.346154</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>518.173077</td>
+      <td>548.530612</td>
+      <td>561.109589</td>
+      <td>560.666667</td>
+      <td>539.654545</td>
+      <td>572.204545</td>
+      <td>549.142857</td>
+      <td>533.725806</td>
+      <td>522.714286</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>471.913793</td>
+      <td>520.266667</td>
+      <td>628.714286</td>
+      <td>521.958333</td>
+      <td>497.944444</td>
+      <td>552.734694</td>
+      <td>572.145455</td>
+      <td>547.822581</td>
+      <td>525.951613</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<ul>
+<li>Instead of having lots of missing values in our pivot table, we can have them filled in using the <code>fill_value </code>argument.</li>
+<li>If we set the <code>margins</code> argument to True, the last row and last column of the pivot table contain the mean of all the values in the column or row, not including the missing values that were filled in with Os.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2<span style="color:#666">.</span>pivot_table(
+    values<span style="color:#666">=</span><span style="color:#ba2121">&#34;hour&#34;</span>,
+    index<span style="color:#666">=</span><span style="color:#ba2121">&#34;lang&#34;</span>,
+    columns<span style="color:#666">=</span><span style="color:#ba2121">&#34;uslc&#34;</span>,
+    aggfunc<span style="color:#666">=</span>[np<span style="color:#666">.</span>mean, np<span style="color:#666">.</span>median, <span style="color:#008000">max</span>, <span style="color:#008000">min</span>],
+    margins<span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">True</span>
+)
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead tr th {
+    text-align: left;
+}
+
+.dataframe thead tr:last-of-type th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="4" halign="left">mean</th>
+      <th colspan="4" halign="left">median</th>
+      <th colspan="4" halign="left">max</th>
+      <th colspan="4" halign="left">min</th>
+    </tr>
+    <tr>
+      <th>uslc</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+      <th>All</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+      <th>All</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+      <th>All</th>
+      <th>CN</th>
+      <th>DE</th>
+      <th>US</th>
+      <th>All</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Julia</th>
+      <td>557.063953</td>
+      <td>550.365714</td>
+      <td>569.245283</td>
+      <td>558.575099</td>
+      <td>521.5</td>
+      <td>553.0</td>
+      <td>566.0</td>
+      <td>548</td>
+      <td>998</td>
+      <td>997</td>
+      <td>999</td>
+      <td>999</td>
+      <td>104</td>
+      <td>104</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>Matlab</th>
+      <td>554.537975</td>
+      <td>550.786982</td>
+      <td>558.037500</td>
+      <td>554.386037</td>
+      <td>563.5</td>
+      <td>562.0</td>
+      <td>567.5</td>
+      <td>562</td>
+      <td>999</td>
+      <td>994</td>
+      <td>990</td>
+      <td>999</td>
+      <td>102</td>
+      <td>104</td>
+      <td>105</td>
+      <td>102</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>541.633333</td>
+      <td>540.060241</td>
+      <td>548.386598</td>
+      <td>543.690196</td>
+      <td>524.0</td>
+      <td>516.5</td>
+      <td>540.0</td>
+      <td>526</td>
+      <td>986</td>
+      <td>993</td>
+      <td>988</td>
+      <td>993</td>
+      <td>105</td>
+      <td>113</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>521.074534</td>
+      <td>523.125000</td>
+      <td>565.625000</td>
+      <td>536.142857</td>
+      <td>513.0</td>
+      <td>519.5</td>
+      <td>541.5</td>
+      <td>524</td>
+      <td>994</td>
+      <td>996</td>
+      <td>998</td>
+      <td>998</td>
+      <td>101</td>
+      <td>101</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>543.790952</td>
+      <td>540.986880</td>
+      <td>559.707281</td>
+      <td>548.185000</td>
+      <td>530.0</td>
+      <td>533.5</td>
+      <td>547.0</td>
+      <td>538</td>
+      <td>999</td>
+      <td>997</td>
+      <td>999</td>
+      <td>999</td>
+      <td>101</td>
+      <td>101</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h1 id="3-slicing-and-indexing-dataframes">3. Slicing and Indexing DataFrames</h1>
+<h2 id="31-explicit-indexes">3.1 Explicit indexes</h2>
+<h3 id="setting-index">setting index</h3>
+<p>You can move a column from the body of the DataFrame to the index. This is called &ldquo;setting an index,&rdquo; and it uses the <strong>set_index method</strong> (<code>.set_index()</code>).</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_ind <span style="color:#666">=</span> df2<span style="color:#666">.</span>set_index(<span style="color:#ba2121">&#34;lang&#34;</span>)
+df_ind<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Julia</th>
+      <td>1</td>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>2</td>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>Julia</th>
+      <td>2</td>
+      <td>US</td>
+      <td>415</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>3</td>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>1</td>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>To undo what you just did, you can reset the index - that is, you remove it. This is done via <code>.reset_index()</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_reind <span style="color:#666">=</span> df_ind<span style="color:#666">.</span>reset_index()
+df_reind<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Julia</td>
+      <td>1</td>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Py</td>
+      <td>2</td>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Julia</td>
+      <td>2</td>
+      <td>US</td>
+      <td>415</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>R</td>
+      <td>1</td>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>reset_index has a <code>drop</code> argument that allows you to discard an index. Here, setting <code>drop=True</code> entirely removes the &ldquo;lang&rdquo; column.</p>
+<blockquote>
+<p>Note that <code>set_Index</code> and <code>reset_Index</code> are not <strong>inplace operations</strong>, which means df2 won&rsquo;t be changed.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_reind_d <span style="color:#666">=</span> df_ind<span style="color:#666">.</span>reset_index(drop<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+df_reind_d<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>US</td>
+      <td>415</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>Setting indexes makes subsetting code cleaner. Consider this example of subsetting for the rows where the &ldquo;lang&rdquo; is Py or R.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2[<span style="color:#ba2121">&#34;lang&#34;</span>] <span style="color:#666">=</span> [lang[rng(<span style="color:#666">0</span>, <span style="color:#008000">len</span>(lang))] <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">2000</span>)]
+
+df2[df2<span style="color:#666">.</span>lang<span style="color:#666">.</span>isin([<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>])]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>Py</td>
+      <td>2</td>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>R</td>
+      <td>1</td>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>R</td>
+      <td>3</td>
+      <td>US</td>
+      <td>948</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Py</td>
+      <td>1</td>
+      <td>US</td>
+      <td>144</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>Now, look at the equivalent when the &ldquo;lang&rdquo; are in the index. DataFrames have a subsetting method called <code>loc</code>, which filters on index values. Here you simply pass the &ldquo;Py&rdquo; and &ldquo;R&rdquo; to loc as a <strong>list</strong>. Much easier!</p>
+<blockquote>
+<p>Notice: there are two pairs of brackets.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_ind<span style="color:#666">.</span>loc[[<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>]]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Py</th>
+      <td>2</td>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>3</td>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>1</td>
+      <td>US</td>
+      <td>144</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>3</td>
+      <td>CN</td>
+      <td>774</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>2</td>
+      <td>US</td>
+      <td>131</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="multi-level-indexes">Multi-level indexes</h3>
+<p>You can include multiple columns in the index by passing a <strong>list</strong> of column names to set_index. There is an implication here that the inner level of index, in this case, &ldquo;vers&rdquo;, is nested inside the outer level, &ldquo;lang&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_muti_ind <span style="color:#666">=</span> df2<span style="color:#666">.</span>set_index([<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>])
+df_muti_ind<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Julia</th>
+      <th>1</th>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <th>2</th>
+      <td>US</td>
+      <td>629</td>
+    </tr>
+    <tr>
+      <th>Julia</th>
+      <th>2</th>
+      <td>US</td>
+      <td>415</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <th>3</th>
+      <td>CN</td>
+      <td>992</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <th>1</th>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="subset-multi-level-indexes">Subset Multi-level indexes</h3>
+<p>To take a subset of rows at the outer level index, you pass a <strong>list</strong> of index values to loc.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_muti_ind<span style="color:#666">.</span>loc[[<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;R&#34;</span>]]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">Julia</th>
+      <th>1</th>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>US</td>
+      <td>415</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>US</td>
+      <td>365</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DE</td>
+      <td>275</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DE</td>
+      <td>626</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>To subset on inner levels, you need to pass a <strong>list of tuples</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_muti_ind<span style="color:#666">.</span>loc[
+    [
+        (<span style="color:#ba2121">&#34;R&#34;</span>, <span style="color:#ba2121">&#34;1&#34;</span>),
+        (<span style="color:#ba2121">&#34;R&#34;</span>, <span style="color:#ba2121">&#34;2&#34;</span>),
+        (<span style="color:#ba2121">&#34;Py&#34;</span>, <span style="color:#ba2121">&#34;3&#34;</span>),
+    ]
+]<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">R</th>
+      <th>1</th>
+      <td>US</td>
+      <td>721</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CN</td>
+      <td>939</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>522</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>US</td>
+      <td>126</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>817</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="sorting-by-index-values">Sorting by index values</h3>
+<p>we can sort the rows of a DataFrame using <code>sort_values</code>. You can also sort by index values using <code>sort_index</code>. By default, it sorts all index levels from outer to inner, in ascending order.</p>
+<p>You can control the sorting by passing lists to the <code>level</code> and <code>ascending</code> arguments.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_muti_ind<span style="color:#666">.</span>sort_index(
+    level<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>],
+    ascending<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">R</th>
+      <th>3</th>
+      <td>US</td>
+      <td>361</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>US</td>
+      <td>913</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CN</td>
+      <td>116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>US</td>
+      <td>224</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>US</td>
+      <td>307</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="32-slicing-and-subsetting-with-loc-and-iloc">3.2 Slicing and subsetting with <code>.loc</code> and <code>.iloc</code></h2>
+<p>Slicing is a technique for selecting <strong>consecutive elements</strong> from objects.</p>
+<h3 id="slicing-lists">Slicing lists</h3>
+<p>To slice the list, you pass first and last positions separated by a colon into square brackets. Remember that Python positions start from zero, so 2 refers to the third element. Also remember that the last position is <strong>not included</strong> in the slice. If you want the slice to start from the beginning of the list, you can omit the zero.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ls <span style="color:#666">=</span> [lang[rng(<span style="color:#666">0</span>, <span style="color:#008000">len</span>(lang))] <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">10</span>)]
+ls
+</code></pre></div><pre><code>['R', 'Julia', 'Matlab', 'R', 'Julia', 'R', 'Py', 'Py', 'Matlab', 'R']
+</code></pre>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ls[<span style="color:#666">2</span>:<span style="color:#666">5</span>] <span style="color:#408080;font-style:italic"># the last position is not included in the slice</span>
+</code></pre></div><pre><code>['Matlab', 'R', 'Julia']
+</code></pre>
+<h3 id="slicing-by-dataframe-index">Slicing by DataFrame Index</h3>
+<p>You can also slice DataFrames, but first, you need to <strong>sort the index</strong> with sort_index.
+To slice rows at the <strong>outer</strong> level of an index, you call <code>.loc[]</code>, passing the first and last values separated by a colon.</p>
+<p>There are two differences compared to slicing lists.</p>
+<ol>
+<li>Rather than specifying row numbers, you specify index values.</li>
+<li>Secondly, notice that the final value is <strong>included</strong>.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_sort_id  <span style="color:#666">=</span> df_muti_ind<span style="color:#666">.</span>sort_index(
+    level<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>]
+)
+df_sort_id<span style="color:#666">.</span>loc[<span style="color:#ba2121">&#34;Julia&#34;</span>: <span style="color:#ba2121">&#34;Py&#34;</span>]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">Julia</th>
+      <th>1</th>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>US</td>
+      <td>911</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>209</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>544</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>862</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">Py</th>
+      <th>3</th>
+      <td>US</td>
+      <td>975</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CN</td>
+      <td>324</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CN</td>
+      <td>981</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DE</td>
+      <td>198</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CN</td>
+      <td>438</td>
+    </tr>
+  </tbody>
+</table>
+<p>1476 rows × 2 columns</p>
+</div>
+<p>The correct approach to slicing at <strong>inner</strong> index levels is to pass the first and last positions as <strong>tuples</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_sort_id<span style="color:#666">.</span>loc[
+    (<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;1&#34;</span>):
+    (<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;2&#34;</span>)
+]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="11" valign="top">Julia</th>
+      <th>1</th>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>US</td>
+      <td>911</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>209</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>544</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>862</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>US</td>
+      <td>583</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CN</td>
+      <td>767</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>US</td>
+      <td>762</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>DE</td>
+      <td>831</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>US</td>
+      <td>140</td>
+    </tr>
+  </tbody>
+</table>
+<p>312 rows × 2 columns</p>
+</div>
+<h3 id="slicing-columns">Slicing columns</h3>
+<p>Since DataFrames are two-dimensional objects, you can also slice columns. You do this by passing two arguments to <code>loc</code> ( splitted by a  comma).</p>
+<p>The simplest case involves subsetting columns but keeping all rows. To do this, pass a colon as the first argument to <code>loc</code>. As with slicing lists, a colon by itself means &ldquo;keep everything.&rdquo; The second argument takes <strong>column names</strong> as the first and last positions to slice on.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_sort_id<span style="color:#666">.</span>loc[
+    (<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;1&#34;</span>): (<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;3&#34;</span>) ,
+    <span style="color:#ba2121">&#34;uslc&#34;</span>: <span style="color:#ba2121">&#34;hour&#34;</span>
+]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="11" valign="top">Julia</th>
+      <th>1</th>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>US</td>
+      <td>911</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>209</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>544</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>862</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>US</td>
+      <td>300</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>US</td>
+      <td>491</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CN</td>
+      <td>684</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>US</td>
+      <td>468</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CN</td>
+      <td>212</td>
+    </tr>
+  </tbody>
+</table>
+<p>482 rows × 2 columns</p>
+</div>
+<h3 id="slicing-by-dates">Slicing by dates</h3>
+<p>An important use case of slicing is to subset DataFrames by a range of dates. To demonstrate this, let&rsquo;s set the date column as the index and sort by this index.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2[<span style="color:#ba2121">&#34;date&#34;</span>] <span style="color:#666">=</span> [
+    <span style="color:#ba2121">&#34;</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#ba2121">-</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#ba2121">-</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#ba2121">&#34;</span><span style="color:#666">.</span>format(rng(<span style="color:#666">2002</span>, <span style="color:#666">2023</span>), rng(<span style="color:#666">1</span>, <span style="color:#666">13</span>), rng(<span style="color:#666">1</span>, <span style="color:#666">29</span>)) <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">2000</span>)
+]
+df_date <span style="color:#666">=</span> df2<span style="color:#666">.</span>set_index(<span style="color:#ba2121">&#34;date&#34;</span>)<span style="color:#666">.</span>sort_index() <span style="color:#408080;font-style:italic"># often use `df.set_index(&#34;xxx&#34;).sort_index()` !!! </span>
+df_date<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2002-1-1</th>
+      <td>Julia</td>
+      <td>1</td>
+      <td>CN</td>
+      <td>792</td>
+    </tr>
+    <tr>
+      <th>2002-1-11</th>
+      <td>Py</td>
+      <td>1</td>
+      <td>US</td>
+      <td>263</td>
+    </tr>
+    <tr>
+      <th>2002-1-17</th>
+      <td>Julia</td>
+      <td>3</td>
+      <td>US</td>
+      <td>468</td>
+    </tr>
+    <tr>
+      <th>2002-1-21</th>
+      <td>R</td>
+      <td>2</td>
+      <td>CN</td>
+      <td>811</td>
+    </tr>
+    <tr>
+      <th>2002-1-26</th>
+      <td>Matlab</td>
+      <td>1</td>
+      <td>CN</td>
+      <td>817</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>You slice dates with the same syntax as other types. The first and last dates are passed as strings.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_date<span style="color:#666">.</span>loc[<span style="color:#ba2121">&#34;2018-01-01&#34;</span>: <span style="color:#ba2121">&#34;2019-01-01&#34;</span>]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-1-13</th>
+      <td>Matlab</td>
+      <td>2</td>
+      <td>CN</td>
+      <td>869</td>
+    </tr>
+    <tr>
+      <th>2018-1-27</th>
+      <td>Julia</td>
+      <td>2</td>
+      <td>DE</td>
+      <td>416</td>
+    </tr>
+    <tr>
+      <th>2018-10-17</th>
+      <td>Julia</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>818</td>
+    </tr>
+    <tr>
+      <th>2018-10-21</th>
+      <td>Julia</td>
+      <td>3</td>
+      <td>DE</td>
+      <td>851</td>
+    </tr>
+    <tr>
+      <th>2018-10-23</th>
+      <td>Matlab</td>
+      <td>2</td>
+      <td>US</td>
+      <td>741</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2018-9-17</th>
+      <td>R</td>
+      <td>1</td>
+      <td>US</td>
+      <td>363</td>
+    </tr>
+    <tr>
+      <th>2018-9-20</th>
+      <td>Julia</td>
+      <td>1</td>
+      <td>US</td>
+      <td>936</td>
+    </tr>
+    <tr>
+      <th>2018-9-21</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>537</td>
+    </tr>
+    <tr>
+      <th>2018-9-23</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>924</td>
+    </tr>
+    <tr>
+      <th>2018-9-28</th>
+      <td>Py</td>
+      <td>2</td>
+      <td>CN</td>
+      <td>877</td>
+    </tr>
+  </tbody>
+</table>
+<p>91 rows × 4 columns</p>
+</div>
+<p>One helpful feature is that you can slice by <strong>partial dates</strong>. Here, the first and last positions are only specified as 2014 and 2016, with no month or day parts. pandas interprets this as slicing from the start of 2014 to the end of 2016.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_date<span style="color:#666">.</span>loc[<span style="color:#ba2121">&#34;2014&#34;</span>: <span style="color:#ba2121">&#34;2016&#34;</span>]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2014-1-12</th>
+      <td>R</td>
+      <td>3</td>
+      <td>US</td>
+      <td>266</td>
+    </tr>
+    <tr>
+      <th>2014-1-14</th>
+      <td>Julia</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>148</td>
+    </tr>
+    <tr>
+      <th>2014-1-15</th>
+      <td>Julia</td>
+      <td>1</td>
+      <td>DE</td>
+      <td>128</td>
+    </tr>
+    <tr>
+      <th>2014-1-20</th>
+      <td>R</td>
+      <td>1</td>
+      <td>CN</td>
+      <td>684</td>
+    </tr>
+    <tr>
+      <th>2014-1-20</th>
+      <td>Py</td>
+      <td>1</td>
+      <td>US</td>
+      <td>637</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2015-9-15</th>
+      <td>R</td>
+      <td>3</td>
+      <td>US</td>
+      <td>224</td>
+    </tr>
+    <tr>
+      <th>2015-9-18</th>
+      <td>R</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>326</td>
+    </tr>
+    <tr>
+      <th>2015-9-21</th>
+      <td>Julia</td>
+      <td>1</td>
+      <td>US</td>
+      <td>545</td>
+    </tr>
+    <tr>
+      <th>2015-9-29</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>US</td>
+      <td>987</td>
+    </tr>
+    <tr>
+      <th>2015-9-5</th>
+      <td>Matlab</td>
+      <td>1</td>
+      <td>US</td>
+      <td>641</td>
+    </tr>
+  </tbody>
+</table>
+<p>211 rows × 4 columns</p>
+</div>
+<p>Or you can arrive there by Boolean Conditions:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df2[
+    (df2<span style="color:#666">.</span>date <span style="color:#666">&gt;=</span> <span style="color:#ba2121">&#34;2014-01-01&#34;</span> ) <span style="color:#666">&amp;</span>
+    (df2<span style="color:#666">.</span>date <span style="color:#666">&lt;=</span> <span style="color:#ba2121">&#34;2015-12-31&#34;</span>)
+]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lang</th>
+      <th>vers</th>
+      <th>uslc</th>
+      <th>hour</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>Julia</td>
+      <td>2</td>
+      <td>US</td>
+      <td>415</td>
+      <td>2014-5-3</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>R</td>
+      <td>2</td>
+      <td>CN</td>
+      <td>248</td>
+      <td>2015-1-15</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>R</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>685</td>
+      <td>2014-9-6</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>Matlab</td>
+      <td>2</td>
+      <td>US</td>
+      <td>831</td>
+      <td>2014-10-16</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>Py</td>
+      <td>3</td>
+      <td>DE</td>
+      <td>215</td>
+      <td>2015-10-17</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1925</th>
+      <td>Py</td>
+      <td>1</td>
+      <td>DE</td>
+      <td>379</td>
+      <td>2014-2-14</td>
+    </tr>
+    <tr>
+      <th>1931</th>
+      <td>R</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>771</td>
+      <td>2014-3-13</td>
+    </tr>
+    <tr>
+      <th>1979</th>
+      <td>Py</td>
+      <td>2</td>
+      <td>US</td>
+      <td>311</td>
+      <td>2015-10-9</td>
+    </tr>
+    <tr>
+      <th>1982</th>
+      <td>R</td>
+      <td>3</td>
+      <td>CN</td>
+      <td>116</td>
+      <td>2015-12-19</td>
+    </tr>
+    <tr>
+      <th>1991</th>
+      <td>Matlab</td>
+      <td>3</td>
+      <td>US</td>
+      <td>732</td>
+      <td>2014-3-24</td>
+    </tr>
+  </tbody>
+</table>
+<p>151 rows × 5 columns</p>
+</div>
+<h3 id="subsetting-by-rowcolumn-number">Subsetting by row/column number</h3>
+<p>You can also slice DataFrames by row or column number using the <code>iloc</code> method. This uses a similar syntax to slicing lists, except that there are two arguments: one for rows and one for columns.</p>
+<blockquote>
+<p>Notice that, like list slicing but unlike loc, the final values <strong>aren&rsquo;t included</strong> in the slice.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Get first 5 rows (index positions 0 to 5), columns 1 and 2 (index positions 0 to 2).</span>
+df_sort_id<span style="color:#666">.</span>iloc[
+    : <span style="color:#666">5</span>,
+    <span style="color:#666">0</span>: <span style="color:#666">2</span>
+]
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>uslc</th>
+      <th>hour</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">Julia</th>
+      <th>1</th>
+      <td>DE</td>
+      <td>386</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>US</td>
+      <td>911</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>209</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>544</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DE</td>
+      <td>862</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="33-slicing-pivot-tables">3.3 Slicing pivot tables</h2>
+<h3 id="loc--slicing-is-a-power-combo-for-pivot-tables"><code>.loc[]</code> + slicing is a power combo for pivot tables</h3>
+<p>Pivot tables are just DataFrames with sorted indexes. That means that all the fun stuff learned so far this chapter can be used on them. In particular, the loc and slicing combination is ideal for subsetting pivot tables</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_pv <span style="color:#666">=</span>  df2<span style="color:#666">.</span>pivot_table(
+    values<span style="color:#666">=</span><span style="color:#ba2121">&#34;hour&#34;</span>,
+    index<span style="color:#666">=</span><span style="color:#ba2121">&#34;lang&#34;</span>,
+    columns<span style="color:#666">=</span><span style="color:#ba2121">&#34;vers&#34;</span>,
+    margins<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>
+)
+df_pv
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>vers</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>All</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Julia</th>
+      <td>556.843373</td>
+      <td>543.020548</td>
+      <td>534.611765</td>
+      <td>544.815353</td>
+    </tr>
+    <tr>
+      <th>Matlab</th>
+      <td>529.410714</td>
+      <td>550.880000</td>
+      <td>555.560440</td>
+      <td>545.370000</td>
+    </tr>
+    <tr>
+      <th>Py</th>
+      <td>534.807453</td>
+      <td>537.061728</td>
+      <td>562.491228</td>
+      <td>545.129555</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>554.878049</td>
+      <td>562.573034</td>
+      <td>553.032967</td>
+      <td>556.851145</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>543.977238</td>
+      <td>548.828616</td>
+      <td>551.537589</td>
+      <td>548.185000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_pv_s <span style="color:#666">=</span> df_pv<span style="color:#666">.</span>loc[
+    <span style="color:#ba2121">&#34;Py&#34;</span>: <span style="color:#ba2121">&#34;R&#34;</span>,
+    <span style="color:#ba2121">&#34;2&#34;</span>: <span style="color:#ba2121">&#34;3&#34;</span>
+]
+df_pv_s
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>vers</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Py</th>
+      <td>537.061728</td>
+      <td>562.491228</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>562.573034</td>
+      <td>553.032967</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>You can convert date Series of type <code>object</code> to <code>datetime64</code> Series using the <code>pd.to_datetime()</code> function. and then access the components of a date (year, month and day) using <code>.dt</code> API.</p>
+<p>For example, the month component is <code>dataframe[&quot;column&quot;].dt.month</code>, and the year component is <code>dataframe[&quot;column&quot;].dt.year</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">datetime <span style="color:#666">=</span> pd<span style="color:#666">.</span>to_datetime(df2<span style="color:#666">.</span>date)
+df2[<span style="color:#ba2121">&#34;year&#34;</span>] <span style="color:#666">=</span> datetime<span style="color:#666">.</span>dt<span style="color:#666">.</span>year
+
+df_pv_y <span style="color:#666">=</span> df2<span style="color:#666">.</span>pivot_table(
+    values<span style="color:#666">=</span><span style="color:#ba2121">&#34;hour&#34;</span>,
+    index<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;vers&#34;</span>],
+    columns<span style="color:#666">=</span><span style="color:#ba2121">&#34;year&#34;</span>,
+)<span style="color:#666">.</span>loc[:, <span style="color:#ba2121">&#34;2002&#34;</span>: <span style="color:#ba2121">&#34;2008&#34;</span>]
+df_pv_y
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>2002</th>
+      <th>2003</th>
+      <th>2004</th>
+      <th>2005</th>
+      <th>2006</th>
+      <th>2007</th>
+      <th>2008</th>
+    </tr>
+    <tr>
+      <th>lang</th>
+      <th>vers</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3" valign="top">Julia</th>
+      <th>1</th>
+      <td>543.090909</td>
+      <td>491.909091</td>
+      <td>491.888889</td>
+      <td>486.916667</td>
+      <td>531.000000</td>
+      <td>817.000000</td>
+      <td>342.666667</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>774.250000</td>
+      <td>660.333333</td>
+      <td>438.250000</td>
+      <td>549.090909</td>
+      <td>546.300000</td>
+      <td>339.500000</td>
+      <td>781.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>502.166667</td>
+      <td>584.727273</td>
+      <td>662.142857</td>
+      <td>469.250000</td>
+      <td>531.375000</td>
+      <td>511.625000</td>
+      <td>503.833333</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">Matlab</th>
+      <th>1</th>
+      <td>557.000000</td>
+      <td>638.250000</td>
+      <td>608.500000</td>
+      <td>740.800000</td>
+      <td>533.800000</td>
+      <td>590.333333</td>
+      <td>488.428571</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>527.363636</td>
+      <td>630.750000</td>
+      <td>557.600000</td>
+      <td>630.000000</td>
+      <td>683.666667</td>
+      <td>696.636364</td>
+      <td>445.571429</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>543.000000</td>
+      <td>559.111111</td>
+      <td>540.500000</td>
+      <td>472.500000</td>
+      <td>577.200000</td>
+      <td>677.600000</td>
+      <td>481.500000</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">Py</th>
+      <th>1</th>
+      <td>567.727273</td>
+      <td>544.333333</td>
+      <td>589.500000</td>
+      <td>533.714286</td>
+      <td>552.142857</td>
+      <td>489.200000</td>
+      <td>472.500000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>466.181818</td>
+      <td>840.375000</td>
+      <td>506.800000</td>
+      <td>498.000000</td>
+      <td>553.666667</td>
+      <td>501.615385</td>
+      <td>469.700000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>419.250000</td>
+      <td>660.000000</td>
+      <td>459.545455</td>
+      <td>452.555556</td>
+      <td>573.615385</td>
+      <td>635.200000</td>
+      <td>565.800000</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">R</th>
+      <th>1</th>
+      <td>561.000000</td>
+      <td>593.500000</td>
+      <td>533.538462</td>
+      <td>572.000000</td>
+      <td>740.857143</td>
+      <td>533.875000</td>
+      <td>588.071429</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>564.416667</td>
+      <td>581.375000</td>
+      <td>586.625000</td>
+      <td>583.000000</td>
+      <td>500.600000</td>
+      <td>632.250000</td>
+      <td>579.666667</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>475.444444</td>
+      <td>541.333333</td>
+      <td>585.461538</td>
+      <td>601.785714</td>
+      <td>596.500000</td>
+      <td>517.333333</td>
+      <td>674.250000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="axis-argument"><code>axis</code> argument</h3>
+<p>The methods for calculating summary statistics on a DataFrame, such as mean, have an <code>axis</code> argument. The default value is &ldquo;index,&rdquo; which means &ldquo;calculate the statistic <strong>across rows</strong> (i.e. calculate for every columns).</p>
+<p>Get the mean hours by year:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y <span style="color:#666">=</span> df_pv_y<span style="color:#666">.</span>mean(axis<span style="color:#666">=</span><span style="color:#ba2121">&#34;index&#34;</span>)
+y
+</code></pre></div><pre><code>year
+2002    541.740951
+2003    610.499790
+2004    546.696017
+2005    549.134428
+2006    576.726976
+2007    578.514035
+2008    532.749008
+dtype: float64
+</code></pre>
+<p>Filter for the year that had the highest mean hours:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y[y <span style="color:#666">==</span> y<span style="color:#666">.</span>max()]
+</code></pre></div><pre><code>year
+2003    610.49979
+dtype: float64
+</code></pre>
+<p>Get the mean hours by lang and vers, you set <code>axis</code> to &ldquo;columns.&rdquo;</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lv <span style="color:#666">=</span> df_pv_y<span style="color:#666">.</span>mean(axis<span style="color:#666">=</span><span style="color:#ba2121">&#34;columns&#34;</span>)
+lv
+</code></pre></div><pre><code>lang    vers
+Julia   1       529.210317
+        2       584.103463
+        3       537.874304
+Matlab  1       593.873129
+        2       595.941156
+        3       550.201587
+Py      1       535.588250
+        2       548.048410
+        3       537.995199
+R       1       588.977433
+        2       575.419048
+        3       570.301195
+dtype: float64
+</code></pre>
+<p>Filter for the lang and vers that had the lowest mean hours:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lv[lv <span style="color:#666">==</span> lv<span style="color:#666">.</span>min()]
+</code></pre></div><pre><code>lang   vers
+Julia  1       529.210317
+dtype: float64
+</code></pre>
+<h1 id="4-creating-and-visualizing-dataframes">4. Creating and Visualizing DataFrames</h1>
+<h2 id="41-visualizing-data">4.1 Visualizing data</h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+<span style="color:#666">%</span>matplotlib inline
+avo <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_pickle(<span style="color:#ba2121">&#34;./avoplotto.pkl&#34;</span>) <span style="color:#408080;font-style:italic"># import a example dataset</span>
+avo<span style="color:#666">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>type</th>
+      <th>year</th>
+      <th>avg_price</th>
+      <th>size</th>
+      <th>nb_sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015-12-27</td>
+      <td>conventional</td>
+      <td>2015</td>
+      <td>0.95</td>
+      <td>small</td>
+      <td>9626901.09</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015-12-20</td>
+      <td>conventional</td>
+      <td>2015</td>
+      <td>0.98</td>
+      <td>small</td>
+      <td>8710021.76</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015-12-13</td>
+      <td>conventional</td>
+      <td>2015</td>
+      <td>0.93</td>
+      <td>small</td>
+      <td>9855053.66</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015-12-06</td>
+      <td>conventional</td>
+      <td>2015</td>
+      <td>0.89</td>
+      <td>small</td>
+      <td>9405464.36</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015-11-29</td>
+      <td>conventional</td>
+      <td>2015</td>
+      <td>0.99</td>
+      <td>small</td>
+      <td>8094803.56</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="histograms">Histograms</h3>
+<p>We can create a histogram of the variable by selecting the column and calling <code>.hist()</code>. The x-axis represents the selected columns elements values, and the y-axis represents the number of elements in each range.</p>
+<p>We can adjust the number of bars, or bins, using the <code>bins</code> argument. Plots can also be <strong>layered</strong> on top of one another.  We can use <code>plt.legend()</code>, passing in a <strong>list of labels</strong>, and then call show. We can use hist&rsquo;s <code>alpha</code> argument, which takes a number. 0 means completely transparent that is, invisible, and 1 means completely opaque.</p>
+<hr>
+<ul>
+<li>Subset avocados for the conventional type, and the average price column.</li>
+<li>Create a histogram.</li>
+<li>Create a histogram of avg_price for organic type avocados.</li>
+<li>Add a legend to your plot, with the names &ldquo;conventional&rdquo; and &ldquo;organic&rdquo;.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Histogram of conventional avg_price </span>
+avo[avo[<span style="color:#ba2121">&#34;type&#34;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#34;conventional&#34;</span>][<span style="color:#ba2121">&#34;avg_price&#34;</span>]<span style="color:#666">.</span>hist(bins<span style="color:#666">=</span> <span style="color:#666">30</span>, alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>)
+<span style="color:#408080;font-style:italic"># Histogram of organic avg_price</span>
+avo[avo[<span style="color:#ba2121">&#34;type&#34;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#34;organic&#34;</span>][<span style="color:#ba2121">&#34;avg_price&#34;</span>]<span style="color:#666">.</span>hist(bins<span style="color:#666">=</span><span style="color:#666">30</span>, alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>)
+
+<span style="color:#408080;font-style:italic"># Add a legend</span>
+plt<span style="color:#666">.</span>legend([<span style="color:#ba2121">&#34;conventional&#34;</span>, <span style="color:#ba2121">&#34;organic&#34;</span>])
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7f8d50e128b0&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_125_1.png" alt="png"></p>
+<p>You can also plot histograms for multiple variables at a time as follows:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df[[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]]<span style="color:#666">.</span>hist()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">avo[[<span style="color:#ba2121">&#34;avg_price&#34;</span>, <span style="color:#ba2121">&#34;nb_sold&#34;</span>]]<span style="color:#666">.</span>hist()
+</code></pre></div><pre><code>array([[&lt;AxesSubplot:title={'center':'avg_price'}&gt;,
+        &lt;AxesSubplot:title={'center':'nb_sold'}&gt;]], dtype=object)
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_127_1.png" alt="png"></p>
+<h3 id="bar-plots">Bar plots</h3>
+<p>Bar plots can reveal relationships between a <strong>categorical variable and a numeric variable</strong>, like lang and rand1. we group by lang, select the rand1 column, and take the mean, giving us the average rand1 values of each lang.</p>
+<p>Now we can create a bar plot from the mean using the <code>.plot()</code> method, setting &ldquo;<code>kind</code>&rdquo; equal to &ldquo;<code>bar</code>&rdquo;. To add a title to our plot, we can use the <code>title</code> argument of the plot method. We may want to rotate the x-axis labels to make the text easier to read. This can be done by passing an angle in degrees with the &ldquo;<code>rot</code>&rdquo; argument</p>
+<hr>
+<ul>
+<li>For each avocado size group, calculate the total number sold, storing as <code>nb_sold_by_size</code>.</li>
+<li>Create a bar plot of the number of avocados sold by size.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Get the total number of avocados sold of each size</span>
+nb_sold_by_size <span style="color:#666">=</span> avo<span style="color:#666">.</span>groupby(by<span style="color:#666">=</span><span style="color:#ba2121">&#34;size&#34;</span>)[<span style="color:#ba2121">&#34;nb_sold&#34;</span>]<span style="color:#666">.</span>sum()
+
+<span style="color:#408080;font-style:italic"># Create a bar plot of the number of avocados sold by size</span>
+nb_sold_by_size<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>, rot<span style="color:#666">=</span><span style="color:#666">45</span>)
+</code></pre></div><pre><code>&lt;AxesSubplot:xlabel='size'&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_129_1.png" alt="png"></p>
+<h3 id="line-plots">Line plots</h3>
+<p>Line plots are great for visualizing changes in <strong>numeric variables over time</strong>. We can use the <code>.plot()</code> method again, but this time, we pass in three arguments: date as <code>x</code>, rand2 as <code>y</code>, and &ldquo;<code>kind</code>&rdquo; equals &ldquo;<code>line</code>&rdquo;</p>
+<hr>
+<ul>
+<li>Get the total number of avocados sold on each date.</li>
+<li>The DataFrame has two rows for each date &ndash; one for organic, and one for conventional.</li>
+<li>Save this as nb_sold_by_date.</li>
+<li>Create a line plot of the number of avocados sold.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Get the total number of avocados sold on each date</span>
+nb_sold_by_date <span style="color:#666">=</span> avo<span style="color:#666">.</span>groupby(by<span style="color:#666">=</span><span style="color:#ba2121">&#34;date&#34;</span>)[<span style="color:#ba2121">&#34;nb_sold&#34;</span>]<span style="color:#666">.</span>sum()
+
+<span style="color:#408080;font-style:italic"># Create a line plot of the number of avocados sold by date</span>
+nb_sold_by_date<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>, rot<span style="color:#666">=</span><span style="color:#666">45</span>)
+</code></pre></div><pre><code>&lt;AxesSubplot:xlabel='date'&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_131_1.png" alt="png"></p>
+<h3 id="scatter-plots">Scatter plots</h3>
+<p>Scatter plots are great for visualizing relationships between <strong>two numeric variables</strong>. we call the <code>.plot()</code> method with <code>x</code> equal to rand2, <code>y</code> equal to rand3, and &ldquo;<code>kind</code>&rdquo; equal to &ldquo;<code>scatter</code>.&rdquo;</p>
+<hr>
+<ul>
+<li>Create a scatter plot with nb_sold on the x-axis and avg_price on the y-axis.</li>
+<li>Title it &ldquo;Number of avocados sold vs. average price&rdquo;.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Scatter plot of nb_sold vs avg_price with title</span>
+avo<span style="color:#666">.</span>plot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;nb_sold&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;avg_price&#34;</span>,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>,
+    title<span style="color:#666">=</span><span style="color:#ba2121">&#34;Number of avocados sold vs. average price&#34;</span>
+)
+</code></pre></div><pre><code>&lt;AxesSubplot:title={'center':'Number of avocados sold vs. average price'}, xlabel='nb_sold', ylabel='avg_price'&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_133_1.png" alt="png"></p>
+<h2 id="42-missing-values">4.2 Missing values</h2>
+<p>Most data is not perfect - there&rsquo;s always a possibility that there are some pieces missing from your dataset. In a pandas DataFrame, missing values are indicated with N-a-N, which stands for &ldquo;not a number.&rdquo;</p>
+<h3 id="detecting-missing-values">Detecting missing values</h3>
+<p>When you first get a DataFrame, it&rsquo;s a good idea to get a sense of whether it contains any missing values, and if so, how many. That&rsquo;s where the <code>.isna()</code> method comes in. When we call <code>isna</code> on a DataFrame, we get a <strong>Boolean for every single value</strong> indicating whether the value is missing or not.</p>
+<p>If we chain dot-isna with dot-any (i.e. <code>df.isna().any()</code>), we get one value for each variable that tells us if there are any missing values in that <strong>column</strong>.</p>
+<blockquote>
+<p>We call each row of data an observation and each column a variable</p>
+</blockquote>
+<hr>
+<ul>
+<li>Set some values in avo to missing values and generate the matrix avo_n</li>
+<li>Crate avo16 a subset of avocados that contains only sales from 2016,</li>
+<li>Print a summary that shows whether any value in each column of avo16 is missing or not.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">avo_n <span style="color:#666">=</span>  avo<span style="color:#666">.</span>iloc[:, :]
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">100</span>):
+    nrr <span style="color:#666">=</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint
+    r <span style="color:#666">=</span> nrr(<span style="color:#666">0</span>, avo<span style="color:#666">.</span>shape[<span style="color:#666">0</span>])
+    c <span style="color:#666">=</span>nrr(<span style="color:#666">0</span>, avo<span style="color:#666">.</span>shape[<span style="color:#666">1</span>])
+    avo_n<span style="color:#666">.</span>iloc[r, c] <span style="color:#666">=</span> np<span style="color:#666">.</span>nan
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">avo_16 <span style="color:#666">=</span> avo[avo_n<span style="color:#666">.</span>year <span style="color:#666">==</span> <span style="color:#666">2016</span>]
+<span style="color:#008000">print</span>(avo_16<span style="color:#666">.</span>isna()<span style="color:#666">.</span>any())
+</code></pre></div><pre><code>date          True
+type          True
+year         False
+avg_price     True
+size          True
+nb_sold       True
+dtype: bool
+</code></pre>
+<p>Since taking the sum of Booleans is the same thing as counting the number of Trues, we can combine <code>sum</code> with <code>isna</code> (i.e. <code>df.isna().sum()</code>) to count the number of NaNs in each column.</p>
+<p>We can use those counts to visualize the missing values in the dataset using a bar plot. (i.e. <code>df.isna().sum().plot(kind=bar)</code>)</p>
+<hr>
+<ul>
+<li>Create a bar plot of the total number of missing values in each column.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000">print</span>(avo_16<span style="color:#666">.</span>isna()<span style="color:#666">.</span>sum())
+avo_16<span style="color:#666">.</span>isna()<span style="color:#666">.</span>sum()<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>, rot<span style="color:#666">=</span><span style="color:#666">45</span>)
+</code></pre></div><pre><code>date         7
+type         4
+year         0
+avg_price    9
+size         7
+nb_sold      5
+dtype: int64
+
+
+
+
+
+&lt;AxesSubplot:&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_138_2.png" alt="png"></p>
+<h3 id="removingreplacing-missing-values">Removing/Replacing missing values</h3>
+<p>One option is to remove the rows in the DataFrame that contain missing values. This can be done using the <code>.dropna()</code> method.</p>
+<hr>
+<ul>
+<li>Remove the rows of avo_16 that contain missing values and store the remaining rows in avocados_complete.</li>
+<li>Verify that all missing values have been removed from avocados_complete. Calculate each column that has NAs and print.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Remove rows with missing values</span>
+avocados_complete <span style="color:#666">=</span> avo_16<span style="color:#666">.</span>dropna()
+
+<span style="color:#408080;font-style:italic"># Check if any columns contain missing values</span>
+<span style="color:#008000">print</span>(avocados_complete<span style="color:#666">.</span>isna()<span style="color:#666">.</span>any())
+</code></pre></div><pre><code>date         False
+type         False
+year         False
+avg_price    False
+size         False
+nb_sold      False
+dtype: bool
+</code></pre>
+<p>Another option is to replace missing values with another value. The <code>.fillna()</code> method takes in a value, and all NaNs will be replaced with this value.</p>
+<hr>
+<p>you&rsquo;ll see how replacing missing values can affect the distribution of a variable using histograms</p>
+<ul>
+<li>A list has been created, cols_with_missing, containing the names of numerical columns with missing values: <code>&quot;avg_price&quot;</code>, <code>&quot;nb_sold&quot;</code>，Create a histogram of those columns.</li>
+<li>Replace the missing values of avo_16 with 0s and store the result as avocados_filled.</li>
+<li>Create a histogram of the cols_with_missing columns of avocados_filled.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cols_with_missing <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;avg_price&#34;</span>, <span style="color:#ba2121">&#34;nb_sold&#34;</span>]
+
+<span style="color:#408080;font-style:italic"># Fill in missing values with 0</span>
+avocados_filled <span style="color:#666">=</span> avo_16<span style="color:#666">.</span>fillna(<span style="color:#666">0</span>)
+
+<span style="color:#408080;font-style:italic"># Create histograms of the filled columns</span>
+avo_16[cols_with_missing]<span style="color:#666">.</span>hist()  <span style="color:#408080;font-style:italic"># with missing values</span>
+avocados_complete[cols_with_missing]<span style="color:#666">.</span>hist()  <span style="color:#408080;font-style:italic"># drop nan</span>
+avocados_filled [cols_with_missing]<span style="color:#666">.</span>hist()  <span style="color:#408080;font-style:italic"># fill nan as 0</span>
+</code></pre></div><pre><code>array([[&lt;AxesSubplot:title={'center':'avg_price'}&gt;,
+        &lt;AxesSubplot:title={'center':'nb_sold'}&gt;]], dtype=object)
+</code></pre>
+<p><img src="../../../../img_overall/img_py_pandas/output_142_1.png" alt="png"></p>
+<p><img src="../../../../img_overall/img_py_pandas/output_142_2.png" alt="png"></p>
+<p><img src="../../../../img_overall/img_py_pandas/output_142_3.png" alt="png"></p>
+<h2 id="43-creating-dataframes">4.3 Creating DataFrames</h2>
+<p>we&rsquo;ll discuss two ways: from a list of dictionaries and from a dictionary of lists. In the first method, the DataFrame is built up row by <strong>row</strong>, while in the second method, the DataFrame is built up column by <strong>column</strong>.</p>
+<h3 id="list-of-dictionaries---by-row">List of dictionaries - by row</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">ls<span style="color:#666">-</span>of<span style="color:#666">-</span>dic <span style="color:#666">=</span> [
+    {<span style="color:#ba2121">&#34;col1&#34;</span> : xx, <span style="color:#ba2121">&#34;col2&#34;</span>: xx, <span style="color:#ba2121">&#34;col3&#34;</span>: xx, <span style="color:#666">...</span>}, <span style="color:#408080;font-style:italic"># row 1</span>
+    {<span style="color:#ba2121">&#34;col1&#34;</span> : xx, <span style="color:#ba2121">&#34;col2&#34;</span>: xx, <span style="color:#ba2121">&#34;col3&#34;</span>: xx, <span style="color:#666">...</span>}, <span style="color:#408080;font-style:italic"># row 2</span>
+    {<span style="color:#ba2121">&#34;col1&#34;</span> : xx, <span style="color:#ba2121">&#34;col2&#34;</span>: xx, <span style="color:#ba2121">&#34;col3&#34;</span>: xx, <span style="color:#666">...</span>}, <span style="color:#408080;font-style:italic"># row 3</span>
+    <span style="color:#666">...</span>
+]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Create a list of dictionaries with new data</span>
+avocados_list <span style="color:#666">=</span> [
+    {<span style="color:#ba2121">&#34;date&#34;</span>:<span style="color:#ba2121">&#34;2019-11-03&#34;</span> , <span style="color:#ba2121">&#34;small_sold&#34;</span>: <span style="color:#666">10376832</span>, <span style="color:#ba2121">&#34;large_sold&#34;</span>: <span style="color:#666">7835071</span>},
+    {<span style="color:#ba2121">&#34;date&#34;</span>:<span style="color:#ba2121">&#34;2019-11-10&#34;</span>, <span style="color:#ba2121">&#34;small_sold&#34;</span>: <span style="color:#666">10717154</span>, <span style="color:#ba2121">&#34;large_sold&#34;</span>: <span style="color:#666">8561348</span>},
+]
+
+<span style="color:#408080;font-style:italic"># Convert list into DataFrame</span>
+avocados_2019 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(avocados_list)
+
+<span style="color:#408080;font-style:italic"># Print the new DataFrame</span>
+avocados_2019
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>small_sold</th>
+      <th>large_sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2019-11-03</td>
+      <td>10376832</td>
+      <td>7835071</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2019-11-10</td>
+      <td>10717154</td>
+      <td>8561348</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="dictionary-of-lists---by-column">Dictionary of lists - by column</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">dic<span style="color:#666">-</span>of<span style="color:#666">-</span>ls <span style="color:#666">=</span> {
+    <span style="color:#ba2121">&#34;col1&#34;</span>: [xx, xx, xx, <span style="color:#666">...</span>],  <span style="color:#408080;font-style:italic"># col1</span>
+    <span style="color:#ba2121">&#34;col2&#34;</span>: [xx, xx, xx, <span style="color:#666">...</span>],  <span style="color:#408080;font-style:italic"># col2</span>
+    <span style="color:#ba2121">&#34;col3&#34;</span>: [xx, xx, xx, <span style="color:#666">...</span>],  <span style="color:#408080;font-style:italic"># col3</span>
+    <span style="color:#666">...</span>
+}
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#408080;font-style:italic"># Create a dictionary of lists with new data</span>
+avocados_dict <span style="color:#666">=</span> {
+  <span style="color:#ba2121">&#34;date&#34;</span>: [<span style="color:#ba2121">&#34;2019-11-17&#34;</span>, <span style="color:#ba2121">&#34;2019-12-01&#34;</span>],
+  <span style="color:#ba2121">&#34;small_sold&#34;</span>: [<span style="color:#666">10859987</span>, <span style="color:#666">9291631</span>],
+  <span style="color:#ba2121">&#34;large_sold&#34;</span>: [<span style="color:#666">7674135</span>, <span style="color:#666">6238096</span>]
+}
+
+<span style="color:#408080;font-style:italic"># Convert dictionary into DataFrame</span>
+avocados_2019 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(avocados_dict)
+
+<span style="color:#408080;font-style:italic"># Print the new DataFrame</span>
+avocados_2019
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>small_sold</th>
+      <th>large_sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2019-11-17</td>
+      <td>10859987</td>
+      <td>7674135</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2019-12-01</td>
+      <td>9291631</td>
+      <td>6238096</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h2 id="44-reading-and-writing-csvs">4.4 Reading and writing CSVs</h2>
+<h3 id="csv-to-dataframe">CSV to DataFrame</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;path&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a2 <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;a2.csv&#34;</span>)
+a2
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>date</th>
+      <th>small_sold</th>
+      <th>large_sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2019-11-17</td>
+      <td>10859987</td>
+      <td>7674135</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2019-12-01</td>
+      <td>9291631</td>
+      <td>6238096</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a2[<span style="color:#ba2121">&#34;new col&#34;</span>] <span style="color:#666">=</span> a2<span style="color:#666">.</span>large_sold <span style="color:#666">-</span> a2<span style="color:#666">.</span>small_sold 
+a2
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>date</th>
+      <th>small_sold</th>
+      <th>large_sold</th>
+      <th>new col</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2019-11-17</td>
+      <td>10859987</td>
+      <td>7674135</td>
+      <td>-3185852</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2019-12-01</td>
+      <td>9291631</td>
+      <td>6238096</td>
+      <td>-3053535</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h3 id="dataframe-to-csv">DataFrame to CSV</h3>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>to_csv(<span style="color:#ba2121">&#34;path&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a2<span style="color:#666">.</span>to_csv(<span style="color:#ba2121">&#34;a2_new.csv&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="">!</span> cat a2_new<span style="color:#666">.</span>csv
+</code></pre></div><pre><code>,Unnamed: 0,date,small_sold,large_sold,new col
+0,0,2019-11-17,10859987,7674135,-3185852
+1,1,2019-12-01,9291631,6238096,-3053535
+</code></pre>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+
