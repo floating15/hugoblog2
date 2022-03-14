@@ -8,11 +8,11 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 04 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Python implementation of the Perceptron Learning Algorithm</title>
-      <link>/post/2020/03/04/python-implementation-of-the-perceptron-learning-algorithm/</link>
+      <title>Perceptron Learning Algorithm (by Python)</title>
+      <link>/post/2020/03/04/perceptron-learning-algorithm-by-python/</link>
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/2020/03/04/python-implementation-of-the-perceptron-learning-algorithm/</guid>
+      <guid>/post/2020/03/04/perceptron-learning-algorithm-by-python/</guid>
       <description>This blog post documents my implementation of the Perceptron Learning Algorithm. Please refer to my notes for more details.
 import numpy as np import pandas as pd import matplotlib.pyplot as plt %matplotlib inline Generate the data: randlist1 = np.array([np.random.uniform(-5,5) for i in range(500)]) randlist2 = np.array([np.random.uniform(0,3) for i in range(500)]) data_m1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1+randlist2, &amp;#34;y&amp;#34; : -1 } ) data_p1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1 - randlist2, &amp;#34;y&amp;#34; : +1 } ) data = pd.</description>
     </item>
