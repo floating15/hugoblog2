@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Python implementation of the Perceptron Learning Algorithm | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/other/">other</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Python implementation of the Perceptron Learning Algorithm</span></h1>  
+
+<h2 class="date">2020/03/04</h2>
+</div>
+
+
+<main>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#generate-the-data">Generate the data:</a></li>
+    <li><a href="#building-perceptron-learning-model">Building perceptron learning model:</a></li>
+    <li><a href="#calculate-the-maximum-number-of-iterations">Calculate the maximum number of iterations:</a></li>
+  </ul>
+</nav>   
+<p>This blog post documents my implementation of the Perceptron Learning Algorithm. Please refer to my notes for more details.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+<span style="color:#666">%</span>matplotlib inline
+</code></pre></div><h1 id="generate-the-data">Generate the data:</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">randlist1 <span style="color:#666">=</span> np<span style="color:#666">.</span>array([np<span style="color:#666">.</span>random<span style="color:#666">.</span>uniform(<span style="color:#666">-</span><span style="color:#666">5</span>,<span style="color:#666">5</span>) <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">500</span>)])
+randlist2 <span style="color:#666">=</span> np<span style="color:#666">.</span>array([np<span style="color:#666">.</span>random<span style="color:#666">.</span>uniform(<span style="color:#666">0</span>,<span style="color:#666">3</span>) <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">500</span>)])
+data_m1_0 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;x0&#34;</span>: <span style="color:#666">1</span>,
+        <span style="color:#ba2121">&#34;x1&#34;</span>: randlist1,
+        <span style="color:#ba2121">&#34;x2&#34;</span>: randlist1<span style="color:#666">+</span>randlist2,
+        <span style="color:#ba2121">&#34;y&#34;</span> : <span style="color:#666">-</span><span style="color:#666">1</span>
+    }
+)
+
+data_p1_0 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;x0&#34;</span>: <span style="color:#666">1</span>,
+        <span style="color:#ba2121">&#34;x1&#34;</span>: randlist1,
+        <span style="color:#ba2121">&#34;x2&#34;</span>: randlist1 <span style="color:#666">-</span> randlist2,
+        <span style="color:#ba2121">&#34;y&#34;</span> : <span style="color:#666">+</span><span style="color:#666">1</span>
+    }
+)
+data <span style="color:#666">=</span> pd<span style="color:#666">.</span>concat([data_m1_0, data_p1_0], axis<span style="color:#666">=</span><span style="color:#666">0</span>)
+plt<span style="color:#666">.</span>scatter(data_m1_0[<span style="color:#ba2121">&#34;x1&#34;</span>], data_m1_0[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+plt<span style="color:#666">.</span>scatter(data_p1_0[<span style="color:#ba2121">&#34;x1&#34;</span>], data_p1_0[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+</code></pre></div><pre><code>&lt;matplotlib.collections.PathCollection at 0x7fe661e73310&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_pla/output_2_1.png" alt="png"></p>
+<h1 id="building-perceptron-learning-model">Building perceptron learning model:</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data_m1 <span style="color:#666">=</span> data[data[<span style="color:#ba2121">&#34;y&#34;</span>] <span style="color:#666">==</span> <span style="color:#666">-</span><span style="color:#666">1</span>]
+data_p1 <span style="color:#666">=</span> data[data[<span style="color:#ba2121">&#34;y&#34;</span>] <span style="color:#666">==</span> <span style="color:#666">+</span><span style="color:#666">1</span>]
+plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">6</span>,<span style="color:#666">4</span>), dpi<span style="color:#666">=</span><span style="color:#666">150</span>)
+plt<span style="color:#666">.</span>scatter(data_m1[<span style="color:#ba2121">&#34;x1&#34;</span>], data_m1[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+plt<span style="color:#666">.</span>scatter(data_p1[<span style="color:#ba2121">&#34;x1&#34;</span>], data_p1[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+w <span style="color:#666">=</span> data<span style="color:#666">.</span>iloc[np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint(data<span style="color:#666">.</span>shape[<span style="color:#666">0</span>])]
+w0 <span style="color:#666">=</span> w[<span style="color:#666">0</span>]; w1 <span style="color:#666">=</span> w[<span style="color:#666">1</span>]; w2 <span style="color:#666">=</span> w[<span style="color:#666">2</span>]
+x <span style="color:#666">=</span> np<span style="color:#666">.</span>linspace(<span style="color:#666">-</span><span style="color:#666">5</span>,<span style="color:#666">5</span>,<span style="color:#666">100</span>)
+plt<span style="color:#666">.</span>plot(x, <span style="color:#666">-</span>(w1<span style="color:#666">/</span>w2)<span style="color:#666">*</span>x <span style="color:#666">-</span> (w0<span style="color:#666">/</span>w2), <span style="color:#ba2121">&#34;b&#34;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#34;start hypothesis&#34;</span>)
+mis_m1 <span style="color:#666">=</span> data_m1[w0 <span style="color:#666">*</span> data_m1[<span style="color:#ba2121">&#34;x0&#34;</span>] <span style="color:#666">+</span> w1 <span style="color:#666">*</span> data_m1[<span style="color:#ba2121">&#34;x1&#34;</span>] <span style="color:#666">+</span> w2 <span style="color:#666">*</span> data_m1[<span style="color:#ba2121">&#34;x2&#34;</span>] <span style="color:#666">&gt;</span> <span style="color:#666">0</span>]
+mis_m2 <span style="color:#666">=</span> data_p1[w0 <span style="color:#666">*</span> data_p1[<span style="color:#ba2121">&#34;x0&#34;</span>] <span style="color:#666">+</span> w1 <span style="color:#666">*</span> data_p1[<span style="color:#ba2121">&#34;x1&#34;</span>] <span style="color:#666">+</span> w2 <span style="color:#666">*</span> data_p1[<span style="color:#ba2121">&#34;x2&#34;</span>] <span style="color:#666">&lt;</span> <span style="color:#666">0</span>]
+mis_data <span style="color:#666">=</span> pd<span style="color:#666">.</span>concat([mis_m1, mis_m2], axis<span style="color:#666">=</span><span style="color:#666">0</span>)
+length <span style="color:#666">=</span> mis_data<span style="color:#666">.</span>shape[<span style="color:#666">0</span>]
+times <span style="color:#666">=</span> <span style="color:#666">1</span>; wl <span style="color:#666">=</span> []
+<span style="color:#008000;font-weight:bold">while</span> length <span style="color:#666">&gt;</span> <span style="color:#666">0</span>:
+    wl<span style="color:#666">.</span>append(w)
+    mis_point <span style="color:#666">=</span> mis_data<span style="color:#666">.</span>iloc[np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint(length),:]
+    w <span style="color:#666">=</span> w <span style="color:#666">+</span> mis_point[<span style="color:#ba2121">&#34;y&#34;</span>] <span style="color:#666">*</span> mis_point<span style="color:#666">.</span>iloc[<span style="color:#666">0</span>:<span style="color:#666">3</span>]
+    w0 <span style="color:#666">=</span> w[<span style="color:#666">0</span>]; w1 <span style="color:#666">=</span> w[<span style="color:#666">1</span>]; w2 <span style="color:#666">=</span> w[<span style="color:#666">2</span>]
+    mis_m1 <span style="color:#666">=</span> data_m1[w0 <span style="color:#666">*</span> data_m1[<span style="color:#ba2121">&#34;x0&#34;</span>] <span style="color:#666">+</span> w1 <span style="color:#666">*</span> data_m1[<span style="color:#ba2121">&#34;x1&#34;</span>] <span style="color:#666">+</span> w2 <span style="color:#666">*</span> data_m1[<span style="color:#ba2121">&#34;x2&#34;</span>] <span style="color:#666">&gt;</span> <span style="color:#666">0</span>]
+    mis_m2 <span style="color:#666">=</span> data_p1[w0 <span style="color:#666">*</span> data_p1[<span style="color:#ba2121">&#34;x0&#34;</span>] <span style="color:#666">+</span> w1 <span style="color:#666">*</span> data_p1[<span style="color:#ba2121">&#34;x1&#34;</span>] <span style="color:#666">+</span> w2 <span style="color:#666">*</span> data_p1[<span style="color:#ba2121">&#34;x2&#34;</span>] <span style="color:#666">&lt;</span> <span style="color:#666">0</span>]
+    mis_data <span style="color:#666">=</span> pd<span style="color:#666">.</span>concat([mis_m1, mis_m2], axis<span style="color:#666">=</span><span style="color:#666">0</span>)
+    length <span style="color:#666">=</span> mis_data<span style="color:#666">.</span>shape[<span style="color:#666">0</span>]
+    times <span style="color:#666">+=</span> <span style="color:#666">1</span>
+    <span style="color:#008000;font-weight:bold">if</span> times <span style="color:#666">&gt;</span> <span style="color:#666">50000</span> :
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;over 50000 times loops&#34;</span>)
+        <span style="color:#008000;font-weight:bold">break</span>
+wl<span style="color:#666">.</span>append(w)
+plt<span style="color:#666">.</span>plot(x, <span style="color:#666">-</span>(w1<span style="color:#666">/</span>w2)<span style="color:#666">*</span>x <span style="color:#666">-</span>  (w0<span style="color:#666">/</span>w2), <span style="color:#ba2121">&#34;c&#34;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;end hypothesis (times=</span><span style="color:#b68;font-weight:bold">{</span>times<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">)&#34;</span>)
+plt<span style="color:#666">.</span>legend()
+plt<span style="color:#666">.</span>axis(<span style="color:#ba2121">&#34;equal&#34;</span>)
+</code></pre></div><pre><code>(-5.5, 5.5, -8.25263956511762, 8.298383023585334)
+</code></pre>
+<p><img src="../../../../img_overall/img_pla/output_4_1.png" alt="png"></p>
+<p>Convergence process of weight vector: $\frac{\mathbf{w}_{f}^{T}\mathbf{w}_t}{||\mathbf{w}_f||\cdot||\mathbf{w}_t||}$</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">wl1 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(wl)
+wl2 <span style="color:#666">=</span> wl1[[<span style="color:#ba2121">&#34;x0&#34;</span>, <span style="color:#ba2121">&#34;x1&#34;</span>, <span style="color:#ba2121">&#34;x2&#34;</span>]]<span style="color:#666">.</span>reset_index(drop<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+wf <span style="color:#666">=</span> np<span style="color:#666">.</span>array([<span style="color:#666">0</span>,<span style="color:#666">1</span>,<span style="color:#666">-</span><span style="color:#666">1</span>])
+wt <span style="color:#666">=</span> wl2<span style="color:#666">.</span>dot(wf) <span style="color:#666">/</span> (np<span style="color:#666">.</span>array([wl2<span style="color:#666">.</span>loc[v]<span style="color:#666">.</span>dot(wl2<span style="color:#666">.</span>loc[v]) <span style="color:#008000;font-weight:bold">for</span> v <span style="color:#a2f;font-weight:bold">in</span> wl2<span style="color:#666">.</span>index]) <span style="color:#666">*</span> wf<span style="color:#666">.</span>dot(wf)) <span style="color:#666">**</span> <span style="color:#666">0.5</span>
+plt<span style="color:#666">.</span>plot(
+    <span style="color:#008000">range</span>(wt<span style="color:#666">.</span>shape[<span style="color:#666">0</span>]),
+    wt,
+    label<span style="color:#666">=</span> <span style="color:#ba2121">r</span><span style="color:#ba2121">&#34;$\frac{\mathbf</span><span style="color:#b68;font-weight:bold">{w}</span><span style="color:#ba2121">_</span><span style="color:#b68;font-weight:bold">{f}</span><span style="color:#ba2121">^</span><span style="color:#b68;font-weight:bold">{T}</span><span style="color:#ba2121">\mathbf</span><span style="color:#b68;font-weight:bold">{w}</span><span style="color:#ba2121">_t}{||\mathbf</span><span style="color:#b68;font-weight:bold">{w}</span><span style="color:#ba2121">_f||\cdot||\mathbf</span><span style="color:#b68;font-weight:bold">{w}</span><span style="color:#ba2121">_t||}$&#34;</span>
+)
+plt<span style="color:#666">.</span>legend()
+</code></pre></div><pre><code>&lt;matplotlib.legend.Legend at 0x7fe68c7a62e0&gt;
+</code></pre>
+<p><img src="../../../../img_overall/img_pla/output_6_1.png" alt="png"></p>
+<h1 id="calculate-the-maximum-number-of-iterations">Calculate the maximum number of iterations:</h1>
+<p>we have
+$$
+\begin{aligned}
+\mathbf{w}<em>{f}^{T}\mathbf{w}</em>{t+1} &amp;= \mathbf{w}<em>{f}^{T}(\mathbf{w}</em>{t}+y_{n(t)}\mathbf{x}<em>{n(t)})\
+&amp;= \mathbf{w}</em>{f}^{T}\mathbf{w}<em>{t} + y</em>{n(t)}\mathbf{w}<em>{f}^{T}\mathbf{x}</em>{n(t)}\
+&amp;\geq \mathbf{w}<em>{f}^{T}\mathbf{w}</em>{t} + \min_{n}y_n\mathbf{w}<em>{f}^{T}\mathbf{x}<em>n\
+&amp;&gt; \mathbf{w}</em>{f}^{T}\mathbf{w}</em>{t}.
+\end{aligned}
+$$</p>
+<p>and
+$$
+\begin{aligned}
+||\mathbf{w}<em>{t+1}||^2 &amp;= || \mathbf{w}</em>{t}+y_{n(t)}\mathbf{x}<em>{n(t)} ||^2\
+&amp;= ||\mathbf{w}</em>{t}||^2+2y_{n(t)}\mathbf{w}<em>{t}^{T}\mathbf{x}</em>{n(t)} + y_{n(t)}^{2}||\mathbf{x}<em>{n}||^2\
+&amp;\leq ||\mathbf{w}</em>{t}||^2+||\mathbf{x}<em>{n}||^2\
+&amp;\leq ||\mathbf{w}</em>{t}||^2 + \max_{n}||\mathbf{x}_{n}||^2.
+\end{aligned}
+$$</p>
+<p>define $R^2 = \max_{n}||\mathbf{x}||^2$ and $\rho = \min_{n}\frac{y_n\mathbf{w}_{f}^{T}\mathbf{x}_n}{||\mathbf{w}_f||}$</p>
+<p>we have
+$$
+\begin{aligned}
+||\mathbf{w}<em>t||^2 &amp;\leq ||\mathbf{w}</em>{t-1}||^2 + R^2\
+&amp;\leq ||\mathbf{w}<em>{t-2}||^2 + 2R^2\
+&amp;\cdots\
+&amp;\leq ||\mathbf{w}</em>{0}||^2 + tR^2\
+&amp;=tR^2.
+\end{aligned}
+$$</p>
+<p>i.e. $||\mathbf{w}_t||\leq R\sqrt{t}$</p>
+<p>since</p>
+<p>$$
+\begin{aligned}
+\frac{\mathbf{w}<em>{f}^{T}\mathbf{w}<em>t}{||\mathbf{w}</em>{f}^{T}||\cdot||\mathbf{w}</em>{t}||} &amp; =
+\frac{\mathbf{w}<em>{f}^{T}(\mathbf{w}</em>{t-1}+y_{n(t-1)}\mathbf{x}<em>{n(t-1)})}{||\mathbf{w}</em>{f}^{T}||\cdot||\mathbf{w}<em>{t}||}\
+&amp;=\frac{\mathbf{w}</em>{f}^{T}\mathbf{w}<em>{t-1}}{||\mathbf{w}</em>{f}^{T}||\cdot||\mathbf{w}<em>{t}||} + \frac{y</em>{n(t-1)}\mathbf{w}<em>{f}^{T}\mathbf{x}</em>{n(t-1)}}{||\mathbf{w}<em>{f}^{T}||\cdot||\mathbf{w}</em>{t}||}\
+&amp;= \frac{\mathbf{w}<em>{f}^{T}\mathbf{w}</em>{t-2}}{||\mathbf{w}<em>{f}^{T}||\cdot||\mathbf{w}</em>{t}||} + \frac{y_{n(t-2)}\mathbf{w}<em>{f}^{T}\mathbf{x}</em>{n(t-2)}}{||\mathbf{w}<em>{f}^{T}||\cdot||\mathbf{w}</em>{t}||} + \frac{y_{n(t-1)}\mathbf{w}<em>{f}^{T}\mathbf{x}</em>{n(t-1)}}{||\mathbf{w}<em>{f}^{T}||\cdot||\mathbf{w}</em>{t}||}\
+&amp;\cdots\
+&amp;=\frac{1}{||\mathbf{w}<em>t||}\cdot\sum^{t}</em>{i=1}\frac{y_{n(i)}\mathbf{w}<em>{f}^{T}\mathbf{x}</em>{n(i)}}{||\mathbf{w}_{f}^{T}||} \
+&amp;\geq \frac{1}{||\mathbf{w}_t||}\cdot t\cdot \rho\geq \frac{t\rho}{R\sqrt{t}}\
+&amp;=\frac{\rho}{R}\sqrt{t}.
+\end{aligned}
+$$</p>
+<p>we have that $\frac{\sqrt{t}\rho}{R}\leq 1$ and $t\leq \frac{R^2}{\rho^2}$</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_vec <span style="color:#666">=</span> data[[<span style="color:#ba2121">&#34;x0&#34;</span>, <span style="color:#ba2121">&#34;x1&#34;</span>, <span style="color:#ba2121">&#34;x2&#34;</span>]]<span style="color:#666">.</span>reset_index(drop<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+y <span style="color:#666">=</span> data[<span style="color:#ba2121">&#34;y&#34;</span>]
+R <span style="color:#666">=</span> (np<span style="color:#666">.</span>array([x_vec<span style="color:#666">.</span>loc[r]<span style="color:#666">.</span>dot(x_vec<span style="color:#666">.</span>loc[r]) <span style="color:#008000;font-weight:bold">for</span> r <span style="color:#a2f;font-weight:bold">in</span> x_vec<span style="color:#666">.</span>index])<span style="color:#666">.</span>max()) <span style="color:#666">**</span> <span style="color:#666">0.5</span>
+rhot <span style="color:#666">=</span> ((np<span style="color:#666">.</span>array([wf<span style="color:#666">.</span>dot(x_vec<span style="color:#666">.</span>loc[v]) <span style="color:#008000;font-weight:bold">for</span> v <span style="color:#a2f;font-weight:bold">in</span> x_vec<span style="color:#666">.</span>index]) <span style="color:#666">*</span> y) <span style="color:#666">/</span> (wf<span style="color:#666">.</span>dot(wf))<span style="color:#666">**</span><span style="color:#666">0.5</span>)
+rho <span style="color:#666">=</span> rhot<span style="color:#666">.</span>min()
+<span style="color:#008000">print</span>(R, rho)
+</code></pre></div><pre><code>9.07912684264071 0.0057176953755827195
+</code></pre>
+<p><img src="../../../../img_overall/img_pla/output_8_1.png" alt="png"></p>
+<p>therefore the maximum iterations of this model is</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">maxt <span style="color:#666">=</span> (R<span style="color:#666">/</span>rho)<span style="color:#666">**</span><span style="color:#666">2</span>
+maxt
+</code></pre></div><pre><code>2521425.4967300384
+</code></pre>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+

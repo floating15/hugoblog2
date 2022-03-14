@@ -34,6 +34,16 @@ vec1 &amp;lt;- c(1, 2, 3) vec2 &amp;lt;- c(&amp;#39;a&amp;#39;, &amp;#39;b&amp;#
     </item>
     
     <item>
+      <title>Python implementation of the Perceptron Learning Algorithm</title>
+      <link>/post/2020/03/04/python-implementation-of-the-perceptron-learning-algorithm/</link>
+      <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/03/04/python-implementation-of-the-perceptron-learning-algorithm/</guid>
+      <description>This blog post documents my implementation of the Perceptron Learning Algorithm. Please refer to my notes for more details.
+import numpy as np import pandas as pd import matplotlib.pyplot as plt %matplotlib inline Generate the data: randlist1 = np.array([np.random.uniform(-5,5) for i in range(500)]) randlist2 = np.array([np.random.uniform(0,3) for i in range(500)]) data_m1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1+randlist2, &amp;#34;y&amp;#34; : -1 } ) data_p1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1 - randlist2, &amp;#34;y&amp;#34; : +1 } ) data = pd.</description>
+    </item>
+    
+    <item>
       <title>Mermaid</title>
       <link>/post/2020/01/03/mermaid/</link>
       <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
@@ -100,6 +110,15 @@ git push origin --delete master  首先创建一个 github 仓库 git_exercise�
  已修改（modified）表示修改了文件，但还没保存到数据库中。 已暂存（staged）表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。 已提交（committed）表示数据已经安全地保存在本地数据库中。  这会让我们的 Git 项目拥有三个阶段：工作区、暂存区、版本库。基本的 Git 工作流程如下：
  在工作区中修改文件，文件状态变为 modified。 将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区，文件状态变为 staged。 提交更新，找到暂存区的文件，将快照永久性存储到 Git 目录，文件状态变为 committed。  3. Git 命令基础 本文以文件 ~/Documents/git_test/items.py 为例，如下：
 3.0 忽略 .DS_Store 文件 Mac OS 系统会自动在每个目录中生成一个隐藏的 .DS_Store 文件。默认情况下 Git 会把 DS_Store 文件代入版本控制的范围内，从而与 Git 中的某些功能产生冲突。所以，需要在对项目进行版本管理之前设置 Git 忽略.</description>
+    </item>
+    
+    <item>
+      <title>Summary of common python data cleaning</title>
+      <link>/post/2019/07/08/summary-of-common-python-data-cleaning/</link>
+      <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/07/08/summary-of-common-python-data-cleaning/</guid>
+      <description>Summary df.head(n) df.sample(n) df.info() df.describe() df.shape df.values df.columns df.index Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.set_index(&amp;#34;col&amp;#34;) df.ser_index(&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;) df.reset_index() df.reset_index(drop=False) Subset and Slice # subset by row df[df[&amp;#34;col&amp;#34;] &amp;gt; 0] df[ (df.col1 &amp;gt; 0) &amp;amp; (df.col2 &amp;gt;0) ] df[ df.col.isin([&amp;#34;xxx&amp;#34;, &amp;#34;yyy&amp;#34;]) ] # with loc method df.loc[ [&amp;#34;outer_index1&amp;#34;, &amp;#34;outer_index_2&amp;#34;] ] df.loc[ [ (&amp;#34;outer_index_1&amp;#34;, &amp;#34;inner_index_1&amp;#34;), (&amp;#34;outer_index_2&amp;#34;, &amp;#34;inner_index_2&amp;#34;), (&amp;#34;outer_index_3&amp;#34;, &amp;#34;inner_index_3&amp;#34;), ] ] df.loc[ &amp;#34;outer_index_i&amp;#34; : &amp;#34;outer_index_j&amp;#34; ] df.</description>
     </item>
     
     <item>
