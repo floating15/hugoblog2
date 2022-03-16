@@ -92,22 +92,10 @@
     <loc>/post/2018/06/05/matplotlib-01.-intro-in-chinese/</loc>
     <lastmod>2018-06-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/other/abc/</loc>
-    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/note/2017/06/14/another-note/</loc>
-    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/note/</loc>
-    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/tutorial/</loc>
-    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/note/2017/06/13/a-quick-note/</loc>
-    <lastmod>2017-06-13T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/post/2016/02/14/a-plain-markdown-post/</loc>
+    <lastmod>2016-02-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/other/abc/</loc>
     <lastmod>2016-02-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/blogdown/</loc>
@@ -140,6 +128,12 @@
     <loc>/post/2015/07/23/lorem-ipsum/</loc>
     <lastmod>2015-07-23T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/replicate/2015-07-23-lorem-ipsum/</loc>
+    <lastmod>2015-07-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/replicate/</loc>
+    <lastmod>2015-07-23T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/post/2015/07/23/%E5%AF%BC%E8%88%AA/</loc>
     <lastmod>2015-07-23T00:00:00+00:00</lastmod>
   </url><url>
@@ -149,6 +143,6 @@
     <loc>/post/2015/07/23/%E6%AC%A2%E8%BF%8E%E4%BD%BF%E7%94%A8-mweb/</loc>
     <lastmod>2015-07-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/about/</loc>
+    <loc>/note/</loc>
   </url>
 </urlset>
