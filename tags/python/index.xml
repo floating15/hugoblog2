@@ -13,7 +13,7 @@
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020/03/04/perceptron-learning-algorithm/</guid>
-      <description>import numpy as np import pandas as pd import matplotlib.pyplot as plt %matplotlib inline Linear separable Generate the data: randlist1 = np.array([np.random.uniform(-5,5) for i in range(500)]) randlist2 = np.array([np.random.uniform(0,3) for i in range(500)]) data_m1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1+randlist2, &amp;#34;y&amp;#34; : -1 } ) data_p1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1 - randlist2, &amp;#34;y&amp;#34; : +1 } ) data = pd.concat([data_m1_0, data_p1_0], axis=0) plt.</description>
+      <description>import numpy as np import pandas as pd import matplotlib.pyplot as plt %matplotlib inline Linear separable Generate the data: randlist1 = np.array([np.random.uniform(-5,5) for i in range(500)]) randlist2 = np.array([np.random.uniform(0,3) for i in range(500)]) data_p1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1 + randlist2, &amp;#34;y&amp;#34; : -1 } ) data_m1_0 = pd.DataFrame( { &amp;#34;x0&amp;#34;: 1, &amp;#34;x1&amp;#34;: randlist1, &amp;#34;x2&amp;#34;: randlist1 - randlist2, &amp;#34;y&amp;#34; : +1 } ) df = pd.concat([data_m1_0, data_p1_0], axis=0) PLA model plt.</description>
     </item>
     
     <item>
