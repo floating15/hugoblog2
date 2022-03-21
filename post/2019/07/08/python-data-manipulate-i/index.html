@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Python Data Manipulate I | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Python Data Manipulate I</span></h1>  
+
+<h2 class="date">2019/07/08</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#sort">Sort</a></li>
+    <li><a href="#set-index">Set index</a></li>
+    <li><a href="#subset-and-slice-">Subset and Slice ※</a></li>
+    <li><a href="#aggregate">Aggregate</a></li>
+    <li><a href="#duplicate-value">Duplicate Value</a></li>
+    <li><a href="#counting">Counting</a></li>
+    <li><a href="#groupby">Groupby</a></li>
+    <li><a href="#merge-">Merge ※</a></li>
+    <li><a href="#advanced-merge">Advanced Merge</a>
+      <ul>
+        <li><a href="#semi-join">Semi Join</a></li>
+        <li><a href="#anti-join">Anti Join</a></li>
+        <li><a href="#concatenate">Concatenate</a></li>
+        <li><a href="#verifying-integrity">Verifying Integrity</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<p>[TOC]</p>
+<h1 id="overview">Overview</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>head(x)
+df<span style="color:#666">.</span>info()
+df<span style="color:#666">.</span>describe()
+df<span style="color:#666">.</span>shape
+df<span style="color:#666">.</span>values
+df<span style="color:#666">.</span>columns
+df<span style="color:#666">.</span>index
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>sample(n) <span style="color:#408080;font-style:italic"># Return n random samples</span>
+df<span style="color:#666">.</span>sample(frac<span style="color:#666">=</span><span style="color:#666">0.3</span>) <span style="color:#408080;font-style:italic"># Return a random sample of 30 percent</span>
+df<span style="color:#666">.</span>sample(frac<span style="color:#666">=</span><span style="color:#666">1</span>) <span style="color:#408080;font-style:italic"># Shuffle</span>
+</code></pre></div><h1 id="sort">Sort</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>sort_values(
+    by<span style="color:#666">=</span><span style="color:#ba2121">&#34;col_name&#34;</span>,
+    axis<span style="color:#666">=</span><span style="color:#666">0</span>,
+    ascending<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+    inplace<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+
+df<span style="color:#666">.</span>sort_values(
+    by<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>, <span style="color:#ba2121">&#34;col3&#34;</span>],
+    ascending<span style="color:#666">=</span>[<span style="color:#008000;font-weight:bold">True</span>, <span style="color:#008000;font-weight:bold">False</span>, <span style="color:#008000;font-weight:bold">True</span>] <span style="color:#408080;font-style:italic"># sort col1 by ascending; sort col2 by descending; sort col3 by ascending</span>
+)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>sort_index(
+    level<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;outter_index&#34;</span>, <span style="color:#ba2121">&#34;inner_index&#34;</span>],
+    ascending<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+</code></pre></div><h1 id="set-index">Set index</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>set_index(<span style="color:#ba2121">&#34;col&#34;</span>)
+df<span style="color:#666">.</span>set_index(<span style="color:#ba2121">&#34;outter_index&#34;</span>, <span style="color:#ba2121">&#34;inner_index&#34;</span>)
+
+df<span style="color:#666">.</span>reset_index()
+df<span style="color:#666">.</span>reset_index(drop<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>)
+
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;xxxx.csv&#34;</span>, index_col<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col&#34;</span>])
+</code></pre></div><h1 id="subset-and-slice-">Subset and Slice ※</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Subset by row</span>
+df[df[<span style="color:#ba2121">&#34;col&#34;</span>] <span style="color:#666">&gt;</span> <span style="color:#666">0</span>]
+
+df[
+    (df<span style="color:#666">.</span>col1 <span style="color:#666">&gt;</span> <span style="color:#666">0</span>) <span style="color:#666">&amp;</span>
+    (df<span style="color:#666">.</span>col2 <span style="color:#666">&gt;</span><span style="color:#666">0</span>)
+]
+
+df[
+    df<span style="color:#666">.</span>col<span style="color:#666">.</span>isin([<span style="color:#ba2121">&#34;xxx&#34;</span>, <span style="color:#ba2121">&#34;yyy&#34;</span>])
+]
+
+
+<span style="color:#408080;font-style:italic"># With loc method</span>
+<span style="color:#408080;font-style:italic">## The first input to .loc[] accessor allows you to select the rows it returns.</span>
+df<span style="color:#666">.</span>loc[
+    [<span style="color:#ba2121">&#34;outer_index1&#34;</span>, <span style="color:#ba2121">&#34;outer_index_2&#34;</span>]
+]
+
+df<span style="color:#666">.</span>loc[
+    [
+        (<span style="color:#ba2121">&#34;outer_index_1&#34;</span>, <span style="color:#ba2121">&#34;inner_index_1&#34;</span>),
+        (<span style="color:#ba2121">&#34;outer_index_2&#34;</span>, <span style="color:#ba2121">&#34;inner_index_2&#34;</span>),
+        (<span style="color:#ba2121">&#34;outer_index_3&#34;</span>, <span style="color:#ba2121">&#34;inner_index_3&#34;</span>),
+    ]
+]
+
+df<span style="color:#666">.</span>loc[
+    <span style="color:#ba2121">&#34;outer_index_i&#34;</span> : <span style="color:#ba2121">&#34;outer_index_j&#34;</span>
+]
+
+df<span style="color:#666">.</span>loc[
+    (<span style="color:#ba2121">&#34;outer_index_i&#34;</span>, <span style="color:#ba2121">&#34;inner_index_i&#34;</span>):
+    (<span style="color:#ba2121">&#34;outer_index_j&#34;</span>, <span style="color:#ba2121">&#34;inner_index_j&#34;</span>)
+]
+
+<span style="color:#408080;font-style:italic"># With iloc method</span>
+df[df[<span style="color:#ba2121">&#34;y&#34;</span>]<span style="color:#666">==+</span><span style="color:#666">1</span>][np<span style="color:#666">.</span>dot(df[df[<span style="color:#ba2121">&#34;y&#34;</span>]<span style="color:#666">==+</span><span style="color:#666">1</span>]<span style="color:#666">.</span>iloc[:,<span style="color:#666">0</span>:df<span style="color:#666">.</span>shape[<span style="color:#666">1</span>]<span style="color:#666">-</span><span style="color:#666">1</span>], w) <span style="color:#666">&lt;=</span> <span style="color:#666">0</span>] <span style="color:#408080;font-style:italic"># subset by row and then by row</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Subset &amp; Slice by col</span>
+df[<span style="color:#ba2121">&#34;col&#34;</span>]
+df<span style="color:#666">.</span>col
+df[df<span style="color:#666">.</span>col <span style="color:#666">==</span> df<span style="color:#666">.</span>col<span style="color:#666">.</span>max()]<span style="color:#666">.</span>col  <span style="color:#408080;font-style:italic"># equal to df.col.max()</span>
+df[
+    [<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]
+]
+
+<span style="color:#408080;font-style:italic"># With loc method</span>
+df_sort_id<span style="color:#666">.</span>loc[
+    [
+        (<span style="color:#ba2121">&#34;outer_index_1&#34;</span>, <span style="color:#ba2121">&#34;inner_index_1&#34;</span>),
+        (<span style="color:#ba2121">&#34;outer_index_2&#34;</span>, <span style="color:#ba2121">&#34;inner_index_2&#34;</span>),
+        (<span style="color:#ba2121">&#34;outer_index_3&#34;</span>, <span style="color:#ba2121">&#34;inner_index_3&#34;</span>),
+    ] ,
+    [<span style="color:#ba2121">&#34;col1&#34;</span>,  <span style="color:#ba2121">&#34;col2&#34;</span>]
+]
+
+df_sort_id<span style="color:#666">.</span>loc[
+    (<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;1&#34;</span>): (<span style="color:#ba2121">&#34;Julia&#34;</span>, <span style="color:#ba2121">&#34;3&#34;</span>) ,
+    <span style="color:#ba2121">&#34;col_i&#34;</span>: <span style="color:#ba2121">&#34;col_j&#34;</span>
+]
+
+df<span style="color:#666">.</span>loc[
+    df<span style="color:#666">.</span>col1 <span style="color:#666">==</span> <span style="color:#ba2121">&#34;xxx&#34;</span>, <span style="color:#408080;font-style:italic"># the first input of .loc select the rows</span>
+    <span style="color:#ba2121">&#34;col2&#34;</span> <span style="color:#408080;font-style:italic"># the second input of .loc select the columns</span>
+]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Add a col</span>
+df[<span style="color:#ba2121">&#34;newcol&#34;</span>] <span style="color:#666">=</span> scalar <span style="color:#a2f;font-weight:bold">or</span> <span style="color:#008000">list</span>
+df<span style="color:#666">.</span>insert(<span style="color:#666">0</span>, <span style="color:#ba2121">&#34;newcol&#34;</span>, scalar <span style="color:#a2f;font-weight:bold">or</span> <span style="color:#008000">list</span>) <span style="color:#408080;font-style:italic"># 0 is the location of the new column</span>
+</code></pre></div><h1 id="aggregate">Aggregate</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>col<span style="color:#666">.</span>mean()
+df[[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]]<span style="color:#666">.</span>mean()
+
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">pct30</span>(col):
+    <span style="color:#008000;font-weight:bold">return</span> col<span style="color:#666">.</span>quantile(<span style="color:#666">0.3</span>)
+
+df<span style="color:#666">.</span>col<span style="color:#666">.</span>agg(<span style="color:#008000">min</span>)
+df[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>agg([<span style="color:#008000">min</span>, <span style="color:#008000">max</span>, np<span style="color:#666">.</span>mean, np<span style="color:#666">.</span>median, pct30])
+df[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>agg([cumsum, cummin, cumprod])
+df<span style="color:#666">.</span>agg(
+    {
+        <span style="color:#ba2121">&#34;col1&#34;</span>: <span style="color:#ba2121">&#34;sum&#34;</span>,
+        <span style="color:#ba2121">&#34;col2&#34;</span>: <span style="color:#ba2121">&#34;mean&#34;</span>,  <span style="color:#408080;font-style:italic"># There is no need to call the numpy module at this time.</span>
+        <span style="color:#ba2121">&#34;col3&#34;</span>: <span style="color:#ba2121">&#34;median&#34;</span>,
+        <span style="color:#ba2121">&#34;col4&#34;</span>: <span style="color:#ba2121">&#34;count&#34;</span>
+    }
+)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>mean(axis<span style="color:#666">=</span><span style="color:#ba2121">&#34;columns&#34;</span>) <span style="color:#408080;font-style:italic"># calculate for every rows</span>
+df<span style="color:#666">.</span>mean(axis<span style="color:#666">=</span><span style="color:#ba2121">&#34;index&#34;</span>) <span style="color:#408080;font-style:italic"># calculate for every columns</span>
+</code></pre></div><h1 id="duplicate-value">Duplicate Value</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>drop_duplicates(
+    subset<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>
+)
+
+df<span style="color:#666">.</span>drop_duplicates(
+    subset<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]
+)
+</code></pre></div><h1 id="counting">Counting</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>col<span style="color:#666">.</span>value_counts(
+    sort<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+    normalize<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># count missing value</span>
+df<span style="color:#666">.</span>isna()
+df<span style="color:#666">.</span>isna()<span style="color:#666">.</span>any()
+df<span style="color:#666">.</span>isna()<span style="color:#666">.</span>sum()
+df<span style="color:#666">.</span>isna()<span style="color:#666">.</span>sum()<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>)
+</code></pre></div><h1 id="groupby">Groupby</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Groupby method</span>
+df<span style="color:#666">.</span>groupby(
+    <span style="color:#ba2121">&#34;col&#34;</span>
+)
+df<span style="color:#666">.</span>groupby(
+    [<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]
+)
+
+df<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col1&#34;</span>)<span style="color:#666">.</span>agg(<span style="color:#ba2121">&#34;sum&#34;</span>)<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;col2&#34;</span>)
+</code></pre></div><p>Argument <code>level = 0</code> separates rows with the same (outest) index.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">ind <span style="color:#666">=</span> [<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">4</span>]
+s <span style="color:#666">=</span> pd<span style="color:#666">.</span>Series([<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">10</span>, <span style="color:#666">20</span>, <span style="color:#666">30</span>, <span style="color:#666">40</span>], index<span style="color:#666">=</span>ind)
+sg <span style="color:#666">=</span> s<span style="color:#666">.</span>groupby(level<span style="color:#666">=</span><span style="color:#666">0</span>)
+<span style="color:#008000">print</span>(sg<span style="color:#666">.</span>first(), sg<span style="color:#666">.</span>last())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">1     1
+2     2
+3     3
+4    40
+dtype: int64 
+1    10
+2    20
+3    30
+4    40
+dtype: int64
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df1_2_3 <span style="color:#666">=</span> pd<span style="color:#666">.</span>concat(
+    [df1, df2, df3],
+    keys<span style="color:#666">=</span>[<span style="color:#ba2121">&#39;7Jul&#39;</span>, <span style="color:#ba2121">&#39;8Aug&#39;</span>, <span style="color:#ba2121">&#39;9Sep&#39;</span>]
+)
+<span style="color:#008000">print</span>(df1_2_3<span style="color:#666">.</span>sample(<span style="color:#666">5</span>))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">         iid  cid invoice_date  total       bill_ctry
+8Aug 18  220    6   2011-08-22   5.94  Czech Republic
+7Jul 28  371    8   2013-07-02   1.98         Belgium
+8Aug 28  378   46   2013-08-02   1.98         Ireland
+9Sep 27  386   27   2013-09-02   1.98             USA
+     23  309   22   2012-09-26   3.98             USA  # &lt;-- there is a Multi indexs
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sumdf <span style="color:#666">=</span> df_1_2_3<span style="color:#666">.</span>groupby(level<span style="color:#666">=</span><span style="color:#666">0</span>)<span style="color:#666">.</span>agg(<span style="color:#008000">sum</span>)
+<span style="color:#008000">print</span>(sumdf)
+sumdf<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">       iid   cid  total
+7Jul  7385   961  190.1
+8Aug  7630  1170  198.1
+9Sep  7417   961  196.2
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220321214359.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Pivot table</span>
+df<span style="color:#666">.</span>pivot_table(
+    values<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>], 
+    index<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col3&#34;</span>, <span style="color:#ba2121">&#34;col4&#34;</span>], 
+    columns<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col5&#34;</span>, <span style="color:#ba2121">&#34;col6&#34;</span>],
+    aggfunc<span style="color:#666">=</span><span style="color:#ba2121">&#39;mean&#39;</span>, 
+    fill_value<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    margins<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, 
+    dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, 
+    margins_name<span style="color:#666">=</span><span style="color:#ba2121">&#39;All&#39;</span>
+)
+</code></pre></div><h1 id="merge-">Merge ※</h1>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Inner Join</span>
+df1_df2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>, suffixes<span style="color:#666">=</span>(<span style="color:#ba2121">&#34;_l&#34;</span>, <span style="color:#ba2121">&#34;_r&#34;</span>))
+df1_df2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>])
+df1_df2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, left_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col1&#34;</span>, right_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col2&#34;</span>) <span style="color:#408080;font-style:italic"># The columns to be merged in the two tables have different names</span>
+
+<span style="color:#408080;font-style:italic"># Left Join</span>
+df1_2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>,  how<span style="color:#666">=</span><span style="color:#ba2121">&#34;left&#34;</span>) <span style="color:#408080;font-style:italic"># default argument how is &#34;inner&#34;</span>
+<span style="color:#408080;font-style:italic"># Right Join</span>
+df1_2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>,  how<span style="color:#666">=</span><span style="color:#ba2121">&#34;right&#34;</span>) 
+<span style="color:#408080;font-style:italic"># Outer Join</span>
+df1_2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>,  how<span style="color:#666">=</span><span style="color:#ba2121">&#34;outer&#34;</span>) 
+
+<span style="color:#408080;font-style:italic"># Symmetric Difference</span>
+df1_2 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>, how<span style="color:#666">=</span><span style="color:#ba2121">&#34;outer&#34;</span>)
+m <span style="color:#666">=</span> (df1_2[<span style="color:#ba2121">&#34;col1_x&#34;</span>]<span style="color:#666">.</span>isna()) <span style="color:#666">|</span> (df1_2[<span style="color:#ba2121">&#34;col1_y&#34;</span>]<span style="color:#666">.</span>isna())
+df1_2[m]
+
+<span style="color:#408080;font-style:italic"># Self Join</span>
+df_1s <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df1, left_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;c1&#34;</span>, right_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;c3&#34;</span>, suffixes<span style="color:#666">=</span>(<span style="color:#ba2121">&#34;_x&#34;</span>, <span style="color:#ba2121">&#34;_y&#34;</span>)) 
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Merge on Index</span>
+df1<span style="color:#666">.</span>merge(df2, left_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, right_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;index_name&#34;</span>)
+df1<span style="color:#666">.</span>merge(
+    df2,
+    left_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;left_index_name&#34;</span>,
+    left_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+    right_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;right_index_name&#34;</span>,
+    right_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+)
+df1<span style="color:#666">.</span>merge(
+    df2,
+    left_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col_name&#34;</span>,
+    right_on<span style="color:#666">=</span><span style="color:#ba2121">&#34;right_index_name&#34;</span>,
+    right_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Merge multiple DataFrame</span>
+df1_df2_df3 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>])<span style="color:#666">.</span>merge(df3, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col3&#34;</span>, suffixes<span style="color:#666">=</span>(<span style="color:#ba2121">&#34;_2&#34;</span>, <span style="color:#ba2121">&#34;_3&#34;</span>)) 
+<span style="color:#408080;font-style:italic"># e.t.  (equal to)</span>
+df1_df2_df3 <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>])\ <span style="color:#408080;font-style:italic"># &lt;-- note this backslash</span>
+                 <span style="color:#666">.</span>merge(df3, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col3&#34;</span>, suffixes<span style="color:#666">=</span>(<span style="color:#ba2121">&#34;_2&#34;</span>, <span style="color:#ba2121">&#34;_3&#34;</span>))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Merge with other operation</span>
+df_1_2_3 <span style="color:#666">=</span> df_1<span style="color:#666">.</span>merge(df_2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col1&#34;</span>)<span style="color:#666">.</span>merge(df_3, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col2&#34;</span>)
+
+df_1_2_3<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col3&#34;</span>)<span style="color:#666">.</span>agg({<span style="color:#ba2121">&#39;col4&#39;</span>: <span style="color:#ba2121">&#39;sum&#39;</span>})<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>)
+    <span style="color:#408080;font-style:italic"># e.t.</span>
+df_1_2_3<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col3&#34;</span>)<span style="color:#666">.</span>col4<span style="color:#666">.</span>agg(<span style="color:#008000">sum</span>)<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>)
+    <span style="color:#408080;font-style:italic"># e.t.</span>
+df_1_2_3<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col3&#34;</span>)<span style="color:#666">.</span>agg(<span style="color:#008000">sum</span>)<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;col4&#34;</span>)
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/03-18-13-16-10-037.png" alt=""></p>
+<h1 id="advanced-merge">Advanced Merge</h1>
+<h2 id="semi-join">Semi Join</h2>
+<p>A semi join filters the left table down to those observations that have a match in the right table. It is similar to an inner join where only the intersection between the tables is returned, but unlike an inner join, only the columns from the left table are shown. Finally, no duplicate rows from the left table are returned, even if there is a one-to-many relationship.</p>
+<p>Semi Join Three Steps:</p>
+<ol>
+<li>Merge the left and right tables on key column using an inner join;</li>
+<li>Search if the key column in the left table is in the merged tables using the <code>.isin()</code> method creating a Boolean <code>Series</code>;</li>
+<li>Subset the rows of left table.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># 1. </span>
+df_merged <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col1&#34;</span>)
+
+<span style="color:#408080;font-style:italic"># 2. </span>
+bs <span style="color:#666">=</span> df1[<span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>isin(df_merged[<span style="color:#ba2121">&#34;col2&#34;</span>]) <span style="color:#408080;font-style:italic"># bs means boolean series</span>
+
+<span style="color:#408080;font-style:italic"># 3.</span>
+df3 <span style="color:#666">=</span> df1[bs]
+</code></pre></div><h2 id="anti-join">Anti Join</h2>
+<p>An anti join returns the observations in the left table that do not have a matching observation in the right table. It also only returns the columns from the left table.</p>
+<p>With <code>indicator</code> set to <code>True</code>, the <code>merge</code> method adds a column called &ldquo;<code>_merge</code>&rdquo; to the output. This column tells the source of each row. For example, if rows found a match in both tables, the <code>_merge</code> column shows <code>both</code>; if rows can only be found in the left table, the <code>_merge</code> column shows <code>left_only</code>. Obviously, <code>right_only</code> will not appear in a left join.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># 1.</span>
+df_merge <span style="color:#666">=</span> df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;col1&#34;</span>, how<span style="color:#666">=</span><span style="color:#ba2121">&#34;left&#34;</span>, indicater<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+<span style="color:#408080;font-style:italic"># 2.</span>
+ls <span style="color:#666">=</span> df_merge<span style="color:#666">.</span>loc[
+    df_merge[<span style="color:#ba2121">&#34;_merge&#34;</span>]<span style="color:#666">==</span><span style="color:#ba2121">&#34;left_only&#34;</span>,
+    <span style="color:#ba2121">&#34;col1&#34;</span>
+]
+
+<span style="color:#408080;font-style:italic"># 3.</span>
+df3 <span style="color:#666">=</span> df1[df1[<span style="color:#ba2121">&#34;col1&#34;</span>]<span style="color:#666">.</span>isin(ls)]
+</code></pre></div><h2 id="concatenate">Concatenate</h2>
+<p>So far, we have only discussed how to merge two tables, which mainly grows them <strong>horizontally</strong>. Now we concern how to grow them <strong>vertically</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">pd<span style="color:#666">.</span>concat(
+    [df1, df2, df3]
+)
+</code></pre></div><p>Notice the column headers are the same. The result is a vertically combined table. <strong>Notice</strong> each table&rsquo;s index value was retained.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">pd<span style="color:#666">.</span>concat(
+    [df1, df2, df3],
+    ignore_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>
+)
+</code></pre></div><p>If the index contains no valuable information, then we can ignore it in the concat method by setting <code>ignore_index</code> to <code>True</code>. The result is that the index will go from <strong>0 to n-1</strong>.</p>
+<p>Now, suppose we wanted to associate specific keys with each of the pieces of our three original tables. We can provide a list of labels to the <code>keys</code> argument. Make sure that <code>ignore_index</code> argument is <code>False</code>, since you can&rsquo;t add a key and ignore the index at the same time. This results in a table with a <strong>multi-index</strong>, with the label on the first level.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">pd<span style="color:#666">.</span>concat(
+    [df1, df2, df3],
+    ignore_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+    keys<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;df1&#34;</span>, <span style="color:#ba2121">&#34;df2&#34;</span>, <span style="color:#ba2121">&#34;df3&#34;</span>]
+)
+</code></pre></div><p>When we need to combine tables that have <strong>different</strong> column names, the <code>concat</code> method by default will include <strong>all of the columns</strong> in the different tables it&rsquo;s combining. If we only want the matching columns between tables, we set the <code>join</code> argument to &ldquo;<code>inner</code>&rdquo;. Its default value is equal to &ldquo;<code>outer</code>&rdquo;</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">pd<span style="color:#666">.</span>concat(
+    [df1, df2, df3],
+    join<span style="color:#666">=</span><span style="color:#ba2121">&#34;inner&#34;</span>
+)
+</code></pre></div><p><code>Append</code> is a simplified <code>concat</code> method. It supports the <code>ignore_index</code> argument. However, it does not support <code>keys</code> or <code>join</code>. <code>Join</code> is always set to <strong>outer</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df1<span style="color:#666">.</span>append(
+    [df2, df3],
+    ignore_index<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>
+)
+</code></pre></div><h2 id="verifying-integrity">Verifying Integrity</h2>
+<p>Both the <code>merge</code> and <code>concat</code> methods have special features that allow us to verify the structure of our data. The <code>validate</code> and <code>verify_integrity</code> arguments of the <code>merge</code> and <code>concat</code> methods respectively will allow us to verify the data.</p>
+<p>When merging two tables, we might expect the tables to have a <code>one-to-one</code> relationship. However, one of the columns we are merging on may have a duplicated value, which will turn the relationship into a <code>one-to-many</code>.</p>
+<p>If we provide the <code>validate</code> argument one of these key strings:</p>
+<ul>
+<li><code>one_to_one</code></li>
+<li><code>one_to_many</code></li>
+<li><code>many_to_one</code></li>
+<li><code>many_to_many</code></li>
+</ul>
+<p>it will validate the relationship between the two tables. For example, if we specify we want a one-to-one relationship, but it turns out the relationship is not one-to-one, <strong>then an error is raised</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df1 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;a&#34;</span>: np<span style="color:#666">.</span>arange(<span style="color:#666">5</span>),
+        <span style="color:#ba2121">&#34;b&#34;</span>: <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;adfgh&#34;</span>)
+    }
+)
+df2 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;a&#34;</span>: [<span style="color:#666">0</span>, <span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">3</span>],
+        <span style="color:#ba2121">&#34;b&#34;</span>: <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;tvdsv&#34;</span>)
+    }
+)
+df1<span style="color:#666">.</span>merge(df2, on<span style="color:#666">=</span><span style="color:#ba2121">&#34;a&#34;</span>, validate<span style="color:#666">=</span><span style="color:#ba2121">&#34;one_to_one&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">MergeError: Merge keys are not unique in right dataset; not a one-to-one merge
+</code></pre></div><p>When concatenating tables vertically, we might unintentionally create duplicate records if a record exists in both tables.</p>
+<blockquote>
+<p>Notice, the recode represent <strong>index</strong>, not columns values.</p>
+</blockquote>
+<p><code>concat</code> method has the argument <code>verify_integrity</code>, which by default is <code>False</code>. However, if set to <code>True</code>, it will check if there are duplicate values in the <strong>index</strong> and <strong>raise an error</strong> if there are. <strong>It will only check the index values and not the columns</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df1 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;a&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>),
+        <span style="color:#ba2121">&#34;b&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>),
+        <span style="color:#ba2121">&#34;c&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>),
+    },
+    index<span style="color:#666">=</span>np<span style="color:#666">.</span>arange(<span style="color:#666">5</span>)
+)
+df2 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(
+    {
+        <span style="color:#ba2121">&#34;a&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>),
+        <span style="color:#ba2121">&#34;b&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>),
+        <span style="color:#ba2121">&#34;c&#34;</span>: np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">5</span>),
+    },
+    index<span style="color:#666">=</span>np<span style="color:#666">.</span>arange(<span style="color:#666">4</span>,<span style="color:#666">9</span>)
+)
+<span style="color:#008000">print</span>(df1, <span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#39;</span>, df2)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">          a         b         c
+0  0.131960  0.559110  0.803359
+1  0.862007  0.349336  0.594149
+2  0.805661  0.313103  0.937367
+3  0.893554  0.633904  0.475403
+4  0.381487  0.096156  0.219184 
+           a         b         c
+4  0.469545  0.142471  0.906317
+5  0.035282  0.481996  0.207780
+6  0.241841  0.355997  0.599351
+7  0.684347  0.592812  0.833834
+8  0.036764  0.347563  0.895287
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">pd<span style="color:#666">.</span>concat(
+    [df1, df2],
+    verify_integrity<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>
+)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ValueError: Indexes have overlapping values: Int64Index([4], dtype=&#39;int64&#39;)
+</code></pre></div>
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+

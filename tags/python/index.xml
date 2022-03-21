@@ -17,12 +17,13 @@
     </item>
     
     <item>
-      <title>Summary of Data Cleaning Skills</title>
-      <link>/post/2019/07/08/summary-of-data-cleaning-skills/</link>
+      <title>Python Data Manipulate I</title>
+      <link>/post/2019/07/08/python-data-manipulate-i/</link>
       <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/2019/07/08/summary-of-data-cleaning-skills/</guid>
-      <description>Summary df.head(n) df.sample(n) df.info() df.describe() df.shape df.values df.columns df.index Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.set_index(&amp;#34;col&amp;#34;) df.ser_index(&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;) df.reset_index() df.reset_index(drop=False) Subset and Slice # subset by row df[df[&amp;#34;col&amp;#34;] &amp;gt; 0] df[ (df.col1 &amp;gt; 0) &amp;amp; (df.col2 &amp;gt;0) ] df[ df.col.isin([&amp;#34;xxx&amp;#34;, &amp;#34;yyy&amp;#34;]) ] # with loc method df.loc[ [&amp;#34;outer_index1&amp;#34;, &amp;#34;outer_index_2&amp;#34;] ] df.loc[ [ (&amp;#34;outer_index_1&amp;#34;, &amp;#34;inner_index_1&amp;#34;), (&amp;#34;outer_index_2&amp;#34;, &amp;#34;inner_index_2&amp;#34;), (&amp;#34;outer_index_3&amp;#34;, &amp;#34;inner_index_3&amp;#34;), ] ] df.loc[ &amp;#34;outer_index_i&amp;#34; : &amp;#34;outer_index_j&amp;#34; ] df.</description>
+      <guid>/post/2019/07/08/python-data-manipulate-i/</guid>
+      <description>[TOC]
+Overview df.head(x) df.info() df.describe() df.shape df.values df.columns df.index df.sample(n) # Return n random samples df.sample(frac=0.3) # Return a random sample of 30 percent df.sample(frac=1) # Shuffle Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_values( by=[&amp;#34;col1&amp;#34;, &amp;#34;col2&amp;#34;, &amp;#34;col3&amp;#34;], ascending=[True, False, True] # sort col1 by ascending; sort col2 by descending; sort col3 by ascending ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.set_index(&amp;#34;col&amp;#34;) df.set_index(&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;) df.reset_index() df.reset_index(drop=False) df = pd.read_csv(&amp;#34;xxxx.csv&amp;#34;, index_col=[&amp;#34;col&amp;#34;]) Subset and Slice ※ # Subset by row df[df[&amp;#34;col&amp;#34;] &amp;gt; 0] df[ (df.</description>
     </item>
     
     <item>
