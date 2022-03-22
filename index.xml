@@ -300,7 +300,8 @@ root@wanghaoming1:/# ls ~ /usr boot boot: abi-4.4.0-62-generic config-4.4.0-62-g
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/note/</guid>
-      <description>Machine Learning Foundation I  Perceptron Learning Algorithm.pdf PAC Learning Frame.pdf  </description>
+      <description>Machine Learning Foundation I Perceptron, Hoeffding&amp;rsquo;s Inequality, PAC Learning Frame, Growth Function, Break Point, Bounding Function, Vapnik-Chervonenkis (VC) Dimension
+ Lecture_0102.pdf Lecture_0304.pdf Lecture_0506.pdf  </description>
     </item>
     
   </channel>
