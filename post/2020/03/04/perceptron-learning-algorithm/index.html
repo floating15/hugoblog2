@@ -119,7 +119,7 @@ length <span style="color:#666">=</span> mis<span style="color:#666">.</span>sha
 plt<span style="color:#666">.</span>plot(x, <span style="color:#666">-</span>(w[<span style="color:#666">1</span>]<span style="color:#666">/</span>w[<span style="color:#666">2</span>])<span style="color:#666">*</span>x <span style="color:#666">-</span>  (w[<span style="color:#666">0</span>]<span style="color:#666">/</span>w[<span style="color:#666">2</span>]), <span style="color:#ba2121">&#34;c&#34;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;end hypothesis (times=</span><span style="color:#b68;font-weight:bold">{</span>times<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">)&#34;</span>)
 plt<span style="color:#666">.</span>legend()
 plt<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;/Users/wanghaoming/Documents/LaTeX_doc/Machine_Learning/pla.png&#34;</span>, bbox_inches<span style="color:#666">=</span><span style="color:#ba2121">&#39;tight&#39;</span>, dpi<span style="color:#666">=</span><span style="color:#666">500</span>)
-</code></pre></div><p><img src="../../../../img_overall/img_pla/output_4_0.png" alt="png"></p>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/pla.png" alt=""></p>
 <h2 id="convergence-process">Convergence process</h2>
 <p>Convergence process of weight vector: <code>$\frac{\mathbf{w}_{f}^{T}\mathbf{w}_t}{||\mathbf{w}_f||\cdot||\mathbf{w}_t||}$</code></p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">wl1 <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(wl)
@@ -134,7 +134,7 @@ plt<span style="color:#666">.</span>plot(
 )
 plt<span style="color:#666">.</span>legend()
 plt<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;/Users/wanghaoming/Documents/LaTeX_doc/Machine_Learning/converg.png&#34;</span>, bbox_inches<span style="color:#666">=</span><span style="color:#ba2121">&#39;tight&#39;</span>,  dpi<span style="color:#666">=</span><span style="color:#666">500</span>)
-</code></pre></div><p><img src="../../../../img_overall/img_pla/output_6_0.png" alt="png"></p>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/converg.png" alt=""></p>
 <h2 id="calculate-the-maximum-number-of-iterations">Calculate the maximum number of iterations:</h2>
 <p>we have
 <code>$$ \begin{aligned} \mathbf{w}_{f}^{T}\mathbf{w}_{t+1} &amp;= \mathbf{w}_{f}^{T}(\mathbf{w}_{t}+y_{n(t)}\mathbf{x}_{n(t)})\\ &amp;= \mathbf{w}_{f}^{T}\mathbf{w}_{t} + y_{n(t)}\mathbf{w}_{f}^{T}\mathbf{x}_{n(t)}\\ &amp;\geq \mathbf{w}_{f}^{T}\mathbf{w}_{t} + \min_{n}y_n\mathbf{w}_{f}^{T}\mathbf{x}_n\\ &amp;&gt; \mathbf{w}_{f}^{T}\mathbf{w}_{t}. \end{aligned} $$</code>
@@ -187,7 +187,7 @@ plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</sp
 plt<span style="color:#666">.</span>scatter(data_m1_0[<span style="color:#ba2121">&#34;x1&#34;</span>], data_m1_0[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>, alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>, linewidths<span style="color:#666">=</span><span style="color:#666">0</span>)
 plt<span style="color:#666">.</span>scatter(data_p1_0[<span style="color:#ba2121">&#34;x1&#34;</span>], data_p1_0[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>, alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>, linewidths<span style="color:#666">=</span><span style="color:#666">0</span>)
 plt<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;/Users/wanghaoming/Documents/LaTeX_doc/Machine_Learning/non_sep.png&#34;</span>, bbox_inches<span style="color:#666">=</span><span style="color:#ba2121">&#39;tight&#39;</span>,  dpi<span style="color:#666">=</span><span style="color:#666">500</span>)
-</code></pre></div><p><img src="../../../../img_overall/img_pla/output_12_0.png" alt="png"></p>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/non_sep.png" alt=""></p>
 <h2 id="building-pocket-model">Building Pocket Model:</h2>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
 plt<span style="color:#666">.</span>scatter(data_m1_0[<span style="color:#ba2121">&#34;x1&#34;</span>], data_m1_0[<span style="color:#ba2121">&#34;x2&#34;</span>], c<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>, alpha<span style="color:#666">=</span><span style="color:#666">0.5</span>, linewidths<span style="color:#666">=</span><span style="color:#666">0</span>)
@@ -217,7 +217,7 @@ lengthl<span style="color:#666">.</span>append(length)
 plt<span style="color:#666">.</span>plot(x, <span style="color:#666">-</span>(w[<span style="color:#666">1</span>]<span style="color:#666">/</span>w[<span style="color:#666">2</span>])<span style="color:#666">*</span>x <span style="color:#666">-</span>  (w[<span style="color:#666">0</span>]<span style="color:#666">/</span>w[<span style="color:#666">2</span>]), <span style="color:#ba2121">&#34;c&#34;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;end hypothesis (times=</span><span style="color:#b68;font-weight:bold">{</span>T<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">)&#34;</span>)
 plt<span style="color:#666">.</span>legend()
 plt<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;/Users/wanghaoming/Documents/LaTeX_doc/Machine_Learning/pocket.png&#34;</span>, bbox_inches<span style="color:#666">=</span><span style="color:#ba2121">&#39;tight&#39;</span>, dpi<span style="color:#666">=</span><span style="color:#666">500</span>)
-</code></pre></div><p><img src="../../../../img_overall/img_pla/output_14_0.png" alt="png"></p>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/pocket.png" alt=""></p>
 <h2 id="error-prediction-number">Error prediction number</h2>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ll <span style="color:#666">=</span> pd<span style="color:#666">.</span>Series(lengthl)
 plt<span style="color:#666">.</span>figure(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,<span style="color:#666">6</span>))
@@ -227,7 +227,7 @@ plt<span style="color:#666">.</span>xscale(<span style="color:#ba2121">&#34;log&
     <span style="color:#008000;font-weight:bold">if</span> ll[i] <span style="color:#666">&lt;</span> ll[i<span style="color:#666">-</span><span style="color:#666">1</span>]:
         plt<span style="color:#666">.</span>text(i ,ll[i], ll[i])
 plt<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;/Users/wanghaoming/Documents/LaTeX_doc/Machine_Learning/minlen.png&#34;</span>, bbox_inches<span style="color:#666">=</span><span style="color:#ba2121">&#39;tight&#39;</span>, dpi<span style="color:#666">=</span><span style="color:#666">500</span>)
-</code></pre></div><p><img src="../../../../img_overall/img_pla/output_16_0.png" alt="png"></p>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/minlen.png" alt=""></p>
 
 </main>
 
