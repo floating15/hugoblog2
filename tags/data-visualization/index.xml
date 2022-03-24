@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Visualization on haoming&#39;s blog</title>
+    <link>/tags/data-visualization/</link>
+    <description>Recent content in Data Visualization on haoming&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/data-visualization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data Visualization I</title>
+      <link>/post/2020/04/16/data-visualization-i/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/04/16/data-visualization-i/</guid>
+      <description>1. Introduction to Matplotlib 1.1 Intro to data visualization with matplotlib we will use the main object-oriented interface. This interface is provided through the pyplot submodule. The plt.subplots() command, when called without any inputs, creates two different objects: a Figure object and an Axes object.
+import matplotlib.pyplot as plt fig, ax = plt.subplots() The Figure object is a container that holds everything that you see on the page. Meanwhile, the Axes is the part of the page that holds the data.</description>
+    </item>
+    
+  </channel>
+</rss>
