@@ -26,20 +26,20 @@
     </item>
     
     <item>
+      <title>Python</title>
+      <link>/tags/python/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Machine Learning</title>
       <link>/tags/machine-learning/</link>
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Python</title>
-      <link>/tags/python/</link>
-      <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/python/</guid>
       <description></description>
     </item>
     
@@ -67,15 +67,6 @@
       <pubDate>Wed, 08 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/pandas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Matplotlib</title>
-      <link>/tags/matplotlib/</link>
-      <pubDate>Tue, 12 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/matplotlib/</guid>
       <description></description>
     </item>
     

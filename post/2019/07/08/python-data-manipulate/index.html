@@ -98,6 +98,8 @@ df<span style="color:#666">.</span>shape
 df<span style="color:#666">.</span>values
 df<span style="color:#666">.</span>columns
 df<span style="color:#666">.</span>index
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>sort_values(by<span style="color:#666">=</span><span style="color:#ba2121">&#34;col&#34;</span>)<span style="color:#666">.</span>tail(n) <span style="color:#408080;font-style:italic"># n largest, e.t.</span>
+df<span style="color:#666">.</span>nlargest(n, <span style="color:#ba2121">&#34;col&#34;</span>)
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>sample(n) <span style="color:#408080;font-style:italic"># Return n random samples</span>
 df<span style="color:#666">.</span>sample(frac<span style="color:#666">=</span><span style="color:#666">0.3</span>) <span style="color:#408080;font-style:italic"># Return a random sample of 30 percent</span>
 df<span style="color:#666">.</span>sample(frac<span style="color:#666">=</span><span style="color:#666">1</span>) <span style="color:#408080;font-style:italic"># Shuffle</span>
@@ -229,11 +231,17 @@ df<span style="color:#666">.</span>mean(axis<span style="color:#666">=</span><sp
 df<span style="color:#666">.</span>drop_duplicates(
     subset<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]
 )
+
+df<span style="color:#666">.</span>col<span style="color:#666">.</span>unique()
 </code></pre></div><h1 id="counting">Counting</h1>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">.</span>col<span style="color:#666">.</span>value_counts(
     sort<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
     normalize<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
 )
+
+df<span style="color:#666">.</span>col<span style="color:#666">.</span>value_counts()
+<span style="color:#408080;font-style:italic"># e.t.</span>
+df<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col&#34;</span>)<span style="color:#666">.</span>count()
 </code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># count missing value of each columns</span>
 df<span style="color:#666">.</span>isna()
 df<span style="color:#666">.</span>isna()<span style="color:#666">.</span>any()
@@ -249,7 +257,13 @@ df<span style="color:#666">.</span>groupby(
 df<span style="color:#666">.</span>groupby(
     [<span style="color:#ba2121">&#34;col1&#34;</span>, <span style="color:#ba2121">&#34;col2&#34;</span>]
 )
+<span style="color:#408080;font-style:italic"># e.t.</span>
+df<span style="color:#666">.</span>groupby(
+    [<span style="color:#ba2121">&#34;col1&#34;</span>, df[<span style="color:#ba2121">&#34;col2&#34;</span>]]
+)
 
+df<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col1&#34;</span>)<span style="color:#666">.</span>agg(<span style="color:#ba2121">&#34;sum&#34;</span>)[<span style="color:#ba2121">&#34;col2&#34;</span>]<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>)
+<span style="color:#408080;font-style:italic"># e.t.</span>
 df<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;col1&#34;</span>)<span style="color:#666">.</span>agg(<span style="color:#ba2121">&#34;sum&#34;</span>)<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;col2&#34;</span>)
 </code></pre></div><p>Argument <code>level = 0</code> separates rows with the same (outest) index.</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">ind <span style="color:#666">=</span> [<span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">1</span>, <span style="color:#666">2</span>, <span style="color:#666">3</span>, <span style="color:#666">4</span>]

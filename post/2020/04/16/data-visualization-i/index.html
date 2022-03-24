@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Visualization I | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Data Visualization I</span></h1>  
+
+<h2 class="date">2020/04/16</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-introduction-to-matplotlib">1. Introduction to Matplotlib</a>
+      <ul>
+        <li><a href="#11-intro-to-data-visualization-with-matplotlib">1.1 Intro to data visualization with matplotlib</a></li>
+        <li><a href="#12-customizing-plots">1.2 Customizing Plots</a></li>
+        <li><a href="#13-small-multiples">1.3 Small Multiples</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-plotting-time-series">2. Plotting time-series</a>
+      <ul>
+        <li><a href="#21-plotting-time-series-data">2.1 Plotting time-series data</a></li>
+        <li><a href="#22-plotting-time-series-with-different-variables">2.2 Plotting time-series with different variables</a></li>
+        <li><a href="#23-annotating-time-series-data">2.3 Annotating time-series data</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-quantitative-comparisons-and-statistical-visualizations">3. Quantitative comparisons and statistical visualizations</a>
+      <ul>
+        <li><a href="#31-quantitative-comparisons-bar-charts">3.1 Quantitative comparisons: bar-charts</a></li>
+        <li><a href="#32-quantitative-comparisons-histograms">3.2 Quantitative comparisons: histograms</a></li>
+        <li><a href="#33-statistical-plotting">3.3 Statistical plotting</a></li>
+        <li><a href="#34-quantitative-comparisons-scatter-plots">3.4 Quantitative comparisons: scatter plots</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-sharing-visualizations-with-others">4. Sharing visualizations with others</a>
+      <ul>
+        <li><a href="#41-plot-style">4.1 Plot style</a></li>
+        <li><a href="#42-saving-visualizations">4.2 Saving visualizations</a></li>
+        <li><a href="#43-automating-figures-from-data">4.3 Automating figures from data</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<h1 id="1-introduction-to-matplotlib">1. Introduction to Matplotlib</h1>
+<h2 id="11-intro-to-data-visualization-with-matplotlib">1.1 Intro to data visualization with matplotlib</h2>
+<p>we will use the main <strong>object-oriented interface</strong>. This interface is provided through the pyplot submodule. The <code>plt.subplots()</code> command, when called without any inputs, creates two different objects: a <code>Figure</code> object and an <code>Axes</code> object.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+</code></pre></div><p>The <code>Figure</code> object is a container that holds everything that you see on the <strong>page</strong>. Meanwhile, the <code>Axes</code> is the part of the <strong>page</strong> that holds the data. It is the canvas on which we will draw with our data.</p>
+<p>To add the data to the <code>Axes</code>, we call a <code>ax.plot()</code> command. If you want, you can add more data to the plot by this way. Finally, we call the <code>plt.show()</code> function to show the effect of the plotting command.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>plot(x<span style="color:#666">=</span>df<span style="color:#666">.</span>col1, y<span style="color:#666">=</span>df<span style="color:#666">.</span>col2)
+ax<span style="color:#666">.</span>plot(x<span style="color:#666">=</span>df<span style="color:#666">.</span>col1, y<span style="color:#666">=</span>df<span style="color:#666">.</span>col3)
+ax<span style="color:#666">.</span>plot(df2[<span style="color:#ba2121">&#34;col1&#34;</span>], df2[<span style="color:#ba2121">&#34;col2&#34;</span>]) <span style="color:#408080;font-style:italic"># you can also add data to a figure from different tables.</span>
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p>Here is what all of the code to create this figure would then look like.</p>
+<ul>
+<li>First, we create the <code>Figure</code> and the <code>Axes</code> objects.</li>
+<li>We call the <code>Axes</code> method <code>plot</code> to add first the <code>df.col2</code>, and then the <code>df.col3</code> to the Axes.</li>
+<li>Finally, we ask Matplotlib to show us the figure.</li>
+</ul>
+<h2 id="12-customizing-plots">1.2 Customizing Plots</h2>
+<p>The <code>plot</code> method takes an optional keyword argument, <code>marker</code>, which lets you indicate what kind of markers you&rsquo;d like. To see all the possible marker styles, you can visit this <a href="https://matplotlib.org/stable/api/markers_api.html">page</a> in the Matplotlib online documentation.</p>
+<p>You can change the appearance of these connecting lines by adding the <code>linestyle</code> keyword argument. Like marker shapes, there are a few linestyles you can choose from, listed in this <a href="https://matplotlib.org/3.0.3/gallery/lines_bars_and_markers/line_styles_reference.html">page</a>.</p>
+<p>You can even go so far as to eliminate the lines altogether, by passing the string &ldquo;<code>None</code>&rdquo; as input to this keyword argument.</p>
+<p>you can also add the <code>color</code> argument. For example, here we&rsquo;ve chosen to show this data in red, indicated by the letter &ldquo;<code>r</code>&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Plot Seattle data, setting data appearance</span>
+ax<span style="color:#666">.</span>plot(
+    seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], 
+    seattle_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>], 
+    color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>, 
+    marker<span style="color:#666">=</span><span style="color:#ba2121">&#34;o&#34;</span>, 
+    linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#34;--&#34;</span>
+)
+<span style="color:#408080;font-style:italic"># Plot Austin data, setting data appearance</span>
+ax<span style="color:#666">.</span>plot(
+    austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], 
+    austin_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>], 
+    color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>, 
+    marker<span style="color:#666">=</span><span style="color:#ba2121">&#34;v&#34;</span>, 
+    linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#34;--&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323145928.png" alt=""></p>
+<p>The <code>Axes</code> object has several methods that start with the word <code>set</code>. These are methods that you can use to change certain properties of the object, before calling show to display it.</p>
+<p>For example, there is a <code>set_xlabel</code> method that you can use to set the value of the label of the x-axis.</p>
+<p>Similarly, a <code>set_ylabel</code> method customizes the label that is associated with the y-axis.</p>
+<p>Finally, you can also add a title to your Axes using the <code>set_title</code> method.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">ax<span style="color:#666">.</span>plot(seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], seattle_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>])
+ax<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>])
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;Time (months)&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Precipitation (inches)&#34;</span>)
+ax<span style="color:#666">.</span>set_title(<span style="color:#ba2121">&#34;Weather patterns in Austin and Seattle&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323150150.png" alt=""></p>
+<h2 id="13-small-multiples">1.3 Small Multiples</h2>
+<p>In some cases, adding more data to a plot can make the plot too busy, obscuring patterns rather than revealing them. One way to overcome this kind of mess is to use what are called <strong>small multiples</strong>. These are multiple small plots that show similar data across different conditions.</p>
+<p>In Matplotlib, small multiples are called <strong>sub-plots</strong>. That is also the reason that the function that creates these is called <code>subplots</code>.</p>
+<p>Previously, we called this function with no inputs. This creates <strong>one subplot</strong>. Now, we&rsquo;ll give it some inputs. <strong>Small multiples are typically arranged on the page as a grid with rows and columns</strong>. Here, we are creating a Figure object with 2 rows of subplots, and 2 columns. This is what this would look like before we add any data to it.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>sublpots(<span style="color:#666">2</span>, <span style="color:#666">2</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323153418.png" alt=""></p>
+<p>In this case, the variable <code>ax</code> is no longer only one <code>Axes</code> object. Instead, it is <strong>an <code>numpy.ndarray</code> of Axes objects with a shape of 2 by 2</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000">print</span>(ax<span style="color:#666">.</span>shape)
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(ax))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">(2, 2)
+&lt;class &#39;numpy.ndarray&#39;&gt;
+</code></pre></div><p>To add data, we would now have to index into this object and call the <code>plot</code> method on an element of the array.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(<span style="color:#666">2</span>, <span style="color:#666">2</span>)
+
+ax[<span style="color:#666">0</span>, <span style="color:#666">0</span>]<span style="color:#666">.</span>plot(seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], seattle_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>])
+ax[<span style="color:#666">0</span>, <span style="color:#666">1</span>]<span style="color:#666">.</span>plot(seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], seattle_weather[<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>])
+ax[<span style="color:#666">1</span>, <span style="color:#666">0</span>]<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>])
+ax[<span style="color:#666">1</span>, <span style="color:#666">1</span>]<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>])
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323153546.png" alt=""></p>
+<p>There is a special case for situations where you have <strong>only one row or only one column</strong> of plots. In this case, the resulting array will be <strong>one-dimensional</strong> and you will only have to provide <strong>one index</strong> to access the elements of this array.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(<span style="color:#666">3</span>, <span style="color:#666">1</span>)
+ax<span style="color:#666">.</span>shape
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">(3,)
+</code></pre></div><p>To make sure that all the subplots have the <strong>same range</strong> of y-axis values, we initialize the figure and its <code>subplots</code> with the key-word argument <code>sharey</code> set to <code>True</code>. This means that both subplots will have the <strong>same range</strong> of y-axis values.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(<span style="color:#666">2</span>, <span style="color:#666">1</span>, sharey<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+ax[<span style="color:#666">0</span>]<span style="color:#666">.</span>plot(seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], seattle_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>], color <span style="color:#666">=</span> <span style="color:#ba2121">&#34;b&#34;</span>)
+ax[<span style="color:#666">0</span>]<span style="color:#666">.</span>plot(seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], seattle_weather[<span style="color:#ba2121">&#34;MLY-PRCP-25PCTL&#34;</span>], color <span style="color:#666">=</span> <span style="color:#ba2121">&#34;b&#34;</span>, linestyle <span style="color:#666">=</span> <span style="color:#ba2121">&#34;--&#34;</span>)
+ax[<span style="color:#666">0</span>]<span style="color:#666">.</span>plot(seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], seattle_weather[<span style="color:#ba2121">&#34;MLY-PRCP-75PCTL&#34;</span>], color <span style="color:#666">=</span> <span style="color:#ba2121">&#34;b&#34;</span>, linestyle <span style="color:#666">=</span> <span style="color:#ba2121">&#34;--&#34;</span>)
+
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-PRCP-NORMAL&#34;</span>], color <span style="color:#666">=</span> <span style="color:#ba2121">&#34;r&#34;</span>)
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-PRCP-25PCTL&#34;</span>], color <span style="color:#666">=</span> <span style="color:#ba2121">&#34;r&#34;</span>, linestyle <span style="color:#666">=</span> <span style="color:#ba2121">&#34;--&#34;</span>)
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-PRCP-75PCTL&#34;</span>], color <span style="color:#666">=</span> <span style="color:#ba2121">&#34;r&#34;</span>, linestyle <span style="color:#666">=</span> <span style="color:#ba2121">&#34;--&#34;</span>)
+
+ax[<span style="color:#666">0</span>]<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Seattle&#34;</span>)
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Austin&#34;</span>)
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;MONTH&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323154407.png" alt=""></p>
+<h1 id="2-plotting-time-series">2. Plotting time-series</h1>
+<h2 id="21-plotting-time-series-data">2.1 Plotting time-series data</h2>
+<p>If we want pandas to recognize column with <code>YYYY-MM-DD</code> format as time-series, we&rsquo;ll need to tell it to parse the this column as a date by <code>parse_dates</code> argument in <code>read_csv</code> method. To use the full power of pandas indexing facilities, we&rsquo;ll also designate the date column as our index by using the <code>index_col</code> argument in <code>read_csv</code> method.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost ~ % head -6 ~/Downloads/climate_change.csv
+date,co2,relative_temp
+1958-03-06,315.71,0.1
+1958-04-06,317.45,0.01
+1958-05-06,317.5,0.08
+1958-06-06,,-0.05
+1958-07-06,315.86,0.06
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">climate_change <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(
+        <span style="color:#ba2121">&#34;~/Downloads/climate_change.csv&#34;</span>, 
+        parse_dates<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;date&#34;</span>], 
+        index_col<span style="color:#666">=</span><span style="color:#ba2121">&#34;date&#34;</span>
+    )
+</code></pre></div><p>Matplotlib automatically chooses to show the time on the x-axis with intervals of 10 years or years or month depending on the length of data.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>plot(
+    climate_change<span style="color:#666">.</span>index,
+    climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>]
+)
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;Time&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Relative temperature (Celsius)&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323162201.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+seventies <span style="color:#666">=</span> climate_change[<span style="color:#ba2121">&#34;1970-01-01&#34;</span>: <span style="color:#ba2121">&#34;1979-12-31&#34;</span>]
+ax<span style="color:#666">.</span>plot(seventies<span style="color:#666">.</span>index, seventies[<span style="color:#ba2121">&#34;co2&#34;</span>])
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323162359.png" alt=""></p>
+<h2 id="22-plotting-time-series-with-different-variables">2.2 Plotting time-series with different variables</h2>
+<p>You could plot two time-series in separate sub-plots. Here, we&rsquo;re going to plot them in the same sub-plot, using <strong>two different y-axis scales</strong>.</p>
+<p>We start by adding the first variable to the Axes. Then, we use the <code>twinx</code> method to create a twin of this Axes. This means that the two Axes share the <strong>same x-axis</strong>, but the <strong>y-axes are separate</strong>.</p>
+<p>We add the other variable to this second Axes object and show the figure. There is one y-axis scale on the left, and another y-axis scale to the right.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>plot(climate_change<span style="color:#666">.</span>index, climate_change[<span style="color:#ba2121">&#34;co2&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+
+ax2 <span style="color:#666">=</span> ax<span style="color:#666">.</span>twinx()
+ax2<span style="color:#666">.</span>plot(climate_change<span style="color:#666">.</span>index, climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323165332.png" alt=""></p>
+<p>We set <code>color</code> argument in our calls to <code>plot</code> and <code>set_ylabel</code> method from the origin Axes twin Axes object. In the resulting figure, each variable has its own color and the y-axis labels clearly tell us which scale belongs to which variable.</p>
+<p>We can also make encoding by color more distinct by setting <strong>y-axis ticks and the y-axis tick labels</strong>. This is done by adding a call to the <code>tick_params</code> method.  This method takes either <code>y</code> or <code>x</code> as its first argument, pointing to the fact that we are modifying the parameters of the y-axis or x-axis ticks and tick labels. To change their color, we use the <code>colors</code> key-word argument.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>plot(climate_change<span style="color:#666">.</span>index, climate_change[<span style="color:#ba2121">&#34;co2&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;CO2&#34;</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+ax<span style="color:#666">.</span>tick_params(<span style="color:#ba2121">&#34;y&#34;</span>, colors<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>) <span style="color:#408080;font-style:italic"># &lt;-- Notice &#34;s&#34;</span>
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;Year&#34;</span>)
+
+ax2 <span style="color:#666">=</span> ax<span style="color:#666">.</span>twinx()
+ax2<span style="color:#666">.</span>plot(climate_change<span style="color:#666">.</span>index, climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+ax2<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Relative Temp&#34;</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+ax2<span style="color:#666">.</span>tick_params(<span style="color:#ba2121">&#34;y&#34;</span>, colors<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323170030.png" alt=""></p>
+<p>We can implement this as a <strong>function</strong> that we can reuse. Using our function, we don&rsquo;t have to repeat these calls, and the code is simpler.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">plot_timeseries</span>(axes, x, y, color, xlabel, ylabel):
+  axes<span style="color:#666">.</span>plot(x, y, color<span style="color:#666">=</span>color)
+  axes<span style="color:#666">.</span>set_xlabel(xlabel)
+  axes<span style="color:#666">.</span>set_ylabel(ylabel, color<span style="color:#666">=</span>color)
+  axes<span style="color:#666">.</span>tick_params(<span style="color:#ba2121">&#39;y&#39;</span>, colors<span style="color:#666">=</span>color)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+plot_timeseries(
+    ax, 
+    climate_change<span style="color:#666">.</span>index, 
+    climate_change[<span style="color:#ba2121">&#34;co2&#34;</span>], 
+    <span style="color:#ba2121">&#34;blue&#34;</span>, 
+    <span style="color:#ba2121">&#34;Time (years)&#34;</span>, 
+    <span style="color:#ba2121">&#34;CO2 levels&#34;</span>
+)
+ax2 <span style="color:#666">=</span> ax<span style="color:#666">.</span>twinx()
+plot_timeseries(
+    ax2, 
+    climate_change<span style="color:#666">.</span>index, 
+    climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>], 
+    <span style="color:#ba2121">&#34;red&#34;</span>, 
+    <span style="color:#ba2121">&#34;Time (years)&#34;</span>, 
+    <span style="color:#ba2121">&#34;Relative temperature (Celsius)&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323170649.png" alt=""></p>
+<h2 id="23-annotating-time-series-data">2.3 Annotating time-series data</h2>
+<p>Annotations are usually small pieces of text that refer to a particular part of the visualization, focusing our attention on some feature of the data and explaining this feature.</p>
+<p>We call a method of the <code>Axes</code> object called <code>annotate</code>. This function takes the annotation text as <code>input</code>, and the <code>xy</code> coordinate that we would like to annotate. The <code>annotate</code> method takes an optional <code>xy text</code> argument that selects the xy position of the text.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>plot(climate_change<span style="color:#666">.</span>index, climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>])
+ax<span style="color:#666">.</span>annotate(
+    <span style="color:#ba2121">&#34;&gt;1 degree&#34;</span>, 
+    xy<span style="color:#666">=</span>(pd<span style="color:#666">.</span>Timestamp(<span style="color:#ba2121">&#39;2015-10-06&#39;</span>), <span style="color:#666">1</span>), 
+    xytext<span style="color:#666">=</span>(pd<span style="color:#666">.</span>Timestamp(<span style="color:#ba2121">&#39;2010-10-06&#39;</span>), <span style="color:#666">0</span>)
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323172723.png" alt=""></p>
+<p>To connect between the annotation text and the annotated data, we can add an arrow. The key-word argument of <code>annotate</code> method to do this is called <code>arrowprops</code>. This argument takes as input a <strong>dictionary</strong> that defines the properties of the arrow that we would like to use.</p>
+<p>If we pass an empty dictionary into the key-word argument, the arrow will have the default properties. We can also customize the appearance of the arrow, by dictionary key &ldquo;<code>arrowstyle</code>&rdquo; and &ldquo;<code>color</code>&rdquo;. Look more customizing method <a href="https://matplotlib.org/2.0.2/users/annotations.html">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+plot_timeseries(
+    ax, 
+    climate_change<span style="color:#666">.</span>index, 
+    climate_change[<span style="color:#ba2121">&#34;co2&#34;</span>], 
+    <span style="color:#ba2121">&#39;blue&#39;</span>, 
+    <span style="color:#ba2121">&#34;Time (years)&#34;</span>, 
+    <span style="color:#ba2121">&#34;CO2 levels&#34;</span>
+)
+
+ax2 <span style="color:#666">=</span> ax<span style="color:#666">.</span>twinx()
+plot_timeseries(
+    ax2, 
+    climate_change<span style="color:#666">.</span>index, 
+    climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>], 
+    <span style="color:#ba2121">&#39;red&#39;</span>, 
+    <span style="color:#ba2121">&#34;Time (years)&#34;</span>, 
+    <span style="color:#ba2121">&#34;Relative temp (Celsius)&#34;</span>
+)
+
+ax2<span style="color:#666">.</span>annotate(
+    <span style="color:#ba2121">&#34;&gt;1 degree&#34;</span>, 
+    xy<span style="color:#666">=</span>(pd<span style="color:#666">.</span>Timestamp(<span style="color:#ba2121">&#39;2015-10-06&#39;</span>), <span style="color:#666">1</span>), 
+    xytext<span style="color:#666">=</span>(pd<span style="color:#666">.</span>Timestamp(<span style="color:#ba2121">&#39;2008-10-06&#39;</span>), <span style="color:#666">-</span><span style="color:#666">0.2</span>), 
+    arrowprops <span style="color:#666">=</span> {
+        <span style="color:#ba2121">&#34;arrowstyle&#34;</span>: <span style="color:#ba2121">&#34;-&gt;&#34;</span>, 
+        <span style="color:#ba2121">&#34;color&#34;</span>: <span style="color:#ba2121">&#34;gray&#34;</span>
+    }
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/20220323173415.png" alt=""></p>
+<h1 id="3-quantitative-comparisons-and-statistical-visualizations">3. Quantitative comparisons and statistical visualizations</h1>
+<h2 id="31-quantitative-comparisons-bar-charts">3.1 Quantitative comparisons: bar-charts</h2>
+<p>We will use a dataset that contains information about the number of medals won by a few countries in the 2016 Olympic Games.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost ~ % head -6 ~/Downloads/medals_by_country_2016.csv
+,Bronze,Gold,Silver
+United States,67,137,52
+Germany,67,47,43
+Great Britain,26,64,55
+Russia,35,50,28
+China,35,44,30
+</code></pre></div><p>We tell pandas to create a DataFrame from a file that contains the data and to use the first column as the index for the DataFrame.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">medals <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;~/Downloads/medals_by_country_2016.csv&#34;</span>, index_col<span style="color:#666">=</span><span style="color:#666">0</span>)
+</code></pre></div><p>We create a Figure and an Axes object and call the Axes <code>bar</code> method to create a bar chart. The labels of the x-axis ticks can be rotated by using the <code>set_xticklabels</code> method of the Axes.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>bar(medals<span style="color:#666">.</span>index, medals[<span style="color:#ba2121">&#34;Gold&#34;</span>])
+ax<span style="color:#666">.</span>set_xticklabels(medals<span style="color:#666">.</span>index, rotation<span style="color:#666">=</span><span style="color:#666">90</span>) <span style="color:#408080;font-style:italic"># &lt;-- Notice here</span>
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Number of medals&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241142755.png" alt=""></p>
+<p>To add others information into the same plot, we&rsquo;ll create a <strong>stacked bar chart</strong>. We add another call to the <code>bar</code> method to add the other data. We add the <code>bottom</code> key-word argument to tell Matplotlib that the bottom of this data should be at the height of the previous data.</p>
+<p>We also need to add the <code>label</code> key-word argument to each call of the bar method with the label for the bars plotted in this call. Then add a call to the Axes <code>legend</code> method before calling show.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>bar(medals<span style="color:#666">.</span>index, medals[<span style="color:#ba2121">&#34;Gold&#34;</span>], label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Gold&#34;</span>)
+ax<span style="color:#666">.</span>bar(
+    medals<span style="color:#666">.</span>index, 
+    medals[<span style="color:#ba2121">&#34;Silver&#34;</span>], 
+    bottom<span style="color:#666">=</span>medals[<span style="color:#ba2121">&#34;Gold&#34;</span>] , 
+    label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Silver&#34;</span>
+)
+ax<span style="color:#666">.</span>bar(
+    medals<span style="color:#666">.</span>index, 
+    medals[<span style="color:#ba2121">&#34;Bronze&#34;</span>], 
+    bottom<span style="color:#666">=</span>medals[<span style="color:#ba2121">&#34;Gold&#34;</span>] <span style="color:#666">+</span> medals[<span style="color:#ba2121">&#34;Silver&#34;</span>], <span style="color:#408080;font-style:italic"># &lt;-- Notice here</span>
+    label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Bronze&#34;</span>
+) 
+
+ax<span style="color:#666">.</span>legend()
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241144520.png" alt=""></p>
+<h2 id="32-quantitative-comparisons-histograms">3.2 Quantitative comparisons: histograms</h2>
+<p>A histogram would show the full distribution of values within each variable. We call the Axes <code>hist</code> method with the column of the DataFrame.</p>
+<p>As before, we can label a variable by calling the <code>hist</code> method with the <code>label</code> key-word argument and then calling the <code>legend</code> method before we call <code>plt.show</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>hist(mens_rowing[<span style="color:#ba2121">&#34;Weight&#34;</span>], label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Rowing&#34;</span>)
+ax<span style="color:#666">.</span>hist(mens_gymnastics[<span style="color:#ba2121">&#34;Weight&#34;</span>], label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Gymnastics&#34;</span>)
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;Weight (kg)&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;# of observations&#34;</span>)
+
+ax<span style="color:#666">.</span>legend()
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241234478.png" alt=""></p>
+<p>The number of default bars or bins in a histogram is 10, but we can <strong>customize</strong> that. If we provide an <strong>scalar</strong> to the <code>bins</code> key-word argument, the histogram will have that number of bins.</p>
+<p>If we instead provide a <strong>list</strong>, these numbers will be set to be the boundaries between the bins.</p>
+<p>The occlusion of two histogram plots can be eliminated by changing the type of histogram that is used. you can specify a <code>histtype</code> of &ldquo;<code>step</code>&rdquo;, which displays the histogram as thin <strong>lines</strong>, instead of solid bars.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>hist(
+    mens_rowing[<span style="color:#ba2121">&#34;Weight&#34;</span>], 
+    label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Rowing&#34;</span>, 
+    bins<span style="color:#666">=</span><span style="color:#666">5</span>, 
+    histtype<span style="color:#666">=</span><span style="color:#ba2121">&#34;step&#34;</span>
+)
+ax<span style="color:#666">.</span>hist(
+    mens_gymnastics[<span style="color:#ba2121">&#34;Weight&#34;</span>], 
+    label<span style="color:#666">=</span><span style="color:#ba2121">&#34;Gymnastics&#34;</span>, 
+    bins<span style="color:#666">=</span><span style="color:#666">5</span>, 
+    histtype<span style="color:#666">=</span><span style="color:#ba2121">&#34;step&#34;</span>
+)
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;Weight (kg)&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;# of observations&#34;</span>)
+
+ax<span style="color:#666">.</span>legend()
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241236056.png" alt=""></p>
+<h2 id="33-statistical-plotting">3.3 Statistical plotting</h2>
+<p>The first is the use of <strong>error bars</strong> in plots. These are additional markers on a plot or bar chart that tell us something about the distribution of the data.</p>
+<blockquote>
+<p>Histograms, that you have seen in the previous lesson, show the entire distribution. Error bars instead summarize the distribution of the data in one number, such as the standard deviation of the values.</p>
+</blockquote>
+<p>There are at least <strong>two different ways</strong> to display error bars. Here, we add the error bar as an argument to a bar chart. Each call to the <code>ax.bar</code> method takes an <code>x</code> argument and a <code>y</code> argument. The <code>yerr</code> key-word argument takes an additional number.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>bar(<span style="color:#ba2121">&#34;Rowing&#34;</span>, mens_rowing[<span style="color:#ba2121">&#34;Height&#34;</span>]<span style="color:#666">.</span>mean(), yerr<span style="color:#666">=</span>mens_rowing[<span style="color:#ba2121">&#34;Height&#34;</span>]<span style="color:#666">.</span>std())
+ax<span style="color:#666">.</span>bar(<span style="color:#ba2121">&#34;Gymnastics&#34;</span>, mens_gymnastics[<span style="color:#ba2121">&#34;Height&#34;</span>]<span style="color:#666">.</span>mean(), yerr<span style="color:#666">=</span>mens_gymnastics[<span style="color:#ba2121">&#34;Height&#34;</span>]<span style="color:#666">.</span>std())
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Height (cm)&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241308882.png" alt=""></p>
+<p>It summarizes the full distribution that you saw in the histograms in two numbers: the mean value, and the spread of values, quantified as the standard deviation.</p>
+<p>We can also add error bars to a line plot. To plot this data with error bars, we will use the <code>ax.errorbar</code> method. This method takes a sequence of <code>x</code> values, <code>y</code> values and <code>yerr</code> values.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>errorbar(
+    seattle_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], 
+    seattle_weather[<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>], 
+    seattle_weather[<span style="color:#ba2121">&#34;MLY-TAVG-STDDEV&#34;</span>]
+)
+ax<span style="color:#666">.</span>errorbar(
+    austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], 
+    austin_weather[<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>], 
+    austin_weather[<span style="color:#ba2121">&#34;MLY-TAVG-STDDEV&#34;</span>]
+) 
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Temperature (Fahrenheit)&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241311807.png" alt=""></p>
+<p>The second statistical visualization technique is the <strong>boxplot</strong>. It is implemented by <code>ax.boxplot</code> method. We can call it with a sequence of sequences. We add labels on each of the variables separately by calling <code>ax.set_xticklabels</code> method, labeling the y-axis as well.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>boxplot(
+    [
+        mens_rowing[<span style="color:#ba2121">&#34;Height&#34;</span>],
+        mens_gymnastics[<span style="color:#ba2121">&#34;Height&#34;</span>],
+    ]
+)
+
+ax<span style="color:#666">.</span>set_xticklabels([<span style="color:#ba2121">&#34;Rowing&#34;</span>, <span style="color:#ba2121">&#34;Gymnastics&#34;</span>])
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Height (cm)&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241314969.png" alt=""></p>
+<h2 id="34-quantitative-comparisons-scatter-plots">3.4 Quantitative comparisons: scatter plots</h2>
+<p>A standard visualization for bi-variate comparisons is a scatter plot. To create this plot, we initialize a Figure and Axes objects and call the Axes <code>scatter</code> method.</p>
+<p>We can customize scatter plots in a manner that is similar to the customization that we introduced in other plots. For example,  we set the <code>color</code> argument to set color on each group of points.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+eighty <span style="color:#666">=</span> climate_change[<span style="color:#ba2121">&#34;1980-01-01&#34;</span>: <span style="color:#ba2121">&#34;1989-12-31&#34;</span>]
+ninety <span style="color:#666">=</span> climate_change[<span style="color:#ba2121">&#34;1990-01-01&#34;</span>: <span style="color:#ba2121">&#34;1999-12-31&#34;</span>]
+
+ax<span style="color:#666">.</span>scatter(eighty[<span style="color:#ba2121">&#34;co2&#34;</span>], eighty[<span style="color:#ba2121">&#34;relative_temp&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#34;1980s&#34;</span>)
+ax<span style="color:#666">.</span>scatter(ninety[<span style="color:#ba2121">&#34;co2&#34;</span>], ninety[<span style="color:#ba2121">&#34;relative_temp&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#34;1990s&#34;</span>)
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;CO2 (ppm)&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Relative temperature (C)&#34;</span>)
+ax<span style="color:#666">.</span>legend()
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241359542.png" alt=""></p>
+<p>But we can also enter a <code>Serise</code> as input to the <code>c</code> key-word argument, this variable will get encoded as color.</p>
+<blockquote>
+<p>Note that this is not the <code>color</code> key-word argument that we used before, but is instead just the letter <code>c</code>.</p>
+</blockquote>
+<p>Now, time of the measurements is encoded in the brightness of the color applied to the points, with dark blue points early on and later points in bright yellow.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+ax<span style="color:#666">.</span>scatter(
+    climate_change[<span style="color:#ba2121">&#34;co2&#34;</span>],
+    climate_change[<span style="color:#ba2121">&#34;relative_temp&#34;</span>],
+    c<span style="color:#666">=</span>climate_change<span style="color:#666">.</span>index
+)
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;CO2 (ppm)&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Relative temperature (C)&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241356018.png" alt=""></p>
+<h1 id="4-sharing-visualizations-with-others">4. Sharing visualizations with others</h1>
+<h2 id="41-plot-style">4.1 Plot style</h2>
+<p>we&rsquo;ll change the overall style of the figure. we call <code>plt.style.use()</code> method before the plotting code, the figure style will look completely different.</p>
+<p>we can choose &ldquo;ggplot&rdquo; style, or &ldquo;seaborn-colorblind&rdquo;, click <a href="https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html">here</a> to find more style.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">plt<span style="color:#666">.</span>style<span style="color:#666">.</span>use(<span style="color:#ba2121">&#34;seaborn&#34;</span>)
+fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+ax2 <span style="color:#666">=</span> ax<span style="color:#666">.</span>twinx()
+
+ax<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+ax2<span style="color:#666">.</span>plot(austin_weather[<span style="color:#ba2121">&#34;MONTH&#34;</span>], austin_weather[<span style="color:#ba2121">&#34;MLY-TAVG-STDDEV&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+
+ax<span style="color:#666">.</span>set_xlabel(<span style="color:#ba2121">&#34;MONTH&#34;</span>)
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+ax<span style="color:#666">.</span>tick_params(<span style="color:#ba2121">&#34;y&#34;</span>, colors<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>)
+ax2<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;MLY-TAVG-NORMAL&#34;</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+ax2<span style="color:#666">.</span>tick_params(<span style="color:#ba2121">&#34;y&#34;</span>, colors<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+ax<span style="color:#666">.</span>set_title(<span style="color:#ba2121">&#34;Title&#34;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241424259.png" alt=""></p>
+<h2 id="42-saving-visualizations">4.2 Saving visualizations</h2>
+<p>Now, we <strong>replace</strong> the call to <code>plt.show()</code> with a call to the Figure object&rsquo;s <code>fig.savefig</code> method. We provide a file-path as input to the function. If we do this, the figure will no longer appear on our screen, but instead appear as a file on our file-system.</p>
+<p>Using <code>savefig</code> method, we can saved the figure as a png, jpg, svg &hellip; file.  You can control how small the resulting file will be, and the degree of loss of quality, by setting the <code>quality</code> key-word argument. This will be a number between 1 and 100. you can also control the quality through setting the <code>dpi</code> key-word argument.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;~/Documents/figure.png&#34;</span>, dpi<span style="color:#666">=</span><span style="color:#666">300</span>)
+</code></pre></div><p>Finally, you can call <code>set_size_inches</code> method to control is the size of the figure. This function takes a list. The first number sets the width of the figure and the second number sets the height of the figure.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig<span style="color:#666">.</span>set_size_inches([<span style="color:#666">3</span>,<span style="color:#666">5</span>])
+fig<span style="color:#666">.</span>savefig(<span style="color:#ba2121">&#34;~/Documents/figure_3_5.png&#34;</span>)
+</code></pre></div><h2 id="43-automating-figures-from-data">4.3 Automating figures from data</h2>
+<p>you can write functions and programs that automatically adjust what they are doing based on the input data.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sports_column <span style="color:#666">=</span> summer_2016_medals[<span style="color:#ba2121">&#34;Sport&#34;</span>]
+sports <span style="color:#666">=</span> sports_column<span style="color:#666">.</span>unique()
+
+fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+
+<span style="color:#008000;font-weight:bold">for</span> sport <span style="color:#a2f;font-weight:bold">in</span> sports:
+    sport_df <span style="color:#666">=</span> summer_2016_medals[summer_2016_medals[<span style="color:#ba2121">&#34;Sport&#34;</span>]<span style="color:#666">==</span>sport]
+    ax<span style="color:#666">.</span>bar(sport, sport_df[<span style="color:#ba2121">&#34;Weight&#34;</span>]<span style="color:#666">.</span>mean(), yerr<span style="color:#666">=</span>sport_df[<span style="color:#ba2121">&#34;Weight&#34;</span>]<span style="color:#666">.</span>std())
+
+ax<span style="color:#666">.</span>set_ylabel(<span style="color:#ba2121">&#34;Weight&#34;</span>)
+ax<span style="color:#666">.</span>set_xticklabels(sports, rotation<span style="color:#666">=</span><span style="color:#666">90</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203241454234.png" alt=""></p>
+<p>You can also do this to achieve a similar effect:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">summer_2016_medals<span style="color:#666">.</span>groupby(<span style="color:#ba2121">&#34;Sport&#34;</span>)[<span style="color:#ba2121">&#34;Weight&#34;</span>]<span style="color:#666">.</span>mean()<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>)
+</code></pre></div>
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+

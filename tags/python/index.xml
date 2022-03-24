@@ -6,7 +6,17 @@
     <description>Recent content in Python on haoming&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data Visualization I</title>
+      <link>/post/2020/04/16/data-visualization-i/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/04/16/data-visualization-i/</guid>
+      <description>1. Introduction to Matplotlib 1.1 Intro to data visualization with matplotlib we will use the main object-oriented interface. This interface is provided through the pyplot submodule. The plt.subplots() command, when called without any inputs, creates two different objects: a Figure object and an Axes object.
+import matplotlib.pyplot as plt fig, ax = plt.subplots() The Figure object is a container that holds everything that you see on the page. Meanwhile, the Axes is the part of the page that holds the data.</description>
+    </item>
+    
     <item>
       <title>Perceptron Learning Algorithm</title>
       <link>/post/2020/03/04/perceptron-learning-algorithm/</link>
@@ -22,7 +32,7 @@
       <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019/07/08/python-data-manipulate/</guid>
-      <description>Overview df.head(x) df.info() df.describe() df.shape df.values df.columns df.index df.sample(n) # Return n random samples df.sample(frac=0.3) # Return a random sample of 30 percent df.sample(frac=1) # Shuffle df.corr() df.diff() Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_values( by=[&amp;#34;col1&amp;#34;, &amp;#34;col2&amp;#34;, &amp;#34;col3&amp;#34;], ascending=[True, False, True] # sort col1 by ascending; sort col2 by descending; sort col3 by ascending ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.set_index(&amp;#34;col&amp;#34;) df.set_index(&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;) df.reset_index() df.reset_index(drop=False) df = pd.</description>
+      <description>Overview df.head(x) df.info() df.describe() df.shape df.values df.columns df.index df.sort_values(by=&amp;#34;col&amp;#34;).tail(n) # n largest, e.t. df.nlargest(n, &amp;#34;col&amp;#34;) df.sample(n) # Return n random samples df.sample(frac=0.3) # Return a random sample of 30 percent df.sample(frac=1) # Shuffle df.corr() df.diff() Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_values( by=[&amp;#34;col1&amp;#34;, &amp;#34;col2&amp;#34;, &amp;#34;col3&amp;#34;], ascending=[True, False, True] # sort col1 by ascending; sort col2 by descending; sort col3 by ascending ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.</description>
     </item>
     
     <item>

@@ -34,6 +34,16 @@ vec1 &amp;lt;- c(1, 2, 3) vec2 &amp;lt;- c(&amp;#39;a&amp;#39;, &amp;#39;b&amp;#
     </item>
     
     <item>
+      <title>Data Visualization I</title>
+      <link>/post/2020/04/16/data-visualization-i/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/04/16/data-visualization-i/</guid>
+      <description>1. Introduction to Matplotlib 1.1 Intro to data visualization with matplotlib we will use the main object-oriented interface. This interface is provided through the pyplot submodule. The plt.subplots() command, when called without any inputs, creates two different objects: a Figure object and an Axes object.
+import matplotlib.pyplot as plt fig, ax = plt.subplots() The Figure object is a container that holds everything that you see on the page. Meanwhile, the Axes is the part of the page that holds the data.</description>
+    </item>
+    
+    <item>
       <title>Perceptron Learning Algorithm</title>
       <link>/post/2020/03/04/perceptron-learning-algorithm/</link>
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
@@ -117,7 +127,7 @@ git push origin --delete master  首先创建一个 github 仓库 git_exercise�
       <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019/07/08/python-data-manipulate/</guid>
-      <description>Overview df.head(x) df.info() df.describe() df.shape df.values df.columns df.index df.sample(n) # Return n random samples df.sample(frac=0.3) # Return a random sample of 30 percent df.sample(frac=1) # Shuffle df.corr() df.diff() Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_values( by=[&amp;#34;col1&amp;#34;, &amp;#34;col2&amp;#34;, &amp;#34;col3&amp;#34;], ascending=[True, False, True] # sort col1 by ascending; sort col2 by descending; sort col3 by ascending ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.set_index(&amp;#34;col&amp;#34;) df.set_index(&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;) df.reset_index() df.reset_index(drop=False) df = pd.</description>
+      <description>Overview df.head(x) df.info() df.describe() df.shape df.values df.columns df.index df.sort_values(by=&amp;#34;col&amp;#34;).tail(n) # n largest, e.t. df.nlargest(n, &amp;#34;col&amp;#34;) df.sample(n) # Return n random samples df.sample(frac=0.3) # Return a random sample of 30 percent df.sample(frac=1) # Shuffle df.corr() df.diff() Sort df.sort_values( by=&amp;#34;col_name&amp;#34;, axis=0, ascending=True, inplace=False ) df.sort_values( by=[&amp;#34;col1&amp;#34;, &amp;#34;col2&amp;#34;, &amp;#34;col3&amp;#34;], ascending=[True, False, True] # sort col1 by ascending; sort col2 by descending; sort col3 by ascending ) df.sort_index( level=[&amp;#34;outter_index&amp;#34;, &amp;#34;inner_index&amp;#34;], ascending=False ) Set index df.</description>
     </item>
     
     <item>
@@ -140,53 +150,6 @@ head method (.head()) returns the first few rows of the DataFrame.
       <description>C04.操作目录和文件 4.1 通配符 shell 提供一种特殊字符，帮助快速指定一组文件名，这种特殊字符叫做通配符（wildcard）。使用通配符的过程称为通配符匹配（globbing）。
    通配符 含义     * 匹配任意多个字符   ？ 匹配任意单个字符   [abc] 匹配属于字符集和 abc 中任意单个字符   [!abc] 匹配不属于字符集和 abc 中任意单个字符   [[:calss:]] 匹配属于字符类 class 的任意单个字符    常用字符类：
    字符类 含义     [:alnum:] 任意单个字母数字   [:alpha:] 任意单个字母   [:digit:] 任意单个数字   [:lower:] 任意单个小写字母   [:upper:] 任意单个大写字母      传统 Unix 可以使用形如[A-Z]或[a-z]来表示字符范围写法，但是一旦配置不当可能产生以外结果。 通配符用来指定文件名（或目录名），若要指定的文件并非当前工作目录的文件，前面需要加上绝对/相对路径。   一些通配符示例：</description>
-    </item>
-    
-    <item>
-      <title>Matplotlib - 04. Configure graphics (in Chinese)</title>
-      <link>/post/2018/06/12/matplotlib-04.-configure-graphics-in-chinese/</link>
-      <pubDate>Tue, 12 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018/06/12/matplotlib-04.-configure-graphics-in-chinese/</guid>
-      <description>import matplotlib.pyplot as plt import numpy as np %matplotlib inline plt.style.use(&amp;#39;seaborn-whitegrid&amp;#39;) 1. 配置图例 1.1 图例风格 plt.legend()命令会自动创建一个包含每个图形元素的图例，这些图例将根据图形元素的 color，style，marker，label生成：
-x = np.linspace(-1, 1, 200) func = lambda x: 2*x**3 - x**2 - 2*x plt.figure(figsize=(8,6)) plt.plot(x, func(x), &amp;#39;-b&amp;#39;, label=&amp;#39;func&amp;#39;) plt.plot(x, func(x)*3, &amp;#39;--r&amp;#39;, label=&amp;#39;func * 3&amp;#39;) plt.axis(&amp;#39;tight&amp;#39;) plt.legend() &amp;lt;matplotlib.legend.Legend at 0x7f7ec2969550&amp;gt;  y_1 = 2*x + np.random.rand(*x.shape)*0.3 y_2 = x**2+np.random.randn(*x.shape)*0.3 plt.figure(figsize=(8,6)) plt.plot(x, y_1, &amp;#39;rv&amp;#39;, label=&amp;#39;red&amp;#39;) plt.plot(x, y_2, &amp;#39;bo&amp;#39;, label=&amp;#39;bule&amp;#39; ) plt.legend() &amp;lt;matplotlib.legend.Legend at 0x7f7e817749a0&amp;gt;  通过对 plt.</description>
-    </item>
-    
-    <item>
-      <title>Matplotlib - 03. Error Lines, Contour Plots and Histograms (in Chinese)</title>
-      <link>/post/2018/06/09/matplotlib-03.-error-lines-contour-plots-and-histograms-in-chinese/</link>
-      <pubDate>Sat, 09 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018/06/09/matplotlib-03.-error-lines-contour-plots-and-histograms-in-chinese/</guid>
-      <description>1. 误差线 import numpy as np import matplotlib.pyplot as plt plt.style.use(&amp;#39;seaborn-white&amp;#39;) %matplotlib inline 误差线可以通过 plt.errorbar() 函数来创建：
-plt.errorbar(x, y, yerr=None, xerr=None, fmt=&amp;#39;&amp;#39;, ecolor=None, elinewidth=None, capsize=None, capthick=None ) 主要参数：
- x, y: 列表，数据点的位置坐标 xerr, yerr: 标量或列表，数据的误差范围 fmt: 数据点的标记样式以及相互之间连接线样式，与 plt.plot 的缩写代码一致 ecolor: 误差棒的线条颜色 elinewidth: 误差棒的线条粗细 capsize: 误差棒边界横杠的大小 capthick: 误差棒边界横杠的厚度 ms: 数据点的大小 mfc: 数据点的颜色 mec: 数据点边缘的颜色  x = np.linspace(0, 10, 50) dy = 0.8 y = np.sin(x) + 0.5 * x + dy * np.</description>
-    </item>
-    
-    <item>
-      <title>Matplotlib - 02. Line  and Scatter Diagram (in Chinese)</title>
-      <link>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram-in-chinese/</link>
-      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram-in-chinese/</guid>
-      <description>1. 简单线形图 import matplotlib.pyplot as plt %matplotlib inline import numpy as np plt.style.use(&amp;#39;seaborn-whitegrid&amp;#39;) 1.1 绘制线形图 Matplotlib 利用面向对象接口作图时，需要需要先创建一个图形对象 fig 和一个坐标轴对象 ax：
-fig = plt.figure() ax = plt.axes() 在 Matplotlib 中，fig (plt.figure 类的一个实例) 可以看成是一个能容纳各种坐标轴、图形、文字、标签的容器；ax (plt.axes 类的一个实例) 是一个带有刻度和标签的矩形，最终包含所有可视化的图形元素。创建好坐标轴后就可以用 ax.plot 作图了（ax.plot 必须与创建的 fig，ax 对象在一起）。在 plt.figure() 中设置参数figuresize可以指定图形的大小，指定参数 dpi可以指定分辨率。
-x = np.linspace(0, 10, 1000) fig = plt.figure(figsize=(8, 6)) ax = plt.axes() ax.plot(x, np.sin(x)) [&amp;lt;matplotlib.lines.Line2D at 0x7f8630237ca0&amp;gt;]  观察到图片上方的标识 [&amp;lt;matplotlib.lines.Line2D at 0x7f8670fc8130&amp;gt;]，这说明 plot 函数生成了一个 plt.Line2D 实例。
-也可以利用类似 Matlab 接口作图：</description>
-    </item>
-    
-    <item>
-      <title>Matplotlib - 01. Intro (in Chinese)</title>
-      <link>/post/2018/06/05/matplotlib-01.-intro-in-chinese/</link>
-      <pubDate>Tue, 05 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2018/06/05/matplotlib-01.-intro-in-chinese/</guid>
-      <description>import numpy as np import pandas as pd 1. Matplotlib 介绍 1.1 导入Matplotlib plt 是 Matplotlib 最常用的接口
-import matplotlib as mpl import matplotlib.pyplot as plt 1.2 设置绘图样式 使用 plt.style.use 来选择图形的绘图风格
-plt.style.use(&amp;#39;classic&amp;#39;) 1.3 关于 show() 方法 Matplotlib 是否使用 show() 方法取决于开发环境，一般而言有三种开发环境：1）script；2）IPython Shell；3）IPython Notebook
-1.3.1 Script 如果在脚本文件中使用 Matplotlib，显示图形时必须使用 plt.show()。plt.show() 会启动一个 event loop，找到当前所有可用的图形对象，然后打开一个或多个交互式窗口文本。
-需要注意，一个 Python session 中只能使用一次 plt.show()，因此通常把它放在脚本最后。
-1.3.2 IPython Shell 在该开发环境下，可以通过 %matplotlib 魔法命令开启 Matplotlib 模式，此后不需要使用 plt.show() 了。开启 Matplotlib 模式后任何 plt 命令都会自动打开一个图形窗口，增加新的命令图形就会更新。有时一些变化不会自动及时更新，此时可以使用 plt.draw() 强制更新。</description>
     </item>
     
     <item>

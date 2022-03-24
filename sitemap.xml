@@ -35,13 +35,16 @@
     <loc>/other/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/post/2020/04/16/data-visualization-i/</loc>
+    <lastmod>2020-04-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/python/</loc>
+    <lastmod>2020-04-16T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/tags/machine-learning/</loc>
     <lastmod>2020-03-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/2020/03/04/perceptron-learning-algorithm/</loc>
-    <lastmod>2020-03-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/python/</loc>
     <lastmod>2020-03-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/markdown/</loc>
@@ -76,21 +79,6 @@
   </url><url>
     <loc>/post/2018/07/23/%E6%93%8D%E4%BD%9C%E7%9B%AE%E5%BD%95%E5%92%8C%E6%96%87%E4%BB%B6/</loc>
     <lastmod>2018-07-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/matplotlib/</loc>
-    <lastmod>2018-06-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/2018/06/12/matplotlib-04.-configure-graphics-in-chinese/</loc>
-    <lastmod>2018-06-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/2018/06/09/matplotlib-03.-error-lines-contour-plots-and-histograms-in-chinese/</loc>
-    <lastmod>2018-06-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/2018/06/06/matplotlib-02.-line-and-scatter-diagram-in-chinese/</loc>
-    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/2018/06/05/matplotlib-01.-intro-in-chinese/</loc>
-    <lastmod>2018-06-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/2016/02/14/a-plain-markdown-post/</loc>
     <lastmod>2016-02-14T00:00:00+00:00</lastmod>
