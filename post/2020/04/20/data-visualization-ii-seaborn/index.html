@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Visualization II (Seaborn) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Data Visualization II (Seaborn)</span></h1>  
+
+<h2 class="date">2020/04/20</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-introduction-to-seaborn">1. Introduction to Seaborn</a>
+      <ul>
+        <li><a href="#11-using-pandas-with-seaborn">1.1 Using pandas with Seaborn</a></li>
+        <li><a href="#12-adding-a-third-variable-with-hue">1.2 Adding a third variable with <code>hue</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#2-relational-plot">2. Relational Plot</a>
+      <ul>
+        <li><a href="#21-relational-plots-and-subplots">2.1 relational plots and subplots</a></li>
+        <li><a href="#22-customizing-scatter-plots">2.2 Customizing scatter plots</a></li>
+        <li><a href="#23-line-plots">2.3 Line plots</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-categorical-plot">3. Categorical Plot</a>
+      <ul>
+        <li><a href="#31-count-plots-and-bar-plots">3.1 Count plots and bar plots</a></li>
+        <li><a href="#32-box-plot">3.2 Box plot</a></li>
+        <li><a href="#33-point-plots">3.3 Point plots</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-customizing-seaborn-plots">4. Customizing Seaborn Plots</a>
+      <ul>
+        <li><a href="#41-changing-plot-style-and-color">4.1 Changing plot style and color</a></li>
+        <li><a href="#42-adding-titles-and-labels">4.2 Adding titles and labels</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<h1 id="1-introduction-to-seaborn">1. Introduction to Seaborn</h1>
+<h2 id="11-using-pandas-with-seaborn">1.1 Using pandas with Seaborn</h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Import Matplotlib and Seaborn</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">seaborn</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">sns</span>
+</code></pre></div><p>To create a count plot with a pandas DataFrame column instead of a list of data, set <code>x</code> (or <code>y</code>) equal to the name of the column in the DataFrame. Then, we&rsquo;ll set the <code>data</code> parameter equal to DataFrame. Finally calling &ldquo;plt.show()&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;xxxx.csv&#34;</span>)
+sns<span style="color:#666">.</span>countplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Spiders&#34;</span>, <span style="color:#408080;font-style:italic"># column name</span>
+    data<span style="color:#666">=</span>df
+)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251050033.png" alt=""></p>
+<blockquote>
+<p>Notice that because we&rsquo;re using a named column in the DataFrame, Seaborn automatically adds the name of the column as the x-axis label at the bottom.</p>
+</blockquote>
+<h2 id="12-adding-a-third-variable-with-hue">1.2 Adding a third variable with <code>hue</code></h2>
+<p>we&rsquo;ll be using Seaborn&rsquo;s built-in <code>tips</code> dataset. You can access it by using the &ldquo;<code>load_dataset</code>&rdquo; function in Seaborn and passing in the name of the dataset. These are the first five rows of the tips dataset.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df<span style="color:#666">=</span>sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+df<span style="color:#666">.</span>head()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">   total_bill   tip     sex smoker  day    time  size
+0       16.99  1.01  Female     No  Sun  Dinner     2
+1       10.34  1.66    Male     No  Sun  Dinner     3
+2       21.01  3.50    Male     No  Sun  Dinner     3
+3       23.68  3.31    Male     No  Sun  Dinner     2
+4       24.59  3.61  Female     No  Sun  Dinner     4
+</code></pre></div><p>Let&rsquo;s explore the relationship between the &ldquo;<code>total_bill</code>&rdquo; and &ldquo;<code>tip</code>&rdquo; columns using a scatter plot.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>scatterplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>,
+    data<span style="color:#666">=</span>df,
+)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251217255.png" alt=""></p>
+<p>If you want to add a third variable to plots by adding color, you can set the &ldquo;<code>hue</code>&rdquo; parameter equal to the DataFrame column name or a list, and then Seaborn will automatically color each point by groups.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>scatterplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>,
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;smoker&#34;</span>,
+    data<span style="color:#666">=</span>df,
+)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251236789.png" alt=""></p>
+<p>The &ldquo;<code>hue_order</code>&rdquo; parameter takes in a <strong>list</strong> of values and will set the order of the values in the plot accordingly. You can control the colors assigned to each value using the &ldquo;<code>palette</code>&rdquo; parameter. This parameter takes in a <strong>dictionary</strong>. This dictionary should map the variable values to the colors you want to represent the value.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">hc <span style="color:#666">=</span> {
+    <span style="color:#ba2121">&#34;Yes&#34;</span>: <span style="color:#ba2121">&#34;c&#34;</span>,
+    <span style="color:#ba2121">&#34;No&#34;</span>: <span style="color:#ba2121">&#34;g&#34;</span>
+}
+
+sns<span style="color:#666">.</span>scatterplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>,
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;smoker&#34;</span>,
+    data<span style="color:#666">=</span>df,
+    hue_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;No&#34;</span>, <span style="color:#ba2121">&#34;Yes&#34;</span>],
+    palette<span style="color:#666">=</span>hc
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251234368.png" alt=""></p>
+<p>Here is the list of Matplotlib colors and their names. Note that you can use a single-letter Matplotlib abbreviation instead of the full name.</p>
+<p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251236474.png" alt=""></p>
+<p><code>hue</code> is available in most of Seaborn&rsquo;s plot types. For example, <code>countplot</code></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">palette_colors <span style="color:#666">=</span> {<span style="color:#ba2121">&#34;Rural&#34;</span>: <span style="color:#ba2121">&#34;green&#34;</span>, <span style="color:#ba2121">&#34;Urban&#34;</span>: <span style="color:#ba2121">&#34;blue&#34;</span>}
+
+sns<span style="color:#666">.</span>countplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;school&#34;</span>,
+    data<span style="color:#666">=</span>student_data,
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;location&#34;</span>,
+    palette<span style="color:#666">=</span>palette_colors
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251231138.png" alt=""></p>
+<blockquote>
+<p>The other way to add the third variable into a plot is calling arguments <code>col</code> or <code>row</code> in <code>sns.relplot()</code> or <code>sns.catplot()</code> method.</p>
+</blockquote>
+<h1 id="2-relational-plot">2. Relational Plot</h1>
+<h2 id="21-relational-plots-and-subplots">2.1 relational plots and subplots</h2>
+<p>Sometimes we suspect that the relationship may be different within certain <strong>subgroups</strong>. In the last chapter, we started to look at subgroups by using the &ldquo;<code>hue</code>&rdquo; parameter to visualize each subgroup using a different color on the same plot.</p>
+<p>Now we&rsquo;ll try out a different method <code>relplot()</code> (relationship plot) to creat a separate plot per subgroup. We call the &ldquo;<code>relplot()</code>&rdquo; method and use the &ldquo;<code>kind</code>&rdquo; parameter to specify what kind of relational plot to use - scatter plot or line plot.</p>
+<p>By setting &ldquo;<code>col</code>&rdquo; equal to &ldquo;smoker&rdquo;, we get a separate scatter plot groups by &ldquo;smoker&rdquo;, arranged horizontally in columns. You can use the &ldquo;<code>col_wrap</code>&rdquo; parameter to specify how many subplots you want per row.  If you want to arrange these vertically in rows instead, you can use the &ldquo;<code>row</code>&rdquo; parameter instead of &ldquo;<code>col</code>&rdquo;. We can also change the order of the subplots by using the &ldquo;<code>col_order</code>&rdquo; and &ldquo;<code>row_order</code>&rdquo; parameters and giving it a list of ordered values.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;G1&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;G3&#34;</span>, 
+    data<span style="color:#666">=</span>student_data,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>, 
+    col<span style="color:#666">=</span><span style="color:#ba2121">&#34;schoolsup&#34;</span>,
+    col_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;yes&#34;</span>, <span style="color:#ba2121">&#34;no&#34;</span>]
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251309816.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;absences&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;G3&#34;</span>, 
+    data<span style="color:#666">=</span>student_data,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>, 
+    row<span style="color:#666">=</span><span style="color:#ba2121">&#34;study_time&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251304838.png" alt=""></p>
+<p>It is possible to use both &ldquo;<code>col</code>&rdquo; and &ldquo;<code>row</code>&rdquo; at the same time. Here, we set &ldquo;<code>col</code>&rdquo; equal to smoking status and &ldquo;<code>row</code>&rdquo; equal to the time of day (lunch or dinner). Now we have a subplot for each combination of these two categorical variables.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;G1&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;G3&#34;</span>, 
+    data<span style="color:#666">=</span>student_data,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>, 
+    col<span style="color:#666">=</span><span style="color:#ba2121">&#34;schoolsup&#34;</span>,
+    col_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;yes&#34;</span>, <span style="color:#ba2121">&#34;no&#34;</span>],
+    row<span style="color:#666">=</span><span style="color:#ba2121">&#34;famsup&#34;</span>,
+    row_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#39;yes&#39;</span>, <span style="color:#ba2121">&#39;no&#39;</span>]
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251311068.png" alt=""></p>
+<h2 id="22-customizing-scatter-plots">2.2 Customizing scatter plots</h2>
+<p>Seaborn allows you to add more information to scatter plots by varying <strong>the size, the style</strong>, and <strong>the transparency</strong> of the points.</p>
+<blockquote>
+<p>All of these options can be used in both the &ldquo;<code>scatterplot()</code>&rdquo; and &ldquo;<code>relplot()</code>&rdquo; functions, but we&rsquo;ll continue to use &ldquo;<code>relplot()</code>&rdquo; since it&rsquo;s more flexible and allows us to create subplots.</p>
+</blockquote>
+<p>We want each point on the scatter plot to be sized based on the number of variable with larger number having bigger points on the plot. To do this, we&rsquo;ll set the &ldquo;<code>size</code>&rdquo; parameter equal to the variable name from the dataset.</p>
+<p>We can make it easier by using the &ldquo;<code>size</code>&rdquo; parameter in combination with the &ldquo;<code>hue</code>&rdquo; parameter. To do this, set &ldquo;<code>hue</code>&rdquo; equal to the variable name.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg&#34;</span>, 
+    data<span style="color:#666">=</span>mpg, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>, 
+    size<span style="color:#666">=</span><span style="color:#ba2121">&#34;cylinders&#34;</span>,
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;cylinders&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251336109.png" alt=""></p>
+<blockquote>
+<p>Notice that because &ldquo;size&rdquo; is a quantitative variable, Seaborn will automatically color the points <strong>the same color with different depth</strong>, instead of different colors per category value like we saw in previous plots.</p>
+</blockquote>
+<p>We use &ldquo;<code>hue</code>&rdquo; to create different colored points based on groups. Setting &ldquo;<code>style</code>&rdquo; equal to allows us to better distinguish these subgroups by plotting points with a different point style in addition to a different color.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;acceleration&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg&#34;</span>,
+    data<span style="color:#666">=</span>mpg,
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>,
+    style<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251338888.png" alt=""></p>
+<p>Setting the &ldquo;<code>alpha</code>&rdquo; parameter to a value between 0 and 1 will vary the transparency of the points in the plot, with 0 being completely transparent and 1 being completely non-transparent.</p>
+<h2 id="23-line-plots">2.3 Line plots</h2>
+<p>In Seaborn, we have two types of relational plots: scatter plots and line plots. Line plots are the visualization of choice when we need to track the same thing over <strong>time</strong>.</p>
+<p>By specifying &ldquo;<code>kind</code>&rdquo; equals &ldquo;<code>line</code>&rdquo;, we can create a line plot. We can also track <strong>subgroups</strong> over time with line plots.  Setting the &ldquo;<code>style</code>&rdquo; and &ldquo;<code>hue</code>&rdquo; parameters equal to the variable name  creates different lines for each group that vary in both line style and color.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+    data<span style="color:#666">=</span>mpg, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>, 
+    ci<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    style<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>,
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251402594.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+    data<span style="color:#666">=</span>mpg, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>, 
+    ci<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    col<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>, 
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>,
+    style<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251404602.png" alt=""></p>
+<p>Setting the &ldquo;<code>markers</code>&rdquo; parameter equal to &ldquo;<code>True</code>&rdquo; will display a marker for each data point. The marker will vary based on the subgroup you&rsquo;ve set using the &ldquo;<code>style</code>&rdquo; parameter. If you don&rsquo;t want the line styles to vary by subgroup, set the &ldquo;<code>dashes</code>&rdquo; parameter equal to &ldquo;<code>False</code>&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>, 
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+    data<span style="color:#666">=</span>mpg, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>, 
+    ci<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+    col<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>, 
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>,
+    style<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>,
+    markers<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+    dashes<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251407028.png" alt=""></p>
+<p>Line plots can also be used when you have <strong>more than one observation per x-value</strong>.  If a line plot is given multiple observations per x-value, it will <strong>aggregate them into a single summary measure</strong>. By default, it will display the <strong>mean</strong>. This is the scatter plot</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg&#34;</span>,
+    data<span style="color:#666">=</span>mpg,
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251409574.png" alt=""></p>
+<p>and the line plot</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg&#34;</span>,
+    data<span style="color:#666">=</span>mpg,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251410104.png" alt=""></p>
+<blockquote>
+<p>Notice that Seaborn will automatically calculate a <strong>confidence interval</strong> for the mean, displayed by the shaded region.</p>
+</blockquote>
+<p>Set the &ldquo;<code>ci</code>&rdquo; parameter equal to the string &ldquo;<code>sd</code>&rdquo; to make <strong>the shaded area represent the standard deviation</strong> instead of the confidence interval for the mean which shows the spread of the distribution of observations at each x value. We can also turn off the confidence interval by setting the &ldquo;<code>ci</code>&rdquo; parameter equal to &ldquo;<code>None</code>&rdquo;.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>relplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg&#34;</span>,
+    data<span style="color:#666">=</span>mpg,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>,
+    ci<span style="color:#666">=</span><span style="color:#ba2121">&#34;sd&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203251411794.png" alt=""></p>
+<h1 id="3-categorical-plot">3. Categorical Plot</h1>
+<h2 id="31-count-plots-and-bar-plots">3.1 Count plots and bar plots</h2>
+<p>Count plots and bar plots are two types of visualizations that Seaborn calls &ldquo;categorical plots&rdquo;.</p>
+<p>We call <code>catplot()</code> method and use the &ldquo;<code>kind</code>&rdquo; parameter to specify what kind of categorical plot to use. &ldquo;<code>catplot()</code>&rdquo; offers the same flexibility that &ldquo;<code>relplot()</code>&rdquo; does, which means it will be easy to create subplots if we need to using the same &ldquo;<code>col</code>&rdquo; and &ldquo;<code>row</code>&rdquo; parameters.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Internet usage&#34;</span>, data<span style="color:#666">=</span>survey_data,
+            kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;count&#34;</span>, row<span style="color:#666">=</span><span style="color:#ba2121">&#34;Age Category&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261053892.png" alt=""></p>
+<p>Use the &ldquo;<code>order</code>&rdquo; parameter which accepts a <strong>list</strong> can specific ordering of categories. This works for all types of categorical plots.</p>
+<p>Bar plots look similar to count plots, but instead of the count of observations in each category, they show <strong>the mean of a quantitative variable among observations in each category</strong>. To create this bar plot, we use &ldquo;<code>catplot</code>&rdquo;. Specify the categorical variable  on the <code>x</code>-axis, the quantitative variable on the <code>y</code>-axis, and set the &ldquo;<code>kind</code>&rdquo; parameter equal to &ldquo;<code>bar</code>&rdquo;.</p>
+<blockquote>
+<p>Of course, you can also change the orientation of the bars in bar plots and count plots by switching the <code>x</code> and <code>y</code> parameters.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">category_order <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;&lt;2 hours&#34;</span>, 
+                  <span style="color:#ba2121">&#34;2 to 5 hours&#34;</span>, 
+                  <span style="color:#ba2121">&#34;5 to 10 hours&#34;</span>, 
+                  <span style="color:#ba2121">&#34;&gt;10 hours&#34;</span>]
+
+sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;study_time&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;G3&#34;</span>,
+            data<span style="color:#666">=</span>student_data,
+            kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>,
+            order<span style="color:#666">=</span>category_order)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261057604.png" alt=""></p>
+<p>Notice also that Seaborn automatically shows 95% confidence intervals for these means. we can turn off these confidence intervals by setting the &ldquo;<code>ci</code>&rdquo; parameter equal to &ldquo;<code>None</code>&rdquo;.</p>
+<h2 id="32-box-plot">3.2 Box plot</h2>
+<p>A box plot shows the distribution of quantitative data. The colored box represents the 25th to 75th percentile, and the line in the middle of the box represents the median. The whiskers give a sense of the spread of the distribution, and the floating points represent outliers.</p>
+<p>We can use the &ldquo;<code>catplot()</code>&rdquo; function to crate a box plot. We&rsquo;ll put the categorical variable on the x-axis and the quantitative variable on the y-axis, and specify <code>kind=&quot;box&quot;</code>.</p>
+<blockquote>
+<p>As a reminder, &ldquo;catplot&rdquo; allows you to change the order of the categories with a list by &ldquo;<code>order</code>&rdquo; parameter.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">study_time_order <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;&lt;2 hours&#34;</span>, <span style="color:#ba2121">&#34;2 to 5 hours&#34;</span>, 
+                    <span style="color:#ba2121">&#34;5 to 10 hours&#34;</span>, <span style="color:#ba2121">&#34;&gt;10 hours&#34;</span>]
+
+sns<span style="color:#666">.</span>catplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;study_time&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;G3&#34;</span>,
+    data<span style="color:#666">=</span>student_data,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;box&#34;</span>,
+    order<span style="color:#666">=</span>study_time_order
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261113276.png" alt=""></p>
+<p>You can omit the outliers using the specify <code>sym=&quot;&quot;</code>. &ldquo;<code>sym</code>&rdquo; can also be used to change the appearance of the outliers instead of omitting them.</p>
+<p>You can change the way the whiskers using the &ldquo;<code>whis</code>&rdquo; parameter. You can have the whiskers define specific lower and upper percentiles by passing in a list of the lower and upper values such as <code>whis=[5, 95]</code> or <code>whis=[0, 100]</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>catplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;internet&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;G3&#34;</span>,
+    data<span style="color:#666">=</span>student_data,
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;box&#34;</span>,
+    sym<span style="color:#666">=</span><span style="color:#ba2121">&#34;&#34;</span>,
+    whis<span style="color:#666">=</span>[<span style="color:#666">0</span>, <span style="color:#666">100</span>], <span style="color:#408080;font-style:italic"># &lt;-- Min &amp; Max</span>
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;location&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261118237.png" alt=""></p>
+<h2 id="33-point-plots">3.3 Point plots</h2>
+<p>Point plots show the mean of a quantitative variable for the observations in each category, plotted as a single point.</p>
+<p>Both line plots and point plots show the mean of a quantitative variable and 95% confidence intervals for the mean. However, there is a <strong>key difference</strong>. Line plots are relational plots, so both the x- and y-axis are quantitative variables. In a point plot, one axis - usually the x-axis - is a categorical variable, making it a categorical plot.</p>
+<p>Since Point plot is a categorical plot, we use &ldquo;catplot&rdquo; and set &ldquo;<code>kind</code>&rdquo; equal to &ldquo;<code>point</code>&rdquo;. To remove the lines connecting each point, set the &ldquo;<code>join</code>&rdquo; parameter equal to <code>False</code>. You can also add “caps” to the end of the confidence intervals, set the <code>“capsize”</code> parameter equal to the desired width of the caps. Finally, you can turn the confidence intervals off by setting the &ldquo;<code>ci</code>&rdquo; parameter equal to <code>None</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;famrel&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;absences&#34;</span>,
+			data<span style="color:#666">=</span>student_data,
+            kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;point&#34;</span>,
+            capsize<span style="color:#666">=</span><span style="color:#666">0.2</span>)
+            
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261134122.png" alt=""></p>
+<p>To have the points and confidence intervals be calculated for the <strong>median</strong> instead of the mean, set &ldquo;<code>estimator=np.median</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">import</span> median
+
+sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;romantic&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;absences&#34;</span>,
+			data<span style="color:#666">=</span>student_data,
+            kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;point&#34;</span>,
+            hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;school&#34;</span>,
+            ci<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>,
+            estimator<span style="color:#666">=</span>median)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261137912.png" alt=""></p>
+<h1 id="4-customizing-seaborn-plots">4. Customizing Seaborn Plots</h1>
+<h2 id="41-changing-plot-style-and-color">4.1 Changing plot style and color</h2>
+<p>Seaborn has five preset figure styles which change the background and axes of the plot. You can refer to them by name: &ldquo;<code>white</code>&rdquo; (default), &ldquo;<code>dark</code>&rdquo;, &ldquo;<code>whitegrid</code>&rdquo;, &ldquo;<code>darkgrid</code>&rdquo;, and &ldquo;<code>ticks</code>&rdquo;. To set one of these as the global style for all of your plots, use the &ldquo;<code>sns.set_style()</code>&rdquo; method.</p>
+<p>You can change the color of the main elements of the plot with Seaborn&rsquo;s &ldquo;<code>sns.set_palette()</code>&rdquo; method. Seaborn has many preset color palettes that you can refer to by name, or you can create your own custom palette with list.</p>
+<p>Seaborn has a group of preset palettes called <strong>diverging palettes</strong> that are great to use if your visualization deals with a scale where the <strong>two ends</strong> of the scale are opposites and there is a neutral midpoint.</p>
+<p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261154420.png" alt=""></p>
+<p>Another group of palettes are called <strong>sequential palettes</strong>. These are a single color (or two colors blended) moving from light to dark values. Sequential palettes are great for emphasizing a variable on a continuous scale.</p>
+<p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261156728.png" alt=""></p>
+<p>You can also create your own custom palettes by passing in a <strong>list</strong> of color names.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set_style(<span style="color:#ba2121">&#34;whitegrid&#34;</span>)
+sns<span style="color:#666">.</span>set_palette(<span style="color:#ba2121">&#34;RdBu&#34;</span>)
+
+category_order <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;Never&#34;</span>, <span style="color:#ba2121">&#34;Rarely&#34;</span>, <span style="color:#ba2121">&#34;Sometimes&#34;</span>, 
+                  <span style="color:#ba2121">&#34;Often&#34;</span>, <span style="color:#ba2121">&#34;Always&#34;</span>]
+
+sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Parents Advice&#34;</span>, 
+            data<span style="color:#666">=</span>survey_data, 
+            kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;count&#34;</span>, 
+            order<span style="color:#666">=</span>category_order)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261159329.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set_style(<span style="color:#ba2121">&#34;darkgrid&#34;</span>)
+color <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;#39A7D0&#34;</span>, <span style="color:#ba2121">&#34;#36ADA4&#34;</span>]
+sns<span style="color:#666">.</span>set_palette(color)
+
+sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Gender&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;Age&#34;</span>, 
+            data<span style="color:#666">=</span>survey_data, kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;box&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261202751.png" alt=""></p>
+<p>Finally, you can change the scale of your plot by using the &ldquo;<code>sns.set_context()</code>&rdquo; method. The scale options from smallest to largest are &ldquo;<code>paper</code>&rdquo; (default), &ldquo;<code>notebook</code>&rdquo;, &ldquo;<code>talk</code>&rdquo;, and &ldquo;<code>poster</code>&rdquo;.</p>
+<h2 id="42-adding-titles-and-labels">4.2 Adding titles and labels</h2>
+<p>In this section, we will focus on the title, label and x axis tick label in the plot.</p>
+<p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261238517.png" alt=""></p>
+<p>Seaborn&rsquo;s plot functions create two different types of objects: <strong><code>FacetGrids</code></strong> and <strong><code>AxesSubplots</code></strong>. To figure out which type of object you&rsquo;re working with, first assign the plot output to a variable such as <code>g</code>, and call the function <code>type(g)</code> .</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g1 <span style="color:#666">=</span> sns<span style="color:#666">.</span>relplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;weight&#34;</span>, 
+                y<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+                data<span style="color:#666">=</span>mpg,
+                kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>)
+g2 <span style="color:#666">=</span> sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;weight&#34;</span>, 
+                data<span style="color:#666">=</span>mpg,
+                kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;count&#34;</span>)
+g3 <span style="color:#666">=</span> sns<span style="color:#666">.</span>scatterplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;weight&#34;</span>, 
+                y<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+                data<span style="color:#666">=</span>mpg)
+g4 <span style="color:#666">=</span> sns<span style="color:#666">.</span>countplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;weight&#34;</span>, 
+                data<span style="color:#666">=</span>mpg)
+
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(g1), <span style="color:#008000">type</span>(g2), <span style="color:#008000">type</span>(g3), <span style="color:#008000">type</span>(g4)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;class &#39;seaborn.axisgrid.FacetGrid&#39;&gt; 
+&lt;class &#39;seaborn.axisgrid.FacetGrid&#39;&gt; 
+&lt;class &#39;matplotlib.axes._subplots.AxesSubplot&#39;&gt;
+&lt;class &#39;matplotlib.axes._subplots.AxesSubplot&#39;&gt;
+</code></pre></div><p>Recall that &ldquo;<code>relplot()</code>&rdquo; and &ldquo;<code>catplot()</code>&rdquo; both support making subplots. This means that they are creating <code>FacetGrid</code> objects. In contrast, single-type plot functions like &ldquo;<code>scatterplot()</code>&rdquo; and &ldquo;<code>countplot()</code>&rdquo; return a single <code>AxesSubplot</code> object.</p>
+<blockquote>
+<p>A <code>FacetGrid</code> consists of one or more <code>AxesSubplots</code>, which is how it supports subplots.</p>
+</blockquote>
+<p>To add a title to a <strong><code>FacetGrid</code></strong> object, first assign the plot to the variable &ldquo;<code>g</code>&rdquo;. And then, you can set the title using &ldquo;<code>g.fig.suptitle()</code>&rdquo;. To adjust the height of the title, you can use the &ldquo;<code>y</code>&rdquo; parameter whose default value is 1.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> sns<span style="color:#666">.</span>relplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;weight&#34;</span>, 
+                y<span style="color:#666">=</span><span style="color:#ba2121">&#34;horsepower&#34;</span>, 
+                data<span style="color:#666">=</span>mpg,
+                kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>)
+g<span style="color:#666">.</span>fig<span style="color:#666">.</span>suptitle(<span style="color:#ba2121">&#34;Car Weight vs. Horsepower&#34;</span>, y<span style="color:#666">=</span><span style="color:#666">1</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261309745.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set_palette(<span style="color:#ba2121">&#34;Blues&#34;</span>)
+
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Gender&#34;</span>,
+                y<span style="color:#666">=</span><span style="color:#ba2121">&#34;Age&#34;</span>, data<span style="color:#666">=</span>survey_data, 
+                kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;box&#34;</span>, hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;Interested in Pets&#34;</span>)
+g<span style="color:#666">.</span>fig<span style="color:#666">.</span>suptitle(<span style="color:#ba2121">&#34;Age of Those Interested in Pets vs. Not&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261348729.png" alt=""></p>
+<p>To add a title to an <strong><code>AxesSubplot</code></strong> object, call the method “<code>g.set_titles()</code>”. You can also use the “<code>y</code>” parameter here to adjust the height of the title. Notice that a <code>FacetGrid</code> consists of one or more <code>AxesSubplots</code>, thus you can set title on each of subplot in a plot.</p>
+<p>Since <code>g</code> is a FacetGrid object, using &ldquo;<code>g.fig.suptitle()</code>&rdquo; will add a title to the figure as a whole. To alter the subplot titles, call &ldquo;<code>g.set_titles()</code>&rdquo; repeatly to set the titles for each AxesSubplot. If you want to use the variable name in the title, you can use <code>{col_name}</code> to reference the column value.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> sns<span style="color:#666">.</span>relplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg_mean&#34;</span>, 
+                 data<span style="color:#666">=</span>mpg_mean,
+                 col<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>, kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>)
+
+g<span style="color:#666">.</span>fig<span style="color:#666">.</span>suptitle(<span style="color:#ba2121">&#34;Average MPG Over Time&#34;</span>)
+g<span style="color:#666">.</span>set_titles(<span style="color:#ba2121">&#34;EU&#34;</span>)
+g<span style="color:#666">.</span>set_titles(<span style="color:#ba2121">&#34;JP&#34;</span>)
+g<span style="color:#666">.</span>set_titles(<span style="color:#ba2121">&#34;US&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261333499.png" alt=""></p>
+<p>or</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> sns<span style="color:#666">.</span>relplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg_mean&#34;</span>, 
+                 data<span style="color:#666">=</span>mpg_mean, 
+                 col<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>, kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;line&#34;</span>)
+
+g<span style="color:#666">.</span>fig<span style="color:#666">.</span>suptitle(<span style="color:#ba2121">&#34;Average MPG Over Time&#34;</span>)
+g<span style="color:#666">.</span>set_titles(<span style="color:#ba2121">&#34;</span><span style="color:#b68;font-weight:bold">{col_name}</span><span style="color:#ba2121">&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261340166.png" alt=""></p>
+<p>To add axis labels, assign the plot to a variable and then call the &ldquo;<code>set</code>&rdquo; function. Set the parameters &ldquo;<code>xlabel</code>&rdquo; and &ldquo;<code>ylabel</code>&rdquo; to set the desired x-axis and y-axis labels, respectively. This works with <strong>both</strong> FacetGrid and AxesSubplot objects.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> sns<span style="color:#666">.</span>lineplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;model_year&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;mpg_mean&#34;</span>, 
+                 data<span style="color:#666">=</span>mpg_mean,
+                 hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>)
+
+g<span style="color:#666">.</span>set_title(<span style="color:#ba2121">&#34;Average MPG Over Time&#34;</span>)
+g<span style="color:#666">.</span>set(
+    xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;Car Model Year&#34;</span>,
+    ylabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;Average MPG&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261327678.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set_style(<span style="color:#ba2121">&#34;darkgrid&#34;</span>)
+sns<span style="color:#666">.</span>set_palette(<span style="color:#ba2121">&#34;RdBu_r&#34;</span>)
+
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Village - town&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;Likes Techno&#34;</span>, 
+                data<span style="color:#666">=</span>survey_data, kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;bar&#34;</span>,
+                col<span style="color:#666">=</span><span style="color:#ba2121">&#34;Gender&#34;</span>)
+g<span style="color:#666">.</span>fig<span style="color:#666">.</span>suptitle(<span style="color:#ba2121">&#34;Percentage of Young People Who Like Techno&#34;</span>, y<span style="color:#666">=</span><span style="color:#666">1.02</span>)
+g<span style="color:#666">.</span>set_titles(<span style="color:#ba2121">&#34;</span><span style="color:#b68;font-weight:bold">{col_name}</span><span style="color:#ba2121">&#34;</span>)
+g<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;Location of Residence&#34;</span>, 
+       ylabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;% Who Like Techno&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261353393.png" alt=""></p>
+<p>Sometimes your tick labels may overlap, one way to address this is by rotating the tick labels. To do this, after we create the plot, we call the matplotlib function &ldquo;<code>plt.xticks()</code>&rdquo; and set &ldquo;<code>rotation=90</code>&rdquo;. This works with <strong>both</strong> FacetGrid and AxesSubplot objects.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>catplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;origin&#34;</span>, 
+            y<span style="color:#666">=</span><span style="color:#ba2121">&#34;acceleration&#34;</span>, 
+            data<span style="color:#666">=</span>mpg, 
+            kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;point&#34;</span>, 
+            join<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, 
+            capsize<span style="color:#666">=</span><span style="color:#666">0.1</span>)
+
+plt<span style="color:#666">.</span>xticks(rotation<span style="color:#666">=</span><span style="color:#666">90</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203261328070.png" alt=""></p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+
