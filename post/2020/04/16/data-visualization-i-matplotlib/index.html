@@ -81,6 +81,10 @@
 </aside>
 
 
+<blockquote>
+<p>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.</p>
+</blockquote>
+<p>[toc]</p>
 <h1 id="1-introduction-to-matplotlib">1. Introduction to Matplotlib</h1>
 <h2 id="11-intro-to-data-visualization-with-matplotlib">1.1 Intro to data visualization with matplotlib</h2>
 <p>we will use the main <strong>object-oriented interface</strong>. This interface is provided through the pyplot submodule. The <code>plt.subplots()</code> command, when called without any inputs, creates two different objects: a <code>Figure</code> object and an <code>Axes</code> object.</p>
@@ -406,7 +410,7 @@ plt<span style="color:#666">.</span>show()
 <h2 id="33-statistical-plotting">3.3 Statistical plotting</h2>
 <p>The first is the use of <strong>error bars</strong> in plots. These are additional markers on a plot or bar chart that tell us something about the distribution of the data.</p>
 <blockquote>
-<p>Histograms, that you have seen in the previous lesson, show the entire distribution. Error bars instead summarize the distribution of the data in one number, such as the standard deviation of the values.</p>
+<p>Histograms show the entire distribution. Error bars instead summarize the distribution of the data in one number, such as the standard deviation of the values.</p>
 </blockquote>
 <p>There are at least <strong>two different ways</strong> to display error bars. Here, we add the error bar as an argument to a bar chart. Each call to the <code>ax.bar</code> method takes an <code>x</code> argument and a <code>y</code> argument. The <code>yerr</code> key-word argument takes an additional number.</p>
 <div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()

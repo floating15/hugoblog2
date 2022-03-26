@@ -6,15 +6,26 @@
     <description>Recent content in Data Visualization on haoming&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/data-visualization/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/data-visualization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data Visualization III (Seaborn)</title>
+      <link>/post/2020/04/23/data-visualization-iii-seaborn/</link>
+      <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/04/23/data-visualization-iii-seaborn/</guid>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]</description>
+    </item>
+    
     <item>
       <title>Data Visualization II (Seaborn)</title>
       <link>/post/2020/04/20/data-visualization-ii-seaborn/</link>
       <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020/04/20/data-visualization-ii-seaborn/</guid>
-      <description>1. Introduction to Seaborn 1.1 Using pandas with Seaborn # Import Matplotlib and Seaborn import matplotlib.pyplot as plt import seaborn as sns To create a count plot with a pandas DataFrame column instead of a list of data, set x (or y) equal to the name of the column in the DataFrame. Then, we&amp;rsquo;ll set the data parameter equal to DataFrame. Finally calling &amp;ldquo;plt.show()&amp;rdquo;.
-df = pd.read_csv(&amp;#34;xxxx.csv&amp;#34;) sns.countplot( x=&amp;#34;Spiders&amp;#34;, # column name data=df ) plt.</description>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]
+1. Introduction to Seaborn 1.1 Using pandas with Seaborn # Import Matplotlib and Seaborn import matplotlib.pyplot as plt import seaborn as sns To create a count plot with a pandas DataFrame column instead of a list of data, set x (or y) equal to the name of the column in the DataFrame.</description>
     </item>
     
     <item>
@@ -23,8 +34,10 @@ df = pd.read_csv(&amp;#34;xxxx.csv&amp;#34;) sns.countplot( x=&amp;#34;Spiders&a
       <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020/04/16/data-visualization-i-matplotlib/</guid>
-      <description>1. Introduction to Matplotlib 1.1 Intro to data visualization with matplotlib we will use the main object-oriented interface. This interface is provided through the pyplot submodule. The plt.subplots() command, when called without any inputs, creates two different objects: a Figure object and an Axes object.
-import matplotlib.pyplot as plt fig, ax = plt.subplots() The Figure object is a container that holds everything that you see on the page. Meanwhile, the Axes is the part of the page that holds the data.</description>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]
+1. Introduction to Matplotlib 1.1 Intro to data visualization with matplotlib we will use the main object-oriented interface. This interface is provided through the pyplot submodule. The plt.subplots() command, when called without any inputs, creates two different objects: a Figure object and an Axes object.
+import matplotlib.</description>
     </item>
     
   </channel>
