@@ -92,6 +92,38 @@ import matplotlib.</description>
     </item>
     
     <item>
+      <title>Object Oriented Programming II (Iterators &amp; Generators)</title>
+      <link>/post/2019/08/16/object-oriented-programming-ii-iterators-generators/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/16/object-oriented-programming-ii-iterators-generators/</guid>
+      <description>[toc]</description>
+    </item>
+    
+    <item>
+      <title>Object Oriented Programming III (Class)</title>
+      <link>/post/2019/08/16/object-oriented-programming-iii-class/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/16/object-oriented-programming-iii-class/</guid>
+      <description>[toc]
+1. OOP Fundamental 1.1 Attributes and Method class Employee: def set_name(self, new_name): self.name = new_name def set_salary(self, new_salary): self.salary = new_salary def give_raise(self, amount): self.salary = self.salary + amount def monthly_salary(self): return self.salary / 12 method = function; attribute = variable
+# self 就是对象 object 的替身 emp = Employee() emp.set_salary(1000) # 理解为 set_salary(emp, 10000)  self.salary # 理解为 emp.salary variable 可以打印, 也可以赋值
+emp.salary = emp.salary + 5000 # e.t. emp.</description>
+    </item>
+    
+    <item>
+      <title>Object Oriented Programming I (Function)</title>
+      <link>/post/2019/08/14/object-oriented-programming-i-function/</link>
+      <pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/14/object-oriented-programming-i-function/</guid>
+      <description>[toc]
+1. Writing Functions 1.1 Define function To define the function, We begin with the keyword def, followed by the function name; this is then followed by a set of parentheses and a colon. This piece of code is called a function header. To complete the function definition, We write the function body inside the indentation.
+There&amp;rsquo;s an essential aspect of writing functions in Python: docstrings. Docstrings serve as documentation for your function so that anyone who reads your function&amp;rsquo;s docstring understands what your function does, without having to trace through all the code in the function definition.</description>
+    </item>
+    
+    <item>
       <title>Git - Rebase (in Chinese)</title>
       <link>/post/2019/08/05/git-rebase-in-chinese/</link>
       <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
@@ -276,7 +308,7 @@ root@wanghaoming1:/# ls ~ /usr boot boot: abi-4.4.0-62-generic config-4.4.0-62-g
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/note/</guid>
-      <description>Analysis VI (Stochastic analysis) Analysis V (Differential manifold) Analysis IV (Complex Analysis) Analysis III (Real Analysis) Analysis II (Mathematical Analysis) Analysis I (General Topology) Data Mining IV Data Mining III Data Mining II Data Mining I Operations Research III Operations Research II Operations Research I Game Theory II Game Theory I Machine Learning Technics Machine Learning Foundation II (CN) Machine Learning Foundation I (CN)   Analysis VI (Stochastic analysis)  Lecture_01.</description>
+      <description>Analysis VI (Stochastic Analysis) Analysis V (Differential Manifold) Analysis IV (Complex Analysis) Analysis III (Real Analysis) Analysis II (Mathematical Analysis) Analysis I (General Topology) Data Mining IV Data Mining III Data Mining II Data Mining I Operations Research III Operations Research II Operations Research I Game Theory II Game Theory I Machine Learning Technics Machine Learning Foundation II (CN) Machine Learning Foundation I (CN)   Analysis VI (Stochastic Analysis)  Lecture_01.</description>
     </item>
     
   </channel>

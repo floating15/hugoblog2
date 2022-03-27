@@ -50,6 +50,38 @@ import matplotlib.</description>
     </item>
     
     <item>
+      <title>Object Oriented Programming II (Iterators &amp; Generators)</title>
+      <link>/post/2019/08/16/object-oriented-programming-ii-iterators-generators/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/16/object-oriented-programming-ii-iterators-generators/</guid>
+      <description>[toc]</description>
+    </item>
+    
+    <item>
+      <title>Object Oriented Programming III (Class)</title>
+      <link>/post/2019/08/16/object-oriented-programming-iii-class/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/16/object-oriented-programming-iii-class/</guid>
+      <description>[toc]
+1. OOP Fundamental 1.1 Attributes and Method class Employee: def set_name(self, new_name): self.name = new_name def set_salary(self, new_salary): self.salary = new_salary def give_raise(self, amount): self.salary = self.salary + amount def monthly_salary(self): return self.salary / 12 method = function; attribute = variable
+# self 就是对象 object 的替身 emp = Employee() emp.set_salary(1000) # 理解为 set_salary(emp, 10000)  self.salary # 理解为 emp.salary variable 可以打印, 也可以赋值
+emp.salary = emp.salary + 5000 # e.t. emp.</description>
+    </item>
+    
+    <item>
+      <title>Object Oriented Programming I (Function)</title>
+      <link>/post/2019/08/14/object-oriented-programming-i-function/</link>
+      <pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/14/object-oriented-programming-i-function/</guid>
+      <description>[toc]
+1. Writing Functions 1.1 Define function To define the function, We begin with the keyword def, followed by the function name; this is then followed by a set of parentheses and a colon. This piece of code is called a function header. To complete the function definition, We write the function body inside the indentation.
+There&amp;rsquo;s an essential aspect of writing functions in Python: docstrings. Docstrings serve as documentation for your function so that anyone who reads your function&amp;rsquo;s docstring understands what your function does, without having to trace through all the code in the function definition.</description>
+    </item>
+    
+    <item>
       <title>Python Data Manipulate</title>
       <link>/post/2019/07/08/python-data-manipulate/</link>
       <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>

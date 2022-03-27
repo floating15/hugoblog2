@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Object Oriented Programming I (Function) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Object Oriented Programming I (Function)</span></h1>  
+
+<h2 class="date">2019/08/14</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-writing-functions">1. Writing Functions</a>
+      <ul>
+        <li><a href="#11-define-function">1.1 Define function</a></li>
+        <li><a href="#12-multiple-parameters-and-return-values">1.2 Multiple parameters and return values</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-default-arguments-variable-length-arguments-and-scope">2. Default arguments, variable-length arguments and scope</a>
+      <ul>
+        <li><a href="#21-scope">2.1 Scope</a></li>
+        <li><a href="#22-nested-functions">2.2 Nested functions</a></li>
+        <li><a href="#23-default-and-flexible-arguments">2.3 Default and flexible arguments</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-lambda-functions-and-error-handling">3. Lambda functions and error-handling</a>
+      <ul>
+        <li><a href="#31-lambda-functions">3.1 Lambda functions</a></li>
+        <li><a href="#32-error-handling">3.2 Error handling</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<p>[toc]</p>
+<h1 id="1-writing-functions">1. Writing Functions</h1>
+<h2 id="11-define-function">1.1 Define function</h2>
+<p>To define the function, We begin with the keyword <code>def</code>, followed by the function name; this is then followed by a set of parentheses and a colon. This piece of code is called a function header. To complete the function definition, We write the function body inside the indentation.</p>
+<p>There&rsquo;s an essential aspect of writing functions in Python: <strong>docstrings</strong>. Docstrings serve as documentation for your function so that anyone who reads your function&rsquo;s docstring understands what your function does, without having to trace through all the code in the function definition. Function docstrings are placed in the immediate line after the function header and are placed in between triple quotation marks.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout</span>():
+    <span style="color:#ba2121">&#34;&#34;&#34;Print a string with three exclamation marks&#34;&#34;&#34;</span>
+    shout_word <span style="color:#666">=</span> <span style="color:#ba2121">&#34;congratulations&#34;</span> <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+    <span style="color:#008000">print</span>(shout_word)
+
+shout()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">congratulations!!!
+</code></pre></div><p>You can add a parameter to the function definition in between the parentheses. When you define a function, you write parameters in the function header. When you call a function, you pass arguments into the function.</p>
+<p>What if we don&rsquo;t want to print that outcome directly and instead we want to return the it and assign it to some variable? You can have your function return the new value by adding the <code>return</code> keyword, followed by the outcome to return.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout</span>(word):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a string with three exclamation marks&#34;&#34;&#34;</span>
+    shout_word <span style="color:#666">=</span> word <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+    <span style="color:#008000;font-weight:bold">return</span> shout_word
+
+yell <span style="color:#666">=</span> shout(<span style="color:#ba2121">&#34;congratulations&#34;</span>)
+<span style="color:#008000">print</span>(yell)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">congratulations!!!
+</code></pre></div><h2 id="12-multiple-parameters-and-return-values">1.2 Multiple parameters and return values</h2>
+<p>We can imput multi parameters to the function.</p>
+<blockquote>
+<p>You should also change your function name and docstrings to reflect this new behavior.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout</span>(word1, word2):
+    <span style="color:#ba2121">&#34;&#34;&#34;Concatenate strings with three exclamation marks&#34;&#34;&#34;</span>
+    shout1 <span style="color:#666">=</span> word1 <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+    shout2 <span style="color:#666">=</span> word2 <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+    new_shout <span style="color:#666">=</span> shout1 <span style="color:#666">+</span> shout2
+    <span style="color:#008000;font-weight:bold">return</span> new_shout
+
+yell <span style="color:#666">=</span> shout(<span style="color:#ba2121">&#34;congratulations&#34;</span>, <span style="color:#ba2121">&#34;you&#34;</span>)
+<span style="color:#008000">print</span>(yell)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">congratulations!!!you!!!
+</code></pre></div><p>You can also make your function return multiple values. You can do that by constructing objects known as tuples in your functions. In the function body, we construct a tuple consisting of the values we want the function to return ,and also we return the tuple.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout_all</span>(word1, word2):
+
+    shout1 <span style="color:#666">=</span> word1 <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+    shout2 <span style="color:#666">=</span> word2 <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+    shout_words <span style="color:#666">=</span> (shout1, shout2)
+    <span style="color:#008000;font-weight:bold">return</span> shout_words
+
+yell1, yell2 <span style="color:#666">=</span> shout_all(<span style="color:#ba2121">&#34;congratulations&#34;</span>, <span style="color:#ba2121">&#34;you&#34;</span>)
+<span style="color:#008000">print</span>(yell1)
+<span style="color:#008000">print</span>(yell2)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">congratulations!!!
+you!!!
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">count_entries</span>(df, col_name):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a dictionary with counts of 
+</span><span style="color:#ba2121">    occurrences as value for each key.&#34;&#34;&#34;</span>
+    langs_count <span style="color:#666">=</span> {}
+    col <span style="color:#666">=</span> df[col_name]
+    <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> col:
+        <span style="color:#008000;font-weight:bold">if</span> entry <span style="color:#a2f;font-weight:bold">in</span> langs_count<span style="color:#666">.</span>keys():
+            langs_count[entry] <span style="color:#666">+=</span> <span style="color:#666">1</span>
+        <span style="color:#008000;font-weight:bold">else</span>:
+            langs_count[entry] <span style="color:#666">=</span> <span style="color:#666">1</span>
+    <span style="color:#008000;font-weight:bold">return</span> langs_count
+
+result <span style="color:#666">=</span> count_entries(tweets_df, <span style="color:#ba2121">&#34;lang&#34;</span>)
+<span style="color:#008000">print</span>(result)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;en&#39;: 97, &#39;et&#39;: 1, &#39;und&#39;: 2}
+</code></pre></div><h1 id="2-default-arguments-variable-length-arguments-and-scope">2. Default arguments, variable-length arguments and scope</h1>
+<h2 id="21-scope">2.1 Scope</h2>
+<p>We&rsquo;ll now talk about the idea of scope in the context of user-defined functions, which tells you which part of a program an object or a name may be accessed.</p>
+<p>Generally, there are three types of scope:</p>
+<ul>
+<li><strong>global scope</strong>. A name that is in the global scope means that it is defined in the main body of a script or a Python program.</li>
+<li><strong>local scope</strong>. A name that is in a local scope means that it is defined within a function.
+Once the execution of a function is done, any name inside the local scope ceases to exist, which means you cannot access those names anymore outside of the function definition.</li>
+<li><strong>built-in scope</strong>: this consists of names in the pre-defined built-ins module Python provides, such as print and sum.</li>
+</ul>
+<p>The rule for referencing global variable <strong>inside the function</strong> is to search for local scope first, and then global scope if not. Notice that</p>
+<ol>
+<li>if global variable was not defined in the function body, you can refer it directly:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">v <span style="color:#666">=</span> <span style="color:#666">3</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func0</span>():
+    <span style="color:#008000">print</span>(v)
+func0()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">3
+</code></pre></div><ol start="2">
+<li>if global variable was defined in the function body after you call the variable, you need use <code>global</code> key word te declare te variable:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">v <span style="color:#666">=</span> <span style="color:#666">3</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    <span style="color:#008000;font-weight:bold">global</span> v
+    <span style="color:#008000">print</span>(v)
+    v <span style="color:#666">=</span> <span style="color:#666">4</span>
+    <span style="color:#008000">print</span>(v)
+func1()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">3
+4
+</code></pre></div><p>otherwise python will report Errors:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">v <span style="color:#666">=</span> <span style="color:#666">3</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    <span style="color:#008000">print</span>(v)
+    v <span style="color:#666">=</span> <span style="color:#666">4</span>
+    <span style="color:#008000">print</span>(v)
+func1()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">UnboundLocalError: local variable &#39;v&#39; referenced before assignment
+</code></pre></div><ol start="3">
+<li>if the variable was defined in the function before you call it, python will use local variable:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">v <span style="color:#666">=</span> <span style="color:#666">3</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+    v<span style="color:#666">=</span><span style="color:#666">4</span>
+    <span style="color:#008000">print</span>(v)
+func2()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">4
+</code></pre></div><p>In general, we cannot refer to a local scope outside a function, unless we declare a local scope as global using the <code>global</code> keyword. Notice that once you use the <code>global</code> keyword for a variable, any changes made to that variable within the function are reflected in the global variable. For example</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n <span style="color:#666">=</span> <span style="color:#666">5</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+  n<span style="color:#666">=</span><span style="color:#666">3</span>
+  <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n1:&#34;</span>, n)
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+  <span style="color:#008000;font-weight:bold">global</span> n
+  <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n2:&#34;</span>, n)
+  n <span style="color:#666">=</span> <span style="color:#666">4</span>
+  <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n3:&#34;</span>, n)
+
+func1()
+func2()
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n4:&#34;</span>, n)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">n1: 3
+n2: 5
+n3: 4
+n4: 4
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">team <span style="color:#666">=</span> <span style="color:#ba2121">&#34;teen titans&#34;</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">change_team</span>():
+    <span style="color:#ba2121">&#34;&#34;&#34;Change the value of the global variable team.&#34;&#34;&#34;</span>
+    <span style="color:#008000;font-weight:bold">global</span> team
+    team <span style="color:#666">=</span> <span style="color:#ba2121">&#34;justice league&#34;</span>
+
+<span style="color:#008000">print</span>(team)
+change_team()
+<span style="color:#008000">print</span>(team)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">teen titans
+justice league
+</code></pre></div><h2 id="22-nested-functions">2.2 Nested functions</h2>
+<p>There are a number of good reasons to do write nested function. For example, we want a function that takes 3 numbers as parameters and performs the same function on each of them. One way would be to write out the computation 3 times.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func</span>(v1, v2, v3):
+    v1  <span style="color:#666">=</span> v1 <span style="color:#666">+</span> <span style="color:#666">5</span>
+    v2  <span style="color:#666">=</span> v2 <span style="color:#666">+</span> <span style="color:#666">5</span>
+    v3  <span style="color:#666">=</span> v3 <span style="color:#666">+</span> <span style="color:#666">5</span>
+    <span style="color:#008000;font-weight:bold">return</span> (v1, v2, v3)
+func(<span style="color:#666">1</span>,<span style="color:#666">2</span>,<span style="color:#666">3</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">(6,7,8)
+</code></pre></div><p>but this definitely does not scale if you need to perform the computation many times. What we can do instead is define an inner function within our function definition, such that</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>(v1,v2,v3):
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>(x):
+        <span style="color:#008000;font-weight:bold">return</span> x <span style="color:#666">+</span> <span style="color:#666">5</span>
+    <span style="color:#008000;font-weight:bold">return</span>(func2(v1), func2(v2), func2(v3))
+func1(<span style="color:#666">1</span>,<span style="color:#666">2</span>,<span style="color:#666">3</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">(6,7,8)
+</code></pre></div><p>This is called a <strong>nested function</strong>. The syntax for the inner function is exactly the same as that for any other function.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">three_shouts</span>(word1, word2, word3):
+    <span style="color:#ba2121">&#34;&#34;&#34;Returns a tuple of strings
+</span><span style="color:#ba2121">    concatenated with &#39;!!!&#39;.&#34;&#34;&#34;</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">inner</span>(word):
+        <span style="color:#ba2121">&#34;&#34;&#34;Returns a string concatenated with &#39;!!!&#39;.&#34;&#34;&#34;</span>
+        <span style="color:#008000;font-weight:bold">return</span> word <span style="color:#666">+</span> <span style="color:#ba2121">&#39;!!!&#39;</span>
+    <span style="color:#008000;font-weight:bold">return</span> (inner(word1), inner(word2), inner(word3))
+
+<span style="color:#008000">print</span>(three_shouts(<span style="color:#ba2121">&#39;a&#39;</span>, <span style="color:#ba2121">&#39;b&#39;</span>, <span style="color:#ba2121">&#39;c&#39;</span>))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> (&#39;a!!!&#39;, &#39;b!!!&#39;, &#39;c!!!&#39;)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">echo</span>(n):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return the inner_echo function.&#34;&#34;&#34;</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">inner_echo</span>(word1):
+        <span style="color:#ba2121">&#34;&#34;&#34;Concatenate n copies of word1.&#34;&#34;&#34;</span>
+        echo_word <span style="color:#666">=</span> word1 <span style="color:#666">*</span> n
+        <span style="color:#008000;font-weight:bold">return</span> echo_word
+    <span style="color:#008000;font-weight:bold">return</span> inner_echo
+
+twice <span style="color:#666">=</span> echo(<span style="color:#666">2</span>)
+thrice <span style="color:#666">=</span> echo(<span style="color:#666">3</span>)
+
+<span style="color:#008000">print</span>(twice(<span style="color:#ba2121">&#39;hello&#39;</span>), thrice(<span style="color:#ba2121">&#39;hello&#39;</span>))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hellohello hellohellohello
+</code></pre></div><p>What if we have a function inner defined within another function outer and we reference a name x in the inner function? The answer is intuitive: Python searches the local scope of the function inner, then if it doesn&rsquo;t find x, it searches the scope of the function outer, which is called an <strong>enclosing function</strong> because it encloses the function inner. If Python can&rsquo;t find x in the scope of the enclosing function, it only then searches the global scope and then the built-in scope. This is known as the <strong>LEGB rule</strong>, where <strong>L</strong> is for local, <strong>E</strong> for enclosing, <strong>G</strong> for global and <strong>B</strong> for built-ins</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n <span style="color:#666">=</span> <span style="color:#666">1</span> <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">outter</span>():
+    n <span style="color:#666">=</span> <span style="color:#666">2</span> <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">inner</span>():
+        n <span style="color:#666">=</span> <span style="color:#666">3</span> <span style="color:#408080;font-style:italic"># &lt;-- L scope</span>
+        <span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- L scope</span>
+    inner()
+    <span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+
+outter()
+<span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">3
+2
+1
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n <span style="color:#666">=</span> <span style="color:#666">1</span> <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">outter</span>():
+    n <span style="color:#666">=</span> <span style="color:#666">2</span> <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">inner</span>():
+        <span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- L scope</span>
+    inner()
+    <span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+
+outter()
+<span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">2
+2
+1
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n <span style="color:#666">=</span> <span style="color:#666">1</span> <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">outter</span>():
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">inner</span>():
+        <span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- L scope</span>
+    inner()
+    <span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+
+outter()
+<span style="color:#008000">print</span>(n) <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">1
+1
+1
+</code></pre></div><blockquote>
+<p>Notice that The E scope variable can reference the values of L and G scope variables, but cannot change the values of L and G scope variables, unless declare keyword <code>global</code> or <code>nonlocol</code>.</p>
+</blockquote>
+<p>Let&rsquo;s now look at another important use case of nested functions. In this example, we define a function <code>func1</code>, which contains an inner function called <code>func2</code>. <code>func1</code> returns the inner function <code>func2</code>. <code>func1</code> takes an argument <code>x</code> and creates a function inner that returns the yth power of <code>x</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>(x):
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>(y):
+        <span style="color:#008000;font-weight:bold">return</span> x <span style="color:#666">**</span> y
+    <span style="color:#008000;font-weight:bold">return</span> func2
+f <span style="color:#666">=</span> func1(<span style="color:#666">2</span>)
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(f))
+f(<span style="color:#666">3</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;class &#39;function&#39;&gt;
+8
+</code></pre></div><p>One interesting detail: when we call the function <code>f</code>, it remembers the value <code>x=2</code>, although the enclosing scope defined by <code>func1</code> and to which <code>x=2</code> is local, has finished execution. This is a subtlety referred to as a <strong>closure</strong> in Computer Science.</p>
+<p>Recall that you can use the keyword <code>global</code> in function definitions to create and change global names; similarly, in a nested function, you can use the keyword <code>nonlocal</code> to create and changes names in an enclosing scope. In simple terms, <code>global: L -&gt; G</code> or <code>global: E -&gt; G</code>; and <code>nonlocal: L -&gt; E</code>.</p>
+<ol>
+<li>outer + inner(<code>nonlocal</code>)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n<span style="color:#666">=</span><span style="color:#666">0</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    n<span style="color:#666">=</span><span style="color:#666">1</span>  <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+        <span style="color:#008000;font-weight:bold">nonlocal</span> n <span style="color:#408080;font-style:italic"># &lt;== [L -&gt; E]</span>
+        n<span style="color:#666">=</span><span style="color:#666">2</span>  <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n1:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n2:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    func2()
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n3:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+func1()
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n4:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">n2: 1
+n1: 2
+n3: 2
+n4: 0
+</code></pre></div><ol start="2">
+<li>outer(<code>global</code>) + inner</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n<span style="color:#666">=</span><span style="color:#666">0</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    <span style="color:#008000;font-weight:bold">global</span> n <span style="color:#408080;font-style:italic"># &lt;== [E -&gt; G]</span>
+    n<span style="color:#666">=</span><span style="color:#666">1</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+        n<span style="color:#666">=</span><span style="color:#666">2</span>  <span style="color:#408080;font-style:italic"># &lt;-- L scope</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n1:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- L scope</span>
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n2:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    func2()
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n3:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+func1()
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n4:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">n2: 1
+n1: 2
+n3: 1
+n4: 1
+</code></pre></div><ol start="3">
+<li>outer + inner(<code>global</code>)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n<span style="color:#666">=</span><span style="color:#666">0</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    n<span style="color:#666">=</span><span style="color:#666">1</span> <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+        <span style="color:#008000;font-weight:bold">global</span> n <span style="color:#408080;font-style:italic"># &lt;== [L -&gt; G]</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n0:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+        n<span style="color:#666">=</span><span style="color:#666">2</span> <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n1:&#34;</span>,n) <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n2:&#34;</span>,n) <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+    func2()
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n3:&#34;</span>,n) <span style="color:#408080;font-style:italic"># &lt;-- E scope</span>
+
+func1()
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n4:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">n2: 1
+n0: 0
+n1: 2
+n3: 1 # &lt;-- Notice, E scope
+n4: 2
+</code></pre></div><ol start="4">
+<li>outer(<code>global</code>) + inner(<code>global</code>)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n<span style="color:#666">=</span><span style="color:#666">0</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    <span style="color:#008000;font-weight:bold">global</span> n <span style="color:#408080;font-style:italic"># &lt;== [E -&gt; G]</span>
+    n<span style="color:#666">=</span><span style="color:#666">1</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+        <span style="color:#008000;font-weight:bold">global</span> n  <span style="color:#408080;font-style:italic"># &lt;== [L -&gt; G]</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n0:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+        n<span style="color:#666">=</span><span style="color:#666">2</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n1:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n2:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    func2()
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n3:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+
+func1()
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n4:&#34;</span>,n)  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">n2: 1
+n0: 1
+n1: 2
+n3: 2
+n4: 2
+</code></pre></div><ol start="5">
+<li>outer(<code>global</code>) + inner(<code>nonlocal</code>)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">n<span style="color:#666">=</span><span style="color:#666">0</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func1</span>():
+    <span style="color:#008000;font-weight:bold">global</span> n <span style="color:#408080;font-style:italic"># &lt;== [E -&gt; G]</span>
+    n<span style="color:#666">=</span><span style="color:#666">1</span>  <span style="color:#408080;font-style:italic"># &lt;-- G scope</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">func2</span>():
+        <span style="color:#008000;font-weight:bold">nonlocal</span> n <span style="color:#408080;font-style:italic"># &lt;== [L -&gt; E] ERROR!</span>
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n0:&#34;</span>,n)
+        n<span style="color:#666">=</span><span style="color:#666">2</span>  
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n1:&#34;</span>,n)
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n2:&#34;</span>,n)
+    func2()
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n3:&#34;</span>,n)
+
+func1()
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;n4:&#34;</span>,n)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SyntaxError: no binding for nonlocal &#39;n&#39; found
+</code></pre></div><p>This leads an error, since E scope variable n has been transform to be G scope variable, which means there is no E scope variable <code>n</code>, and <code>nonlocal n</code> cannot match <code>n</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">echo_shout</span>(word):
+    <span style="color:#ba2121">&#34;&#34;&#34;Change the value of a nonlocal variable&#34;&#34;&#34;</span>
+    echo_word <span style="color:#666">=</span> word <span style="color:#666">*</span> <span style="color:#666">2</span>
+    <span style="color:#008000">print</span>(echo_word)
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout</span>():
+        <span style="color:#ba2121">&#34;&#34;&#34;Alter a variable in the enclosing scope&#34;&#34;&#34;</span>    
+        <span style="color:#008000;font-weight:bold">nonlocal</span> echo_word
+        echo_word <span style="color:#666">=</span> echo_word <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>
+
+    shout()
+    <span style="color:#008000">print</span>(echo_word)
+
+echo_shout(<span style="color:#ba2121">&#34;hello&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hellohello
+hellohello!!!
+</code></pre></div><h2 id="23-default-and-flexible-arguments">2.3 Default and flexible arguments</h2>
+<p>To define a function with a default argument value, in the function header we follow the parameter of interest with an equals sign and the default argument value.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Define shout_echo</span>
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout_echo</span>(word1, echo<span style="color:#666">=</span><span style="color:#666">1</span>):
+    <span style="color:#ba2121">&#34;&#34;&#34;Concatenate echo copies of word1 and three
+</span><span style="color:#ba2121">     exclamation marks at the end of the string.&#34;&#34;&#34;</span>
+    echo_word <span style="color:#666">=</span> word1 <span style="color:#666">*</span> echo
+    shout_word <span style="color:#666">=</span> echo_word <span style="color:#666">+</span> <span style="color:#ba2121">&#39;!!!&#39;</span>
+    <span style="color:#008000;font-weight:bold">return</span> shout_word
+
+no_echo <span style="color:#666">=</span> shout_echo(<span style="color:#ba2121">&#34;Hey&#34;</span>)
+with_echo <span style="color:#666">=</span> shout_echo(<span style="color:#ba2121">&#34;Hey&#34;</span>, echo<span style="color:#666">=</span><span style="color:#666">5</span>)
+
+<span style="color:#008000">print</span>(no_echo)
+<span style="color:#008000">print</span>(with_echo)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Hey!!!
+HeyHeyHeyHeyHey!!!
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">shout_echo</span>(word1, echo<span style="color:#666">=</span><span style="color:#666">1</span>, intense<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>):
+    <span style="color:#ba2121">&#34;&#34;&#34;Concatenate echo copies of word1 and three
+</span><span style="color:#ba2121">    exclamation marks at the end of the string.&#34;&#34;&#34;</span>
+    echo_word <span style="color:#666">=</span> word1 <span style="color:#666">*</span> echo
+    <span style="color:#008000;font-weight:bold">if</span> intense <span style="color:#a2f;font-weight:bold">is</span> <span style="color:#008000;font-weight:bold">True</span>:
+        echo_word_new <span style="color:#666">=</span> echo_word<span style="color:#666">.</span>upper() <span style="color:#666">+</span> <span style="color:#ba2121">&#39;!!!&#39;</span>
+    <span style="color:#008000;font-weight:bold">else</span>:
+        echo_word_new <span style="color:#666">=</span> echo_word <span style="color:#666">+</span> <span style="color:#ba2121">&#39;!!!&#39;</span>
+    <span style="color:#008000;font-weight:bold">return</span> echo_word_new
+
+
+with_big_echo <span style="color:#666">=</span> shout_echo(<span style="color:#ba2121">&#34;Hey&#34;</span>, echo<span style="color:#666">=</span><span style="color:#666">5</span>, intense<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+big_no_echo <span style="color:#666">=</span> shout_echo(<span style="color:#ba2121">&#34;Hey&#34;</span>, intense<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+<span style="color:#008000">print</span>(with_big_echo)
+<span style="color:#008000">print</span>(big_no_echo)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">HEYHEYHEYHEYHEY!!!
+HEY!!!
+</code></pre></div><p>In the function definition, we use the parameter <code>*arg</code>: this then turns all the arguments passed to a function call into a tuple called args in the function body;</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">gibberish</span>(<span style="color:#666">*</span>args):
+    <span style="color:#ba2121">&#34;&#34;&#34;Concatenate strings in *args together.&#34;&#34;&#34;</span>
+    hodgepodge<span style="color:#666">=</span><span style="color:#ba2121">&#34;&#34;</span>
+    <span style="color:#008000;font-weight:bold">for</span> word <span style="color:#a2f;font-weight:bold">in</span> args:
+        hodgepodge <span style="color:#666">+=</span> word
+    <span style="color:#008000;font-weight:bold">return</span> hodgepodge
+
+
+one_word <span style="color:#666">=</span> gibberish(<span style="color:#ba2121">&#34;luke&#34;</span>)
+many_words <span style="color:#666">=</span> gibberish(<span style="color:#ba2121">&#34;luke&#34;</span>, <span style="color:#ba2121">&#34;leia&#34;</span>, <span style="color:#ba2121">&#34;han&#34;</span>, <span style="color:#ba2121">&#34;obi&#34;</span>, <span style="color:#ba2121">&#34;darth&#34;</span>)
+
+ls <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;luke&#34;</span>, <span style="color:#ba2121">&#34;leia&#34;</span>, <span style="color:#ba2121">&#34;han&#34;</span>, <span style="color:#ba2121">&#34;obi&#34;</span>, <span style="color:#ba2121">&#34;darth&#34;</span>]
+many_words2 <span style="color:#666">=</span> gibberish(<span style="color:#666">*</span>ls)
+
+<span style="color:#008000">print</span>(one_word)
+<span style="color:#008000">print</span>(many_words)
+<span style="color:#008000">print</span>(many_words2)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">luke
+lukeleiahanobidarth
+lukeleiahanobidarth
+</code></pre></div><p>You can also use the parameter <strong><code>kwargs</code></strong> preceded by a double star. This turns the identifier-keyword pairs into a dictionary within the function body.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">report_status</span>(<span style="color:#666">**</span>kwargs):
+    <span style="color:#ba2121">&#34;&#34;&#34;Print out the status of a movie character.&#34;&#34;&#34;</span>
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">BEGIN: REPORT</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#34;</span>)
+    <span style="color:#008000;font-weight:bold">for</span> key, value <span style="color:#a2f;font-weight:bold">in</span> kwargs<span style="color:#666">.</span>items():
+        <span style="color:#008000">print</span>(key <span style="color:#666">+</span> <span style="color:#ba2121">&#34;: &#34;</span> <span style="color:#666">+</span> value)
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">END REPORT&#34;</span>)
+
+report_status(name<span style="color:#666">=</span><span style="color:#ba2121">&#34;luke&#34;</span>, affiliation<span style="color:#666">=</span><span style="color:#ba2121">&#34;jedi&#34;</span>, status<span style="color:#666">=</span><span style="color:#ba2121">&#34;missing&#34;</span>)
+
+params <span style="color:#666">=</span> {
+    <span style="color:#ba2121">&#34;name&#34;</span>:<span style="color:#ba2121">&#34;anakin&#34;</span>, 
+    <span style="color:#ba2121">&#34;affiliation&#34;</span>:<span style="color:#ba2121">&#34;sith lord&#34;</span>, 
+    <span style="color:#ba2121">&#34;status&#34;</span>:<span style="color:#ba2121">&#34;deceased&#34;</span>
+}
+report_status(<span style="color:#666">**</span>params)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">BEGIN: REPORT
+
+name: luke
+affiliation: jedi
+status: missing
+
+END REPORT
+
+BEGIN: REPORT
+
+name: anakin
+affiliation: sith lord
+status: deceased
+
+END REPORT
+</code></pre></div><blockquote>
+<p>Note that it is NOT the names args and kwargs that are important when using flexible arguments, but rather that they&rsquo;re preceded by a single and double star, respectively.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">count_entries</span>(df, <span style="color:#666">*</span>args):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a dictionary with counts of
+</span><span style="color:#ba2121">    occurrences as value for each key.&#34;&#34;&#34;</span>
+    cols_count <span style="color:#666">=</span> {}
+    <span style="color:#008000;font-weight:bold">for</span> col_name <span style="color:#a2f;font-weight:bold">in</span> args:
+        col <span style="color:#666">=</span> df[col_name]
+        <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> col:
+            <span style="color:#008000;font-weight:bold">if</span> entry <span style="color:#a2f;font-weight:bold">in</span> cols_count<span style="color:#666">.</span>keys():
+                cols_count[entry] <span style="color:#666">+=</span> <span style="color:#666">1</span>
+            <span style="color:#008000;font-weight:bold">else</span>:
+                cols_count[entry] <span style="color:#666">=</span> <span style="color:#666">1</span>
+    <span style="color:#008000;font-weight:bold">return</span> cols_count
+
+result1 <span style="color:#666">=</span> count_entries(tweets_df, <span style="color:#ba2121">&#34;lang&#34;</span>)
+result2 <span style="color:#666">=</span> count_entries(tweets_df, <span style="color:#ba2121">&#34;lang&#34;</span>, <span style="color:#ba2121">&#34;source&#34;</span>)
+
+<span style="color:#008000">print</span>(result1)
+<span style="color:#008000">print</span>(result2)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;en&#39;: 97, &#39;et&#39;: 1, &#39;und&#39;: 2}
+{&#39;en&#39;: 97, &#39;et&#39;: 1, &#39;und&#39;: 2, &#39;&lt;a href=&#34;http://twitter.com&#34; rel=&#34;nofollow&#34;&gt;Twitter Web Client&lt;/a&gt;&#39;: 24, &#39;&lt;a href=&#34;http://www.facebook.com/twitter&#34; rel=&#34;nofollow&#34;&gt;Facebook&lt;/a&gt;&#39;: 1, &#39;&lt;a href=&#34;http://twitter.com/download/android&#34; rel=&#34;nofollow&#34;&gt;Twitter for Android&lt;/a&gt;&#39;: 26, &#39;&lt;a href=&#34;http://twitter.com/download/iphone&#34; rel=&#34;nofollow&#34;&gt;Twitter for iPhone&lt;/a&gt;&#39;: 33, &#39;&lt;a href=&#34;http://www.twitter.com&#34; rel=&#34;nofollow&#34;&gt;Twitter for BlackBerry&lt;/a&gt;&#39;: 2, &#39;&lt;a href=&#34;http://www.google.com/&#34; rel=&#34;nofollow&#34;&gt;Google&lt;/a&gt;&#39;: 2, &#39;&lt;a href=&#34;http://twitter.com/#!/download/ipad&#34; rel=&#34;nofollow&#34;&gt;Twitter for iPad&lt;/a&gt;&#39;: 6, &#39;&lt;a href=&#34;http://linkis.com&#34; rel=&#34;nofollow&#34;&gt;Linkis.com&lt;/a&gt;&#39;: 2, &#39;&lt;a href=&#34;http://rutracker.org/forum/viewforum.php?f=93&#34; rel=&#34;nofollow&#34;&gt;newzlasz&lt;/a&gt;&#39;: 2, &#39;&lt;a href=&#34;http://ifttt.com&#34; rel=&#34;nofollow&#34;&gt;IFTTT&lt;/a&gt;&#39;: 1, &#39;&lt;a href=&#34;http://www.myplume.com/&#34; rel=&#34;nofollow&#34;&gt;Plume\xa0for\xa0Android&lt;/a&gt;&#39;: 1}
+</code></pre></div><h1 id="3-lambda-functions-and-error-handling">3. Lambda functions and error-handling</h1>
+<h2 id="31-lambda-functions">3.1 Lambda functions</h2>
+<p>There&rsquo;s a quicker way to write functions on the fly and these are called <strong>lambda functions</strong> because you use the keyword <code>lambda</code>. To do so, after the keyword <code>lambda</code>, we specify the names of the arguments; then we use a colon followed by the expression that specifies what we wish the function to return, such as</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">lambda</span> x,y: x <span style="color:#666">+</span> y
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">f <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">lambda</span> x: x <span style="color:#666">**</span> <span style="color:#666">2</span>
+f(<span style="color:#666">3</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">9
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">echo_word <span style="color:#666">=</span> (<span style="color:#008000;font-weight:bold">lambda</span> word1, echo: word1 <span style="color:#666">*</span> echo)
+result <span style="color:#666">=</span> echo_word(<span style="color:#ba2121">&#34;hey&#34;</span>, <span style="color:#666">5</span>)
+
+<span style="color:#008000">print</span>(result)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">heyheyheyheyhey
+</code></pre></div><p>Here we introduce three useful function: <code>map()</code>, <code>filter()</code> and <code>reduce()</code>.</p>
+<p>Firstly, check out the <code>map</code> function, which takes two arguments, a function and a sequence such as a list and applies the function over all elements of the sequence. We can pass lambda functions to map without even naming them and in this case we refer to them as <strong>anonymous functions</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">ls <span style="color:#666">=</span> [<span style="color:#666">1</span>,<span style="color:#666">2</span>,<span style="color:#666">3</span>,<span style="color:#666">4</span>,<span style="color:#666">5</span>]
+ls1 <span style="color:#666">=</span> <span style="color:#008000">map</span>(
+    <span style="color:#008000;font-weight:bold">lambda</span> x: x <span style="color:#666">**</span> <span style="color:#666">2</span>,
+    ls
+)
+<span style="color:#008000">print</span>(ls1, <span style="color:#008000">list</span>(ls1))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;map object at 0x7fc5a95e76d0&gt; [1, 4, 9, 16, 25]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">spells <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;protego&#34;</span>, <span style="color:#ba2121">&#34;accio&#34;</span>, <span style="color:#ba2121">&#34;expecto patronum&#34;</span>, <span style="color:#ba2121">&#34;legilimens&#34;</span>]
+
+shout_spells <span style="color:#666">=</span> <span style="color:#008000">map</span>(
+    <span style="color:#008000;font-weight:bold">lambda</span> item: item <span style="color:#666">+</span> <span style="color:#ba2121">&#34;!!!&#34;</span>,
+    spells
+)
+
+shout_spells_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(shout_spells)
+<span style="color:#008000">print</span>(shout_spells_list)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;protego!!!&#39;, &#39;accio!!!&#39;, &#39;expecto patronum!!!&#39;, &#39;legilimens!!!&#39;]
+</code></pre></div><p>The function <code>filter()</code> offers a way to filter out elements from a list that don&rsquo;t satisfy certain criteria. We now use <code>filter()</code> to create, from an input list of strings, a new list that contains only strings that have more than 6 characters.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fellowship <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;frodo&#39;</span>, <span style="color:#ba2121">&#39;samwise&#39;</span>, <span style="color:#ba2121">&#39;merry&#39;</span>, <span style="color:#ba2121">&#39;pippin&#39;</span>, <span style="color:#ba2121">&#39;aragorn&#39;</span>, <span style="color:#ba2121">&#39;boromir&#39;</span>, <span style="color:#ba2121">&#39;legolas&#39;</span>, <span style="color:#ba2121">&#39;gimli&#39;</span>, <span style="color:#ba2121">&#39;gandalf&#39;</span>]
+
+result_f <span style="color:#666">=</span> <span style="color:#008000">filter</span>(
+    <span style="color:#008000;font-weight:bold">lambda</span> x: <span style="color:#008000">len</span>(x) <span style="color:#666">&gt;</span> <span style="color:#666">6</span>,
+    fellowship
+)
+result_m <span style="color:#666">=</span> <span style="color:#008000">map</span>(
+    <span style="color:#008000;font-weight:bold">lambda</span> x: <span style="color:#008000">len</span>(x) <span style="color:#666">&gt;</span> <span style="color:#666">6</span>,
+    fellowship
+)
+
+result_f_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(result_f)
+result_m_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(result_m)
+
+<span style="color:#008000">print</span>(result_f_list)
+<span style="color:#008000">print</span>(result_m_list)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;samwise&#39;, &#39;aragorn&#39;, &#39;boromir&#39;, &#39;legolas&#39;, &#39;gandalf&#39;]
+[False, True, False, False, True, True, True, False, True]
+</code></pre></div><p>The <code>reduce()</code> function is useful for performing some computation on a list and, unlike <code>map()</code> and <code>filter()</code>, returns a single value as a result. The operation rule of <code>reduce()</code> is to use the input function (with 2 arguments) to operate on the first and second elements in the iterator (e.g. list), and then use the function to operate the result with the third data, and finally get a result. To use <code>reduce()</code>, you must import it from the functools module.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">functools</span> <span style="color:#008000;font-weight:bold">import</span> reduce
+
+stark <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;robb&#39;</span>, <span style="color:#ba2121">&#39;sansa&#39;</span>, <span style="color:#ba2121">&#39;arya&#39;</span>, <span style="color:#ba2121">&#39;brandon&#39;</span>, <span style="color:#ba2121">&#39;rickon&#39;</span>]
+nums <span style="color:#666">=</span> [<span style="color:#666">1</span>,<span style="color:#666">1</span>,<span style="color:#666">1</span>,<span style="color:#666">1</span>,<span style="color:#666">1</span>,<span style="color:#666">1</span>]
+
+result_s <span style="color:#666">=</span> reduce(
+    <span style="color:#008000;font-weight:bold">lambda</span> x, y: x <span style="color:#666">+</span> y,
+    stark
+)
+result_n <span style="color:#666">=</span> reduce(
+    <span style="color:#008000;font-weight:bold">lambda</span> x, y: x <span style="color:#666">+</span> y,
+    nums
+)
+
+<span style="color:#008000">print</span>(result_s)
+<span style="color:#008000">print</span>(result_n)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">robbsansaaryabrandonrickon
+6
+</code></pre></div><h2 id="32-error-handling">3.2 Error handling</h2>
+<p>A error caught during execution, commonly called exceptions. The main way to catch exceptions is the <code>try-except</code> clause, in which Python tries to run the code following <code>try</code> and if it can, all is well. If it cannot due to an exception, it runs the code following <code>except</code>.</p>
+<p>We may also wish to only catch specific type of error and let other errors pass through, in which case we would use <code>except &lt;error type&gt;</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">count_entries</span>(df, col_name<span style="color:#666">=</span><span style="color:#ba2121">&#39;lang&#39;</span>):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a dictionary with counts of
+</span><span style="color:#ba2121">    occurrences as value for each key.&#34;&#34;&#34;</span>
+    cols_count <span style="color:#666">=</span> {}
+    <span style="color:#008000;font-weight:bold">try</span>:
+        col <span style="color:#666">=</span> df[col_name]
+        <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> col:
+            <span style="color:#008000;font-weight:bold">if</span> entry <span style="color:#a2f;font-weight:bold">in</span> cols_count<span style="color:#666">.</span>keys():
+                cols_count[entry] <span style="color:#666">+=</span> <span style="color:#666">1</span>
+            <span style="color:#008000;font-weight:bold">else</span>:
+                cols_count[entry] <span style="color:#666">=</span> <span style="color:#666">1</span>
+        <span style="color:#008000;font-weight:bold">return</span> cols_count
+    <span style="color:#008000;font-weight:bold">except</span>:
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#39;The DataFrame does not have a &#39;</span> <span style="color:#666">+</span> col_name <span style="color:#666">+</span> <span style="color:#ba2121">&#39; column.&#39;</span>)
+
+result1 <span style="color:#666">=</span> count_entries(tweets_df, <span style="color:#ba2121">&#39;lang&#39;</span>)
+<span style="color:#008000">print</span>(result1)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;en&#39;: 97, &#39;et&#39;: 1, &#39;und&#39;: 2}
+</code></pre></div><p>More often than not, instead of merely printing an error message, we&rsquo;ll want to actually <strong>raise</strong> an error by clause <code>raise &lt;error type&gt;(&quot;xxx&quot;)</code>. For example</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">a <span style="color:#666">=</span> <span style="color:#666">4</span>
+<span style="color:#008000;font-weight:bold">if</span> a <span style="color:#666">&lt;</span> <span style="color:#666">5</span>:
+    <span style="color:#008000;font-weight:bold">raise</span> <span style="color:#d2413a;font-weight:bold">TypeError</span>(<span style="color:#ba2121">&#34;ddd&#34;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">TypeError: ddd
+</code></pre></div><p>The other method to catch error for the last example is that</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">count_entries</span>(df, col_name<span style="color:#666">=</span><span style="color:#ba2121">&#39;lang&#39;</span>):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a dictionary with counts of
+</span><span style="color:#ba2121">    occurrences as value for each key.&#34;&#34;&#34;</span>
+    
+    <span style="color:#008000;font-weight:bold">if</span> col_name <span style="color:#a2f;font-weight:bold">not</span> <span style="color:#a2f;font-weight:bold">in</span> df<span style="color:#666">.</span>columns:
+        <span style="color:#008000;font-weight:bold">raise</span> <span style="color:#d2413a;font-weight:bold">ValueError</span>(<span style="color:#ba2121">&#39;The DataFrame does not have a &#39;</span> <span style="color:#666">+</span> col_name <span style="color:#666">+</span> <span style="color:#ba2121">&#39; column.&#39;</span>)
+
+    cols_count <span style="color:#666">=</span> {}
+    col <span style="color:#666">=</span> df[col_name]
+    <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> col:
+        <span style="color:#008000;font-weight:bold">if</span> entry <span style="color:#a2f;font-weight:bold">in</span> cols_count<span style="color:#666">.</span>keys():
+            cols_count[entry] <span style="color:#666">+=</span> <span style="color:#666">1</span>
+        <span style="color:#008000;font-weight:bold">else</span>:
+            cols_count[entry] <span style="color:#666">=</span> <span style="color:#666">1</span>
+    <span style="color:#008000;font-weight:bold">return</span> cols_count
+
+result1 <span style="color:#666">=</span> count_entries(tweets_df, <span style="color:#ba2121">&#34;lang&#34;</span>)
+<span style="color:#008000">print</span>(result1)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"> {&#39;en&#39;: 97, &#39;et&#39;: 1, &#39;und&#39;: 2}
+</code></pre></div>
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+

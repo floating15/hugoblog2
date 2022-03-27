@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Object Oriented Programming III (Class) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Object Oriented Programming III (Class)</span></h1>  
+
+<h2 class="date">2019/08/16</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-oop-fundamental">1. OOP Fundamental</a>
+      <ul>
+        <li><a href="#11-attributes-and-method">1.1 Attributes and Method</a></li>
+        <li><a href="#12-constructor-__init__">1.2 constructor <code>__init__()</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#2-inheritance-and-polymorphism">2. Inheritance and Polymorphism</a>
+      <ul>
+        <li><a href="#21-instance--class--attribute--method">2.1 Instance &amp; Class * Attribute &amp; Method</a></li>
+        <li><a href="#22-class-inheritance">2.2 Class inheritance</a></li>
+        <li><a href="#23-customizing-functionality-via-inheritance">2.3 Customizing functionality via inheritance</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<p>[toc]</p>
+<h1 id="1-oop-fundamental">1. OOP Fundamental</h1>
+<h2 id="11-attributes-and-method">1.1 Attributes and Method</h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">set_name</span>(self, new_name):
+        self<span style="color:#666">.</span>name <span style="color:#666">=</span> new_name
+
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">set_salary</span>(self, new_salary):
+        self<span style="color:#666">.</span>salary <span style="color:#666">=</span> new_salary 
+
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">give_raise</span>(self, amount):
+        self<span style="color:#666">.</span>salary <span style="color:#666">=</span> self<span style="color:#666">.</span>salary <span style="color:#666">+</span> amount
+
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">monthly_salary</span>(self):
+        <span style="color:#008000;font-weight:bold">return</span> self<span style="color:#666">.</span>salary <span style="color:#666">/</span> <span style="color:#666">12</span>
+</code></pre></div><p>method = function; attribute = variable</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># self 就是对象 object 的替身</span>
+emp <span style="color:#666">=</span> Employee()
+emp<span style="color:#666">.</span>set_salary(<span style="color:#666">1000</span>) <span style="color:#408080;font-style:italic">#  理解为 set_salary(emp, 10000) </span>
+self<span style="color:#666">.</span>salary <span style="color:#408080;font-style:italic"># 理解为 emp.salary</span>
+</code></pre></div><p>variable 可以打印, 也可以赋值</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">emp<span style="color:#666">.</span>salary <span style="color:#666">=</span> emp<span style="color:#666">.</span>salary <span style="color:#666">+</span> <span style="color:#666">5000</span>
+<span style="color:#408080;font-style:italic"># e.t. emp.give_raise(5000)</span>
+</code></pre></div><p>注意method可以不指定参数</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">emp<span style="color:#666">.</span>monthly_salary() <span style="color:#408080;font-style:italic"># e.t. emp.salary / 12</span>
+</code></pre></div><p>class 是模板, object 是具有不同状态值的类的实例. method 是calss 中的函数, 具有特殊的第一个参数<code>self</code>, <code>self</code> 是未来 object 的替身. attribute 通过赋值创建, 并在 method 中使用 self 变量调用.</p>
+<blockquote>
+<p>the name &ldquo;<code>self</code>&rdquo; is a convention. You could actually use <strong>any name</strong> for the first variable of a method, it will always be treated as the object reference regardless. But don&rsquo;t do it, and always use &ldquo;self&rdquo;.</p>
+</blockquote>
+<p>classes, like functions, allow for <strong>docstrings</strong> which are displayed when <code>help()</code>is called on the object. Remember the first lesson of the course, and use the docstrings to make the life of the person using your class easier.</p>
+<h2 id="12-constructor-__init__">1.2 constructor <code>__init__()</code></h2>
+<p>We learned that methods are functions within class with a special first argument <code>self</code>, and that attributes are created by assignment and referred to using the <code>self</code> variable within methods.</p>
+<p>In the exercises, you created an Employee class, and for each attribute you wanted to create, you defined a new method, and then called those methods one after another. <strong>This could quickly get unsustainable if your classes contain a lot of data.</strong></p>
+<p><strong>A better strategy would be to add data to the object when creating it</strong>. Python allows you to add a special method called the <strong>constructor <code>__init__()</code></strong> <strong>that is automatically called every time an object is created</strong>.</p>
+<hr>
+<h4 id="exercise-1"><em>Exercise 1</em></h4>
+<p>Instead of using the methods like <code>set_salary()</code> that you wrote in the previous lesson, you will introduce a constructor that assigns <code>name</code> and <code>salary</code> to the employee at the moment <strong>when the object is created</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+    <span style="color:#408080;font-style:italic"># Create __init__() method</span>
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary<span style="color:#666">=</span><span style="color:#666">0</span>):
+        <span style="color:#408080;font-style:italic"># Create the name and salary attributes</span>
+        self<span style="color:#666">.</span>name <span style="color:#666">=</span> name
+        self<span style="color:#666">.</span>salary <span style="color:#666">=</span> salary
+    
+    <span style="color:#408080;font-style:italic"># From the previous lesson</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">give_raise</span>(self, amount):
+        self<span style="color:#666">.</span>salary <span style="color:#666">+=</span> amount
+
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">monthly_salary</span>(self):
+        <span style="color:#008000;font-weight:bold">return</span> self<span style="color:#666">.</span>salary<span style="color:#666">/</span><span style="color:#666">12</span>
+</code></pre></div><p>The <code>__init__()</code> method is a great place to do preprocessing. Modify <code>__init__()</code> to check whether the salary parameter is positive:</p>
+<ul>
+<li>if yes, assign it to the salary attribute,</li>
+<li>if not, assign 0 to the attribute and print &ldquo;Invalid salary!&rdquo;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+  
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary<span style="color:#666">=</span><span style="color:#666">0</span>):
+        self<span style="color:#666">.</span>name <span style="color:#666">=</span> name
+        <span style="color:#408080;font-style:italic"># Modify code below to check if salary is positive</span>
+        <span style="color:#008000;font-weight:bold">if</span> salary <span style="color:#666">&gt;</span> <span style="color:#666">0</span>:
+            self<span style="color:#666">.</span>salary <span style="color:#666">=</span> salary 
+        <span style="color:#008000;font-weight:bold">else</span>:
+            self<span style="color:#666">.</span>salary <span style="color:#666">=</span> <span style="color:#666">0</span>
+            <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;Invalid salary!&#34;</span>)
+</code></pre></div><p>Import <code>datetime</code> from the datetime module. This contains the function that returns current date. Add an attribute <code>hire_date</code> and set it to <code>datetime.today()</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Import datetime from datetime</span>
+<span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">datetime</span> <span style="color:#008000;font-weight:bold">import</span> datetime
+
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+    
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary<span style="color:#666">=</span><span style="color:#666">0</span>):
+        self<span style="color:#666">.</span>name <span style="color:#666">=</span> name
+        <span style="color:#008000;font-weight:bold">if</span> salary <span style="color:#666">&gt;</span> <span style="color:#666">0</span>:
+          self<span style="color:#666">.</span>salary <span style="color:#666">=</span> salary
+        <span style="color:#008000;font-weight:bold">else</span>:
+          self<span style="color:#666">.</span>salary <span style="color:#666">=</span> <span style="color:#666">0</span>
+          <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;Invalid salary!&#34;</span>)
+          
+        <span style="color:#408080;font-style:italic"># Add the hire_date attribute and set it to today&#39;s date</span>
+        self<span style="color:#666">.</span>hire_date <span style="color:#666">=</span> datetime<span style="color:#666">.</span>today()
+        
+   <span style="color:#408080;font-style:italic"># ...Other methods omitted for brevity ...</span>
+</code></pre></div><hr>
+<p><em>Exercise 2</em></p>
+<p>Define the class Point that has:</p>
+<ul>
+<li>Two attributes, <code>x</code> and <code>y</code> - the coordinates of the point on the plane;</li>
+<li>A constructor that accepts two arguments, <code>x</code> and <code>y</code>, that initialize the corresponding attributes. These arguments should have default value of 0.0;</li>
+<li>A method <code>distance_to_origin()</code> that returns the distance from the point to the origin.</li>
+<li>A method <code>reflect()</code>, that reflects the point with respect to the x- or y-axis, accepts one argument <code>axis</code>,</li>
+<li>
+<ul>
+<li>if <code>axis=&quot;x&quot;</code> , it sets the <code>y</code>  attribute to the negative value of the <code>y</code> attribute,</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>if <code>axis=&quot;y&quot;</code>, it sets the <code>x</code> attribute to the negative value of the <code>x</code> attribute,</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>for any other value of axis, prints an error message.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Write the class Point as outlined in the instructions</span>
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Point</span>:
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, x<span style="color:#666">=</span><span style="color:#666">0.0</span>, y<span style="color:#666">=</span><span style="color:#666">0.0</span>):
+        self<span style="color:#666">.</span>x <span style="color:#666">=</span> x
+        self<span style="color:#666">.</span>y <span style="color:#666">=</span> y
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">distance_to_origin</span>(self):
+        <span style="color:#008000;font-weight:bold">return</span> (self<span style="color:#666">.</span>x<span style="color:#666">**</span><span style="color:#666">2</span> <span style="color:#666">+</span> self<span style="color:#666">.</span>y<span style="color:#666">**</span><span style="color:#666">2</span>)<span style="color:#666">**</span><span style="color:#666">0.5</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">reflect</span>(self, axis):
+        <span style="color:#008000;font-weight:bold">if</span> axis <span style="color:#666">==</span> <span style="color:#ba2121">&#34;x&#34;</span>:
+            self<span style="color:#666">.</span>y <span style="color:#666">=</span> <span style="color:#666">-</span>self<span style="color:#666">.</span>y
+        <span style="color:#008000;font-weight:bold">elif</span> axis <span style="color:#666">==</span> <span style="color:#ba2121">&#34;y&#34;</span>:
+            self<span style="color:#666">.</span>x <span style="color:#666">=</span> <span style="color:#666">-</span>self<span style="color:#666">.</span>x
+        <span style="color:#008000;font-weight:bold">else</span>:
+            <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;error&#34;</span>)
+</code></pre></div><hr>
+<p>there are <strong>two</strong> ways to define attributes:</p>
+<ol>
+<li>we can define an attribute in any method in a class; and then calling the method will add the attribute to the object.</li>
+<li>we can define them all together in the constructor.</li>
+</ol>
+<p>If possible, <strong>try to avoid defining attributes outside the constructor</strong>.</p>
+<ul>
+<li>easier to read all attributes</li>
+<li>defining all attributes in the constructor ensures that all of them are created when the object is created, so you don&rsquo;t have to worry about trying to access an attribute that doesn&rsquo;t yet exist</li>
+<li>All this results in more organized, readable, and maintainable code.</li>
+</ul>
+<p>To name your classes, use <strong>camel case</strong>, which means that if your class name contains several words, they should be written without delimiters, and each word should start with a capital letter.</p>
+<p>For methods and attributes, it&rsquo;s the opposite &ndash; words should be separated by underscores and start with lowercase letters.</p>
+<h1 id="2-inheritance-and-polymorphism">2. Inheritance and Polymorphism</h1>
+<p>Inheritance and Polymorphism, together with encapsulation, form the core principles of OOP.</p>
+<h2 id="21-instance--class--attribute--method">2.1 Instance &amp; Class * Attribute &amp; Method</h2>
+<h3 id="instance-level-data">Instance-level data</h3>
+<p>you need to learn how to distinguish between <strong>instance-level data and class level data</strong>. Remember the <code>Employee</code> class you defined in the previous chapter. It had attributes like <code>name</code> and <code>salary</code>, and we were able to assign specific values to them for each new instance of the class. These were instance attributes. <strong>We used <code>self</code> to bind them to a particular instance</strong>.</p>
+<h3 id="class-level-data">Class-level data</h3>
+<p>But maybe you needed to store <strong>some data that is shared among all the instances of a class</strong>. For example, if you wanted to introduce a minimal salary across the entire organization. That data should <strong>not differ among object instances</strong>. Then, you can define an attribute directly in the class body. This will create a class attribute, that will serve as a &ldquo;global variable&rdquo; within a class. For example, we can define <code>MIN_SALARY</code>, and set it to 30000.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+    MIN_SALARY <span style="color:#666">=</span> <span style="color:#666">30000</span>  <span style="color:#408080;font-style:italic"># &lt;-- Note1: no self</span>
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary):
+        self<span style="color:#666">.</span>name <span style="color:#666">=</span> name
+        <span style="color:#008000;font-weight:bold">if</span> salary <span style="color:#666">&gt;</span> Employee<span style="color:#666">.</span>MIN_SALARY:  <span style="color:#408080;font-style:italic"># &lt;-- Note2: Class_Name.Class_attribute</span>
+            self<span style="color:#666">.</span>salary <span style="color:#666">=</span> salary
+        <span style="color:#008000;font-weight:bold">else</span>:
+            self<span style="color:#666">.</span>salary <span style="color:#666">=</span> Employee<span style="color:#666">.</span>MIN_SALARY
+</code></pre></div><p><strong>Note that we do not use <code>self</code> to define the attribute, and we use the <code>class name</code> instead of <code>self</code> when referring to the attribute.</strong></p>
+<p>This <code>MIN_SALARY</code> variable will be shared among all the instances of the employee class. We can <strong>access</strong> it like any other attribute from an object instance, and the value will be the same across instances.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">emp <span style="color:#666">=</span> Employee(<span style="color:#ba2121">&#34;Tom&#34;</span>, <span style="color:#666">40000</span>)
+<span style="color:#008000">print</span>(emp<span style="color:#666">.</span>MIN_SALARY)  <span style="color:#408080;font-style:italic"># &lt;-- Note3: object_name.Class_attribute</span>
+</code></pre></div><p>So, the main use case for class attributes is <strong>global constants that are related to class</strong>, for example min/max values for attributes &ndash; like the min_salary example &ndash; or commonly used values: for example,if you were defining a Circle class, you could store pi as a class attribute.</p>
+<h3 id="class-methods">Class methods</h3>
+<p>What about methods? <strong>Regular methods are already shared between instances</strong>: the same code gets executed for every instance. <strong>The only difference is the data that is fed into it</strong>.</p>
+<p>It is possible to define methods bound to class rather than an instance, but they have a narrow application scope, because <strong>these methods will not be able to use any instance-level data</strong>.</p>
+<p>To define a class method, you start with a <strong>classmethod decorator <code>@classmethod</code></strong>, followed by a method definition. The only difference is that <strong>now the first argument is not <code>self</code>, but <code>cls</code>,</strong> referring to the class, just like the <code>self</code> argument was a reference to a particular instance.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">MyClass</span>:
+    <span style="color:#a2f">@classmethod</span> <span style="color:#408080;font-style:italic"># &lt;-- Note1: ues decorator to declare a class method</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">my_method</span>(cls, args<span style="color:#666">...</span>): <span style="color:#408080;font-style:italic"># &lt;-- Note2: cls argument</span>
+</code></pre></div><p>Then you write it as any other function, keeping in mind that you can&rsquo;t refer to any instance attributes in that method. <strong>To call a class method, we use <code>class-dot-method</code> syntax, rather than <code>object-dot-method</code> syntax.</strong></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">MyClass<span style="color:#666">.</span>my_method(args<span style="color:#666">...</span>) <span style="color:#408080;font-style:italic"># Note3: Class_name.Class_method</span>
+</code></pre></div><h3 id="alternative-constructors">Alternative constructors</h3>
+<p>Python allows you to <strong>define</strong> class methods , using the <code>@classmethod</code> decorator and a special first argument <code>cls</code>. The <strong>main use</strong> of class methods is defining methods that <strong>return an instance of the class</strong>, but aren&rsquo;t using the same code as <code>__init__()</code>.</p>
+<blockquote>
+<p>A class can only have one <code>__init__</code> method, but there might be multiple ways to initialize an object.</p>
+</blockquote>
+<p>For example, we might want to create an Employee object from data stored in a file. We can&rsquo;t use a method, because it would require an instance, and there isn&rsquo;t one yet! <strong>Here we introduce a class method <code>from_file</code> that accepts a file name, reads the first line from the file that presumably contains the name of the employee, and returns an object instance.</strong></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+    <span style="color:#a2f">@classmethod</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">from_file</span>(cls, filename):
+        <span style="color:#008000;font-weight:bold">with</span> <span style="color:#008000">open</span>(filename, <span style="color:#ba2121">&#34;r&#34;</span>) <span style="color:#008000;font-weight:bold">as</span> f:
+            name <span style="color:#666">=</span> f<span style="color:#666">.</span>readline()
+        <span style="color:#008000;font-weight:bold">return</span> cls(name)
+</code></pre></div><p>In the return statement, we use the <code>cls</code> variable &ndash; remember that now <code>cls</code> refers to the class, so this will <strong>call</strong> the <code>__init__</code> constructor, just like using Employee with parentheses would when used <strong>outside</strong> the class definition.</p>
+<p>Then we can <strong>call</strong> the method <code>from_file</code> by using <code>class-dot-method</code> syntax, which will <strong>create an employee object without explicitly calling the constructor</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">emp <span style="color:#666">=</span> Employee<span style="color:#666">.</span>from_file(<span style="color:#ba2121">&#34;employee_data.txt&#34;</span>)
+<span style="color:#008000">type</span>(emp)
+</code></pre></div><table>
+<thead>
+<tr>
+<th></th>
+<th>class attribute</th>
+<th>class method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>define</td>
+<td><code>MIN_SALARY = 30000</code></td>
+<td><code>@classmethod </code>      <code>def from_file(cls, filename):</code></td>
+</tr>
+<tr>
+<td>call in class</td>
+<td><code>Employee.MIN_SALARY</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>call out class</td>
+<td><code>emp.MIN_SALARY</code> <code>Employee.MIN_SALARY</code></td>
+<td><code>Employee.from_file</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="exercise-1-1"><em>Exercise 1</em></h4>
+<p>Define a class <code>Player</code> that has:</p>
+<ul>
+<li>A class attribute <code>MAX_POSITION</code> with value 10.</li>
+<li>The<code> __init__()</code> method that sets the <code>position</code> instance attribute to 0.</li>
+<li>Print <code>Player.MAX_POSITION</code>.</li>
+<li>Create a Player object <code>p</code> and print its <code>MAX_POSITION</code>.</li>
+<li>Add a <code>move()</code> method with a <code>steps</code> parameter such that:</li>
+<li>
+<ul>
+<li>if <code>position</code> plus <code>steps</code> is less than <code>MAX_POSITION</code>, then add <code>steps</code> to <code>position</code> and assign the result back to <code>position</code>;</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>otherwise, set <code>position</code> to <code>MAX_POSITION</code>.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Player</span>:
+    MAX_POSITION <span style="color:#666">=</span> <span style="color:#666">10</span>
+    
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self):
+        self<span style="color:#666">.</span>position <span style="color:#666">=</span> <span style="color:#666">0</span>
+
+    <span style="color:#408080;font-style:italic"># Add a move() method with steps parameter</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">move</span>(self, steps):
+        <span style="color:#008000;font-weight:bold">if</span> steps <span style="color:#666">+</span> self<span style="color:#666">.</span>position <span style="color:#666">&lt;</span> Player<span style="color:#666">.</span>MAX_POSITION:
+            self<span style="color:#666">.</span>position <span style="color:#666">=</span> self<span style="color:#666">.</span>position <span style="color:#666">+</span> steps
+        <span style="color:#008000;font-weight:bold">else</span>:
+            self<span style="color:#666">.</span>position <span style="color:#666">=</span> Player<span style="color:#666">.</span>MAX_POSITION
+</code></pre></div><hr>
+<h4 id="exercise-2"><em>Exercise 2</em></h4>
+<p>The <code>Player</code> class from the previous exercise is pre-defined. Recall that it has a <code>position</code> instance attribute, and <code>MAX_SPEED</code> and <code>MAX_POSITION</code> class attributes. The initial value of <code>MAX_SPEED</code> is 3.</p>
+<ul>
+<li>Create two <code>Player</code> objects <code>p1</code> and <code>p2</code>.</li>
+<li>Print <code>p1.MAX_SPEED</code> and <code>p2.MAX_SPEED</code>.</li>
+<li>Assign 7 to <code>p1.MAX_SPEED</code>.</li>
+<li>Print <code>p1.MAX_SPEED</code> and <code>p2.MAX_SPEED</code> again.</li>
+<li>Print Player.<code>MAX_SPEED</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Create Players p1 and p2</span>
+p1 <span style="color:#666">=</span> Player()
+p2 <span style="color:#666">=</span> Player()
+
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;MAX_SPEED of p1 and p2 before assignment:&#34;</span>)
+<span style="color:#408080;font-style:italic"># Print p1.MAX_SPEED and p2.MAX_SPEED</span>
+<span style="color:#008000">print</span>(p1<span style="color:#666">.</span>MAX_SPEED)
+<span style="color:#008000">print</span>(p2<span style="color:#666">.</span>MAX_SPEED)
+
+<span style="color:#408080;font-style:italic"># Assign 7 to p1.MAX_SPEED</span>
+p1<span style="color:#666">.</span>MAX_SPEED <span style="color:#666">=</span> <span style="color:#666">7</span>
+
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;MAX_SPEED of p1 and p2 after assignment:&#34;</span>)
+<span style="color:#408080;font-style:italic"># Print p1.MAX_SPEED and p2.MAX_SPEED</span>
+<span style="color:#008000">print</span>(p1<span style="color:#666">.</span>MAX_SPEED)
+<span style="color:#008000">print</span>(p2<span style="color:#666">.</span>MAX_SPEED)
+
+
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;MAX_SPEED of Player:&#34;</span>)
+<span style="color:#408080;font-style:italic"># Print Player.MAX_SPEED</span>
+<span style="color:#008000">print</span>(Player<span style="color:#666">.</span>MAX_SPEED)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">MAX_SPEED of p1 <span style="color:#a2f;font-weight:bold">and</span> p2 before assignment:
+<span style="color:#666">3</span>
+<span style="color:#666">3</span>
+MAX_SPEED of p1 <span style="color:#a2f;font-weight:bold">and</span> p2 after assignment:
+<span style="color:#666">7</span>
+<span style="color:#666">3</span>
+MAX_SPEED of Player:
+<span style="color:#666">3</span>
+</code></pre></div><p>Even though <code>MAX_SPEED</code> is shared across instances, assigning 7 to <code>p1.MAX_SPEED</code> <strong>didn&rsquo;t change</strong> the value of <code>MAX_SPEED</code> in <code>p2</code>, or in the <code>Player</code> class.</p>
+<p>So what happened? In fact, <strong>Python created a new instance attribute in p1, also called it <code>MAX_SPEED</code></strong>, and assigned 7 to it, without touching the class attribute.</p>
+<p>Now let&rsquo;s change the class attribute value for <strong>real</strong>.</p>
+<ul>
+<li>Modify the assignment to assign 7 to <code>Player.MAX_SPEED</code> instead.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;MAX_SPEED of p1 and p2 before assignment:&#34;</span>)
+<span style="color:#408080;font-style:italic"># Print p1.MAX_SPEED and p2.MAX_SPEED</span>
+<span style="color:#008000">print</span>(p1<span style="color:#666">.</span>MAX_SPEED)
+<span style="color:#008000">print</span>(p2<span style="color:#666">.</span>MAX_SPEED)
+
+<span style="color:#408080;font-style:italic"># ---MODIFY THIS LINE--- </span>
+Player<span style="color:#666">.</span>MAX_SPEED <span style="color:#666">=</span> <span style="color:#666">7</span>
+
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;MAX_SPEED of p1 and p2 after assignment:&#34;</span>)
+<span style="color:#408080;font-style:italic"># Print p1.MAX_SPEED and p2.MAX_SPEED</span>
+<span style="color:#008000">print</span>(p1<span style="color:#666">.</span>MAX_SPEED)
+<span style="color:#008000">print</span>(p2<span style="color:#666">.</span>MAX_SPEED)
+
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;MAX_SPEED of Player:&#34;</span>)
+<span style="color:#408080;font-style:italic"># Print Player.MAX_SPEED</span>
+<span style="color:#008000">print</span>(Player<span style="color:#666">.</span>MAX_SPEED)
+</code></pre></div><hr>
+<h4 id="exercise-3"><em>Exercise 3</em></h4>
+<p>you are developing a time series package and want to define your own class for working with dates, <code>BetterDate</code>. The attributes of the class will be <code>year</code>, <code>month</code>, and <code>day</code>. <strong>You want to have a constructor that creates <code>BetterDate</code> objects given the values for year, month, and day, but you also want to be able to create <code>BetterDate</code> objects from strings like <code>2020-04-30</code>.</strong></p>
+<ul>
+<li>
+<p>Add a class method <code>from_str()</code> that:</p>
+</li>
+<li>
+<p>accepts a string <code>datestr</code> of the format<code>'YYYY-MM-DD'</code>,</p>
+</li>
+<li>
+<p>splits <code>datestr</code> and converts each part into an integer,</p>
+</li>
+<li>
+<p>returns an instance of the class with the attributes set to the values extracted from <code>datestr</code>.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">BetterDate</span>:    
+    <span style="color:#408080;font-style:italic"># Constructor</span>
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, year, month, day):
+      <span style="color:#408080;font-style:italic"># Recall that Python allows multiple variable assignments in one line</span>
+      self<span style="color:#666">.</span>year, self<span style="color:#666">.</span>month, self<span style="color:#666">.</span>day <span style="color:#666">=</span> year, month, day
+    
+    <span style="color:#408080;font-style:italic"># Define a class method from_str</span>
+    <span style="color:#a2f">@classmethod</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">from_str</span>(cls, datestr):
+        <span style="color:#408080;font-style:italic"># Split the string at &#34;-&#34; and convert each part to integer</span>
+        parts <span style="color:#666">=</span> datestr<span style="color:#666">.</span>split(<span style="color:#ba2121">&#34;-&#34;</span>)
+        year, month, day <span style="color:#666">=</span> <span style="color:#008000">int</span>(parts[<span style="color:#666">0</span>]), <span style="color:#008000">int</span>(parts[<span style="color:#666">1</span>]), <span style="color:#008000">int</span>(parts[<span style="color:#666">2</span>])
+        <span style="color:#408080;font-style:italic"># Return the class instance</span>
+        <span style="color:#008000;font-weight:bold">return</span> cls(year, month, day)
+        
+bd <span style="color:#666">=</span> BetterDate<span style="color:#666">.</span>from_str(<span style="color:#ba2121">&#39;2020-04-30&#39;</span>)   
+<span style="color:#008000">print</span>(bd<span style="color:#666">.</span>year)
+<span style="color:#008000">print</span>(bd<span style="color:#666">.</span>month)
+<span style="color:#008000">print</span>(bd<span style="color:#666">.</span>day)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#666">2020</span>
+<span style="color:#666">4</span>
+<span style="color:#666">30</span>
+</code></pre></div><p>For compatibility, you also want to be able to <strong>convert</strong> a datetime object into a BetterDate object.</p>
+<ul>
+<li>Add a class method <code>from_datetime()</code> that accepts a datetime object as the argument, and uses its attributes <code>.year</code>, <code>.month</code> and <code>.day</code> to create a BetterDate object with the same attribute values.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># import datetime from datetime</span>
+<span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">datetime</span> <span style="color:#008000;font-weight:bold">import</span> datetime
+
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">BetterDate</span>:
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, year, month, day):
+      self<span style="color:#666">.</span>year, self<span style="color:#666">.</span>month, self<span style="color:#666">.</span>day <span style="color:#666">=</span> year, month, day
+      
+    <span style="color:#a2f">@classmethod</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">from_str</span>(cls, datestr):
+        year, month, day <span style="color:#666">=</span> <span style="color:#008000">map</span>(<span style="color:#008000">int</span>, datestr<span style="color:#666">.</span>split(<span style="color:#ba2121">&#34;-&#34;</span>))
+        <span style="color:#008000;font-weight:bold">return</span> cls(year, month, day)
+      
+    <span style="color:#408080;font-style:italic"># Define a class method from_datetime accepting a datetime object</span>
+    <span style="color:#a2f">@classmethod</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">from_datetime</span>(cls, datetime):
+      year, month, day <span style="color:#666">=</span> datetime<span style="color:#666">.</span>year, datetime<span style="color:#666">.</span>month, datetime<span style="color:#666">.</span>day
+      <span style="color:#008000;font-weight:bold">return</span> cls(year, month, day)
+
+<span style="color:#408080;font-style:italic"># You should be able to run the code below with no errors: </span>
+today <span style="color:#666">=</span> datetime<span style="color:#666">.</span>today()     
+bd <span style="color:#666">=</span> BetterDate<span style="color:#666">.</span>from_datetime(today)   
+<span style="color:#008000">print</span>(bd<span style="color:#666">.</span>year)
+<span style="color:#008000">print</span>(bd<span style="color:#666">.</span>month)
+<span style="color:#008000">print</span>(bd<span style="color:#666">.</span>day)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#666">2022</span>
+<span style="color:#666">3</span>
+<span style="color:#666">16</span>
+</code></pre></div><h2 id="22-class-inheritance">2.2 Class inheritance</h2>
+<h3 id="code-reuse">Code reuse</h3>
+<p>Object-oriented programming is fundamentally about <strong>code reuse</strong>. But what if that code doesn&rsquo;t match your needs exactly? For example, you might want to modify the to_csv method of a pandas DataFrame to adjust the output format. You could do that by importing pandas and writing a new function, but it will not be integrated into the DataFrame interface. <strong>OOP will allow you to keep interface consistent while customizing functionality</strong>.</p>
+<h3 id="inheritance">Inheritance</h3>
+<p>We can accomplish this with <strong>inheritance</strong>. Class inheritance is mechanism by which we can define a new class that <strong>gets all the the functionality of another class plus maybe something extra</strong> without re-implementing the code.</p>
+<p>Declaring a class that inherits from another class is very straightforward: <strong>you simply add parentheses after the class name, and then specify the class to inherit from</strong>. Here, we define a rudimentary BankAccount class and a seemingly empty SavingsAccount class inherited from it.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">BankAccount</span>:
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, balance):
+        self<span style="color:#666">.</span>balance <span style="color:#666">=</span>  balance
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">withdraw</span>(self, amount):
+        self<span style="color:#666">.</span>balance <span style="color:#666">-=</span> amount
+
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">SavingsAccount</span>(BankAccount):
+    <span style="color:#008000;font-weight:bold">pass</span>
+</code></pre></div><p>&ldquo;Seemingly&rdquo; because SavingsAccount actually has exactly <strong>as much</strong> in it as the BankAccount class. For example, we can create an object &ndash; even though we did not define a constructor &ndash; and we can access the balance attribute and the withdraw method from the instance of SavingsAccount, even though these features weren&rsquo;t defined in the new class.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">savings_acct <span style="color:#666">=</span> SavingsAccount(<span style="color:#666">1000</span>)
+</code></pre></div><p>That&rsquo;s because <strong>inheritance represents &ldquo;is-a&rdquo; relationship: a savings account is a bank account, just with some extra features.</strong>  Calling <code>isinstance</code> function on a <code>savingsaccount</code> object shows that Python treats it like an instance of <strong>both</strong> <code>savingsaccount</code> and <code>BankAccount</code> classes,</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000">isinstance</span>(saving_acct, SavingsAccount)
+
+<span style="color:#008000;font-weight:bold">True</span>
+
+<span style="color:#008000">isinstance</span>(saving_acct, BankAccount)
+
+<span style="color:#008000;font-weight:bold">True</span>
+</code></pre></div><p>which is not the case for a generic <code>BankAccount</code> object. i.e. <strong>every Child class is a Parent class, but the reverse is not necessarily true.</strong></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">acct <span style="color:#666">=</span> SavingsAccount(<span style="color:#666">1000</span>)
+<span style="color:#008000">isinstance</span>(acct, SavingsAccount)
+
+<span style="color:#008000;font-weight:bold">False</span>
+
+<span style="color:#008000">isinstance</span>(acct, BankAccount)
+
+<span style="color:#008000;font-weight:bold">True</span>
+</code></pre></div><hr>
+<h4 id="exercise-1-2"><em>Exercise 1</em></h4>
+<p>Recall the <code>Employee</code> class from earlier in the course. In most organizations, managers enjoy more privileges and more responsibilities than a regular employee. So it would make sense to introduce a <code>Manager</code> class that has more functionality than <code>Employee</code>.</p>
+<p>But a <code>Manager</code> is still an employee, so the <code>Manager</code> class should be <strong>inherited</strong> from the <code>Employee</code> class.</p>
+<ul>
+<li>Add an empty <code>Manager</code> class that is inherited from <code>Employee</code>.</li>
+<li>add a <code>display()</code> method to the <code>Manager</code> class that just prints the string &ldquo;Manager&rdquo; followed by the full name, e.g. &ldquo;Manager Katie Flatcher&rdquo;</li>
+<li>Create an object <code>mng</code> of the <code>Manager</code> class with the <code>name</code> Debbie Lashko and <code>salary</code> 86500.</li>
+<li>Print the name of <code>mng</code>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+  MIN_SALARY <span style="color:#666">=</span> <span style="color:#666">30000</span>    
+
+  <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary<span style="color:#666">=</span>MIN_SALARY):
+      self<span style="color:#666">.</span>name <span style="color:#666">=</span> name
+      <span style="color:#008000;font-weight:bold">if</span> salary <span style="color:#666">&gt;=</span> Employee<span style="color:#666">.</span>MIN_SALARY:
+        self<span style="color:#666">.</span>salary <span style="color:#666">=</span> salary
+      <span style="color:#008000;font-weight:bold">else</span>:
+        self<span style="color:#666">.</span>salary <span style="color:#666">=</span> Employee<span style="color:#666">.</span>MIN_SALARY
+  <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">give_raise</span>(self, amount):
+    self<span style="color:#666">.</span>salary <span style="color:#666">+=</span> amount      
+        
+<span style="color:#408080;font-style:italic"># Add a display method</span>
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Manager</span>(Employee):
+  <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">display</span>(self):  
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">f</span><span style="color:#ba2121">&#34;Manager </span><span style="color:#b68;font-weight:bold">{</span>self<span style="color:#666">.</span>name<span style="color:#b68;font-weight:bold">}</span><span style="color:#ba2121">&#34;</span>)
+
+mng <span style="color:#666">=</span> Manager(<span style="color:#ba2121">&#34;Debbie Lashko&#34;</span>, <span style="color:#666">86500</span>)
+<span style="color:#008000">print</span>(mng<span style="color:#666">.</span>name)
+
+<span style="color:#408080;font-style:italic"># Call mng.display()</span>
+mng<span style="color:#666">.</span>display()
+</code></pre></div><h2 id="23-customizing-functionality-via-inheritance">2.3 Customizing functionality via inheritance</h2>
+<h3 id="customizing-constructors">Customizing constructors</h3>
+<p>We could already create <code>SavingsAccount</code> objects, but they did not have any functionality that <code>BankAccount</code> did not have. Let&rsquo;s start customization by adding a <strong>constructor</strong> specifically for <code>SavingsAccount</code>.</p>
+<p>It will take a <code>balance</code> parameter, just like <code>BankAccount</code>, and an additional <code>interest_rate</code> parameter. In that constructor, we first run the code for creating a generic <code>BankAccount</code> by explicitly calling the <code>init</code> method of the <code>bankAccount</code> class.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">SavingAccount</span>(BankAccount):
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, balance, interest_rate):
+        BankAccount<span style="color:#666">.</span>__init__(self, balance)
+</code></pre></div><p><strong>Notice that we use <code>BankAccount-dot-init</code> to tell Python to call the constructor from the parent class, and we also pass <code>self</code> to that constructor.</strong>  <code>Self</code> in this case is a <code>SavingsAccount</code> &ndash; that&rsquo;s the class we&rsquo;re in &ndash; but remember that in Python, instances of a subclass are also instances of the parent class. so it is a <code>BankAccount</code> as well, and we can pass it to the <code>init</code> method of <code>BankAccount</code>.  <strong>when we create an instance of the <code>SavingsAccount</code> class, the new constructor will be called, and in particular, the <code>interest_rate</code> attribute will be initialized.</strong></p>
+<blockquote>
+<p>Then we can add more functionality, in this case just initializing an attribute. <strong>You actually aren&rsquo;t required to call the parent constructor in the subclass</strong>, or to call it first &ndash; you can use new code entirely &ndash; but you&rsquo;ll likely to almost always use the parent constructor.</p>
+</blockquote>
+<h3 id="customizing-functionality">Customizing functionality</h3>
+<p>In the exercises, you saw <strong>you can add methods to a subclass just like to any other class</strong>. In those methods <strong>you can use data from both the child and the parent class</strong>. For example here, we add a <code>compute_interest</code> method that returns the amount of interest in the account. <strong>Notice that we multiply the <code>balance</code> attribute - which was inherited from the <code>BankAccount</code> parent - by an expression involving the <code>interest_rate</code> attribute that exists only in the child <code>SavingsAccount</code> class.</strong></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">BankAccount</span>:
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, balance):
+        self<span style="color:#666">.</span>balance <span style="color:#666">=</span>  balance
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">withdraw</span>(self, amount):
+        self<span style="color:#666">.</span>balance <span style="color:#666">-=</span> amount
+
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">SavingAccount</span>(BankAccount):
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, balance, interest_rate):
+        BankAccount<span style="color:#666">.</span>__init__(self, balance)
+        self<span style="color:#666">.</span>interest_rate  <span style="color:#666">=</span> interest_rate
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">compute_interest</span>(self, n_period <span style="color:#666">=</span> <span style="color:#666">1</span>):
+        <span style="color:#008000;font-weight:bold">return</span> self<span style="color:#666">.</span>balance <span style="color:#666">*</span> ((<span style="color:#666">1</span> <span style="color:#666">+</span> self<span style="color:#666">.</span>interest_rate) <span style="color:#666">**</span> n_period <span style="color:#666">-</span><span style="color:#666">1</span>)
+</code></pre></div><p>Now let&rsquo;s talk about <strong>customizing functionality</strong>. <code>SavingsAccount</code> inherits the <code>withdraw</code> method from the parent <code>BankAccount</code> class. Calling <code>withdraw</code> on a <code>SavingsAccount</code> instance will execute exactly the same code as calling it on a generic <code>BankAccount</code> instance. We want to create a <code>CheckingAccount</code> class, which should have a slightly <strong>modified</strong> version of the <code>withdraw</code> method: it will have a parameter and adjust the <code>withdrawal</code> amount.</p>
+<p>Here&rsquo;s an outline of what that could look like. - Start by inheriting from the parent class,</p>
+<ul>
+<li>
+<p>add a customized constructor that also executes the parent code,</p>
+</li>
+<li>
+<p>a new <code>deposit</code> method, and a <code>withdraw</code> method, but <strong>we add a new argument to <code>withdraw</code></strong> - <code>fee</code>, that specifies the additional withdrawal fee.</p>
+</li>
+<li>
+<p>We compare the fee to some fee limit, and then <strong>call the parent <code>withdraw</code> method</strong>, passing a new amount to it &ndash; with fees subtracted.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">CheckingAccount</span>(BankAccount):
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, balance, limit):
+        BankAccount<span style="color:#666">.</span>__init__(self, content)
+        self<span style="color:#666">.</span> limit <span style="color:#666">=</span> limit
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">deposit</span>(self, amount):
+        self<span style="color:#666">.</span>balance <span style="color:#666">+=</span> amount
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">withdraw</span>(self, amount, fee<span style="color:#666">=</span><span style="color:#666">0</span>):
+        <span style="color:#008000;font-weight:bold">if</span> fee <span style="color:#666">&lt;=</span> self<span style="color:#666">.</span>limit:
+            BankAccount<span style="color:#666">.</span>withdraw(self, amount <span style="color:#666">-</span> fee)
+        <span style="color:#008000;font-weight:bold">else</span>:
+            BankAccount<span style="color:#666">.</span>withdraw(self, amount <span style="color:#666">-</span> self<span style="color:#666">.</span>limit)
+</code></pre></div><p>So this method runs almost the same code as the <code>BankAccount</code>&rsquo;s <code>withdraw</code> method without re-implementing it - just augmenting.</p>
+<p>Notice that we can change the signature of the method in the subclass by adding a parameter, and <strong>we again, just like in the constructor, call the parent version of the method directly by using <code>parent-class-dot</code> syntax and passing <code>self</code></strong>.</p>
+<blockquote>
+<ul>
+<li>在类中使用方法时, 第一个参数永远是 <code>self</code> (class method 第一个参数是 cls)</li>
+<li>在子类中采用 <code>parent.method</code>调用父类的方法.</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="exercise-1-3"><em>Exercise 1</em></h4>
+<p>In this exercise, you&rsquo;ll continue working with the <code>Manager</code> class that is inherited from the <code>Employee</code> class. You&rsquo;ll add new data to the class, and customize the <code>give_raise()</code> method to increase the manager&rsquo;s raise amount by a bonus percentage whenever they are given a raise.</p>
+<p>Add a constructor to <code>Manager</code> that:</p>
+<ul>
+<li>accepts <code>name</code>, <code>salary</code> (default 50000), and <code>project</code> (default None)</li>
+<li>calls the constructor of the <code>Employee</code> class with the <code>name</code> and <code>salary</code> parameters,</li>
+<li>creates a <code>project</code> attribute and sets it to the <code>project</code> parameter.</li>
+</ul>
+<p>Add a <code>give_raise()</code> method to <code>Manager</code> that:</p>
+<ul>
+<li>accepts the same parameters as <code>Employee.give_raise()</code>, plus a <code>bonus</code> parameter with the default value of 1.05 (bonus of 5%),</li>
+<li>multiplies <code>amount</code> by <code>bonus</code>,</li>
+<li>uses the <code>Employee</code>&rsquo;s method to raise salary by that product.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Employee</span>:
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary<span style="color:#666">=</span><span style="color:#666">30000</span>):
+        self<span style="color:#666">.</span>name <span style="color:#666">=</span> name
+        self<span style="color:#666">.</span>salary <span style="color:#666">=</span> salary
+
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">give_raise</span>(self, amount):
+        self<span style="color:#666">.</span>salary <span style="color:#666">+=</span> amount
+
+        
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Manager</span>(Employee):
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">display</span>(self):
+        <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;Manager &#34;</span>, self<span style="color:#666">.</span>name)
+
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self, name, salary<span style="color:#666">=</span><span style="color:#666">50000</span>, project<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>):
+        Employee<span style="color:#666">.</span>__init__(self, name, salary)
+        self<span style="color:#666">.</span>project <span style="color:#666">=</span> project
+
+    <span style="color:#408080;font-style:italic"># Add a give_raise method</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">give_raise</span>(self, amount, bonus<span style="color:#666">=</span><span style="color:#666">1.05</span>):
+        <span style="color:#008000;font-weight:bold">return</span> Employee<span style="color:#666">.</span>give_raise(self, amount <span style="color:#666">*</span> bonus)
+    
+    
+mngr <span style="color:#666">=</span> Manager(<span style="color:#ba2121">&#34;Ashta Dunbar&#34;</span>, <span style="color:#666">78500</span>)
+mngr<span style="color:#666">.</span>give_raise(<span style="color:#666">1000</span>)
+<span style="color:#008000">print</span>(mngr<span style="color:#666">.</span>salary)
+mngr<span style="color:#666">.</span>give_raise(<span style="color:#666">2000</span>, bonus<span style="color:#666">=</span><span style="color:#666">1.03</span>)
+<span style="color:#008000">print</span>(mngr<span style="color:#666">.</span>salary)
+</code></pre></div><hr>
+<h4 id="exercise-2-1"><em>Exercise 2</em></h4>
+<p>In this exercise, you&rsquo;ll create subclasses of the <code>Player</code> class from the first lesson of the chapter, and explore the inheritance of class attributes and methods.</p>
+<ul>
+<li>Create a class <code>Racer</code> inherited from <code>Player</code>,</li>
+<li>Assign 5 to <code>MAX_SPEED</code> in the body of the class.</li>
+<li>Create a <code>Player</code> object p and a <code>Racer</code> object r (no arguments needed for the constructor).</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Player</span>:
+    MAX_POSITION <span style="color:#666">=</span> <span style="color:#666">10</span>
+    MAX_SPEED <span style="color:#666">=</span> <span style="color:#666">3</span>
+    <span style="color:#008000;font-weight:bold">def</span> __init__(self):
+        self<span style="color:#666">.</span>position <span style="color:#666">=</span> <span style="color:#666">0</span>
+
+    <span style="color:#408080;font-style:italic"># Add a move() method with steps parameter</span>
+    <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">move</span>(self, steps):
+        <span style="color:#008000;font-weight:bold">if</span> steps <span style="color:#666">+</span> self<span style="color:#666">.</span>position <span style="color:#666">&lt;</span> Player<span style="color:#666">.</span>MAX_POSITION:
+            self<span style="color:#666">.</span>position <span style="color:#666">=</span> self<span style="color:#666">.</span>position <span style="color:#666">+</span> steps
+        <span style="color:#008000;font-weight:bold">else</span>:
+            self<span style="color:#666">.</span>position <span style="color:#666">=</span> Player<span style="color:#666">.</span>MAX_POSITION
+
+<span style="color:#408080;font-style:italic"># Create a Racer class and set MAX_SPEED to 5</span>
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">Racer</span>(Player):
+    MAX_SPEED <span style="color:#666">=</span> <span style="color:#666">5</span>
+ 
+<span style="color:#408080;font-style:italic"># Create a Player and a Racer objects</span>
+p <span style="color:#666">=</span> Player()
+r <span style="color:#666">=</span> Racer()
+</code></pre></div><p><strong>Notice: Class attributes CAN be inherited, and the value of class attributes CAN be overwritten in the child class</strong></p>
+<hr>
+<h4 id="exercise-3-1"><em>Exercise 3</em></h4>
+<p>In this exercise, you will implement a small <code>LoggedDF</code> class that inherits from a regular <code>pandas</code> DataFrame but has a <code>created_at</code> attribute storing the timestamp. You will then augment the standard <code>to_csv()</code> method to always include a column storing the creation date.</p>
+<blockquote>
+<p>Tip: all DataFrame methods have many parameters, and it is not sustainable to copy all of them for each method you&rsquo;re customizing. <strong>The trick is to use variable-length arguments <code>*args</code> and <code>**kwargs</code> to catch all of them.</strong></p>
+</blockquote>
+<ul>
+<li>
+<p>Import <code>pandas</code> as <code>pd</code>.</p>
+</li>
+<li>
+<p>Define <code>LoggedDF</code> class inherited from <code>pd.DataFrame</code>.</p>
+</li>
+<li>
+<p>Define a constructor with arguments <code>*args</code> and <code>**kwargs</code> that:</p>
+</li>
+<li>
+<ul>
+<li>calls the <code>pd.DataFrame</code> constructor with the same arguments,</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>assigns <code>datetime.today()</code> to <code>self.created_at</code>.</li>
+</ul>
+</li>
+<li>
+<p>Add a <code>to_csv()</code> method to <code>LoggedDF</code> that:</p>
+</li>
+<li>
+<ul>
+<li>copies <code>self</code> to a temporary DataFrame using <code>.copy()</code>,</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>creates a new column <code>created_at</code> in the temporary DataFrame and fills it with <code>self.created_at</code></li>
+</ul>
+</li>
+<li>
+<ul>
+<li>calls <code>pd.DataFrame.to_csv()</code> on the temporary variable.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># Import pandas as pd</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+
+<span style="color:#408080;font-style:italic"># Define LoggedDF inherited from pd.DataFrame and add the constructor</span>
+<span style="color:#008000;font-weight:bold">class</span> <span style="color:#00f;font-weight:bold">LoggedDF</span>(pd<span style="color:#666">.</span>DataFrame):
+  
+  <span style="color:#008000;font-weight:bold">def</span> __init__(self, <span style="color:#666">*</span>args, <span style="color:#666">**</span>kwargs):
+    pd<span style="color:#666">.</span>DataFrame<span style="color:#666">.</span>__init__(self, <span style="color:#666">*</span>args, <span style="color:#666">**</span>kwargs)
+    self<span style="color:#666">.</span>created_at <span style="color:#666">=</span> datetime<span style="color:#666">.</span>today()
+    
+  <span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">to_csv</span>(self, <span style="color:#666">*</span>args, <span style="color:#666">**</span>kwargs):
+    <span style="color:#408080;font-style:italic"># Copy self to a temporary DataFrame</span>
+    temp <span style="color:#666">=</span> self<span style="color:#666">.</span>copy()
+    
+    <span style="color:#408080;font-style:italic"># Create a new column filled with self.created_at</span>
+    temp[<span style="color:#ba2121">&#34;created_at&#34;</span>] <span style="color:#666">=</span> self<span style="color:#666">.</span>created_at
+    
+    <span style="color:#408080;font-style:italic"># Call pd.DataFrame.to_csv on temp, passing in *args and **kwargs</span>
+    pd<span style="color:#666">.</span>DataFrame<span style="color:#666">.</span>to_csv(temp, <span style="color:#666">*</span>args, <span style="color:#666">**</span>kwargs)
+</code></pre></div><p>Note that: <code>df.to_csv(&quot;/path&quot;)</code> &ndash;&gt; <code>to_csv(df, &quot;/path&quot;)</code> &ndash;&gt; <code>df=self</code> &ndash;&gt; <code>temp = self.copy() e.t. temp=df.copy()</code>.  记住<code>self</code>是 object 的替身.</p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+
