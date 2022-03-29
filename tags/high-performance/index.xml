@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>High-Performance on haoming&#39;s blog</title>
+    <link>/tags/high-performance/</link>
+    <description>Recent content in High-Performance on haoming&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 16 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="/tags/high-performance/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Object Oriented Programming II (Iterators, Comprehensions &amp; Generators)</title>
+      <link>/post/2019/08/16/object-oriented-programming-ii-iterators-comprehensions-generators/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/08/16/object-oriented-programming-ii-iterators-comprehensions-generators/</guid>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]
+1. Iterators in PythonLand 1.1 Introduction to iterators When you use a for loop to print out each element of a list, you&amp;rsquo;re iterating over the list. You can also use a for loop to iterate over characters in a string. You can also use a for loop to iterate a over a sequence of numbers produced by a special range object.</description>
+    </item>
+    
+  </channel>
+</rss>

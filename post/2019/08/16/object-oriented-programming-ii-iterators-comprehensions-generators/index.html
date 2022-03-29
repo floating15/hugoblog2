@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Object Oriented Programming II (Iterators, Comprehensions &amp; Generators) | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Object Oriented Programming II (Iterators, Comprehensions &amp; Generators)</span></h1>  
+
+<h2 class="date">2019/08/16</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-iterators-in-pythonland">1. Iterators in PythonLand</a>
+      <ul>
+        <li><a href="#11-introduction-to-iterators">1.1 Introduction to iterators</a></li>
+        <li><a href="#12-operating-iterator">1.2 Operating iterator</a></li>
+        <li><a href="#13-using-iterators-to-load-large-files-into-memory">1.3 Using iterators to load large files into memory</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-list-comprehensions-and-generators">2. List comprehensions and generators</a>
+      <ul>
+        <li><a href="#21-list-comprehensions">2.1 List comprehensions</a></li>
+        <li><a href="#22-advanced-comprehensions">2.2 Advanced comprehensions</a></li>
+        <li><a href="#23-dictionary-comprehensions">2.3 Dictionary comprehensions</a></li>
+        <li><a href="#24-generator-expressions">2.4 Generator expressions</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-world-bank-data-analysis-case">3. World Bank Data Analysis Case</a></li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<blockquote>
+<p>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.</p>
+</blockquote>
+<p>[toc]</p>
+<h1 id="1-iterators-in-pythonland">1. Iterators in PythonLand</h1>
+<h2 id="11-introduction-to-iterators">1.1 Introduction to iterators</h2>
+<p>When you use a for loop to print out each element of a <strong>list</strong>, you&rsquo;re iterating over the list. You can also use a for loop to iterate over characters in a <strong>string</strong>. You can also use a for loop to iterate a over a sequence of numbers produced by a special <strong>range</strong> object. The reason that we can loop over such objects is that they are special objects called <strong>iterables</strong>: lists, strings and range objects are all iterables, as are many other Python objects, such as <strong>dictionaries</strong> and <strong>file connections</strong>.</p>
+<p>The actual definition of an <strong>iterable</strong> is an object that has an associated <code>iter()</code> method. Once this <code>iter()</code> method is applied to an iterable, an <strong>iterator</strong> object is created. An <strong>iterator</strong> is defined as an object that has an associated <code>next()</code> method that produces the consecutive values. To create an iterator from an iterable, all we need to do is use the function <code>iter()</code> and pass it the iterable. Once we have the iterator defined, we pass it to the function <code>next()</code> and this returns the first value. Calling <code>next()</code> again on the iterator returns the next value until there are no values left to return and then it throws us a StopIteration error.</p>
+<ul>
+<li><code>iter(iterable)</code> &mdash;-&gt; iterator</li>
+<li><code>next(iterator)</code> &mdash;-&gt; iterate the elements in iterator</li>
+</ul>
+<blockquote>
+<p>Under the hood, this is actually what a <strong>for</strong> loop is doing: it <strong>takes an iterable, creates the associated iterator object, and iterates over it</strong>.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">flash <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;jay garrick&#39;</span>, <span style="color:#ba2121">&#39;barry allen&#39;</span>, <span style="color:#ba2121">&#39;wally west&#39;</span>, <span style="color:#ba2121">&#39;bart allen&#39;</span>]
+<span style="color:#008000;font-weight:bold">for</span> item <span style="color:#a2f;font-weight:bold">in</span> flash:
+    <span style="color:#008000">print</span>(item)
+
+<span style="color:#408080;font-style:italic"># e.t.</span>
+superhero <span style="color:#666">=</span> <span style="color:#008000">iter</span>(flash)
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(superhero))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(superhero))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(superhero))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(superhero))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">jay garrick
+barry allen
+wally west
+bart allen
+jay garrick
+barry allen
+wally west
+bart allen
+</code></pre></div><p>You can also print all values of an iterator in one fell swoop using the <code>*</code> operator. This <code>*</code> operator unpacks all elements of an <strong>iterator or an iterable</strong>. Be warned, however, once you do so, you cannot do it (the iterator instead of the iterable) again as there are no more values to iterate through. We would have to redefine our iterator to do so.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">pr</span>(ob):
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;ob: &#34;</span>, ob)
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;*ob: &#34;</span>, <span style="color:#666">*</span>ob)
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;type: &#34;</span>, <span style="color:#008000">type</span>(ob), <span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#34;</span>)
+
+word <span style="color:#666">=</span> <span style="color:#ba2121">&#34;dfghjhgfds&#34;</span>
+word1 <span style="color:#666">=</span> <span style="color:#008000">iter</span>(word)
+
+pr(word)
+pr(word1)
+pr(word)
+pr(word1)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ob:  dfghjhgfds
+*ob:  d f g h j h g f d s
+type:  &lt;class &#39;str&#39;&gt; 
+
+ob:  &lt;str_iterator object at 0x7fc5787b2ac0&gt;
+*ob:  d f g h j h g f d s
+type:  &lt;class &#39;str_iterator&#39;&gt; 
+
+ob:  dfghjhgfds
+*ob:  d f g h j h g f d s
+type:  &lt;class &#39;str&#39;&gt; 
+
+ob:  &lt;str_iterator object at 0x7fc5787b2ac0&gt;
+*ob: 
+type:  &lt;class &#39;str_iterator&#39;&gt; 
+</code></pre></div><p>You can also assembles the elements, in the iterator, into a list with <code>list()</code> method</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">word <span style="color:#666">=</span> <span style="color:#ba2121">&#34;dfghjhgfds&#34;</span>
+word1 <span style="color:#666">=</span> <span style="color:#008000">iter</span>(word)
+<span style="color:#008000">print</span>(word1)
+<span style="color:#008000">print</span>(<span style="color:#008000">list</span>(word1))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;str_iterator object at 0x7fc5787b2df0&gt;
+[&#39;d&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;, &#39;j&#39;, &#39;h&#39;, &#39;g&#39;, &#39;f&#39;, &#39;d&#39;, &#39;s&#39;]
+</code></pre></div><p>We mentioned before that dictionaries and file connections are iterables as well. To iterate over the key-value pairs of a Python dictionary, we need to unpack them by applying the <code>items()</code> method to the dictionary.</p>
+<p>w.r.t. file connections, here you can see how to use the <code>iter()</code> and <code>next()</code> methods to return the lines from a file.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost oop_ii_slide % touch file.txt
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost oop_ii_slide % <span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;the first line&#34;</span> &gt; file.txt
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost oop_ii_slide % <span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;the second line&#34;</span> &gt;&gt; file.txt
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost oop_ii_slide % <span style="color:#008000">echo</span> <span style="color:#ba2121">&#34;the third line&#34;</span> &gt;&gt; file.txt
+<span style="color:#666">(</span>base<span style="color:#666">)</span> wanghaoming@localhost oop_ii_slide % cat file.txt
+the first line
+the second line
+the third line
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">pr</span>(ob):
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;ob: &#34;</span>, ob)
+    <span style="color:#008000">print</span>(<span style="color:#008000">next</span>(ob)) <span style="color:#408080;font-style:italic"># Placing it below *ob will cause an error because there are no more elements in the iterator</span>
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;*ob: &#34;</span>, <span style="color:#666">*</span>ob)
+    <span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;type: &#34;</span>, <span style="color:#008000">type</span>(ob), <span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#34;</span>)
+
+file <span style="color:#666">=</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#34;file.txt&#34;</span>)
+it <span style="color:#666">=</span> <span style="color:#008000">iter</span>(file)
+
+pr(it)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ob:  &lt;_io.TextIOWrapper name=&#39;file.txt&#39; mode=&#39;r&#39; encoding=&#39;UTF-8&#39;&gt;
+the first line
+
+*ob:  the second line  # &lt;-- Notice here
+ the third line
+
+type:  &lt;class &#39;_io.TextIOWrapper&#39;&gt; 
+</code></pre></div><h2 id="12-operating-iterator">1.2 Operating iterator</h2>
+<p>Now, we are going to introduce two useful functions. The first function, <code>enumerate</code>, will allow us to add a counter to any iterable while the second function, <code>zip</code>, will allow us to stitch together an arbitrary number of iterables.</p>
+<p><code>enumerate</code> is a function that <strong>takes</strong> any iterable as argument, such as a list, and <strong>returns</strong> a special enumerate object, which consists of pairs containing the elements of the original iterable, along with their index within the iterable. The enumerate object itself is also an <strong>iterable</strong> and we can loop over it while unpacking its elements using the clause for index, value in enumerate(avengers). The default behavior of enumerate to begin indexing at 0. However, you can alter this with <code>start</code>argument, such as <code>start=10</code></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tx <span style="color:#666">=</span> <span style="color:#ba2121">&#34;asdfghjkll&#34;</span>
+etx <span style="color:#666">=</span> <span style="color:#008000">enumerate</span>(tx)
+
+<span style="color:#008000">print</span>(<span style="color:#666">*</span>tx)
+<span style="color:#008000">print</span>(<span style="color:#008000">list</span>(tx))
+
+<span style="color:#008000">print</span>(<span style="color:#666">*</span>etx)
+<span style="color:#008000">print</span>(<span style="color:#008000">list</span>(etx))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">a s d f g h j k l l
+[&#39;a&#39;, &#39;s&#39;, &#39;d&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;, &#39;j&#39;, &#39;k&#39;, &#39;l&#39;, &#39;l&#39;]
+(0, &#39;a&#39;) (1, &#39;s&#39;) (2, &#39;d&#39;) (3, &#39;f&#39;) (4, &#39;g&#39;) (5, &#39;h&#39;) (6, &#39;j&#39;) (7, &#39;k&#39;) (8, &#39;l&#39;) (9, &#39;l&#39;)
+[] # &lt;-- lazy evaluation
+</code></pre></div><p>Notice that The enumerate object has the characteristics of <strong>lazy evaluation</strong>. The elements that have been visited in the enumerate object cannot be accessed again, and the use of square brackets to index the elements is not supported. (Objects like zip, filter, map, etc. have similar characteristics.)</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tx <span style="color:#666">=</span> <span style="color:#ba2121">&#34;asdfghjkll&#34;</span>
+mtx <span style="color:#666">=</span> <span style="color:#008000">map</span>(
+    <span style="color:#008000;font-weight:bold">lambda</span> x: x<span style="color:#666">+</span><span style="color:#ba2121">&#34;!&#34;</span>,
+    tx
+)
+<span style="color:#008000">print</span>(mtx)
+<span style="color:#008000">print</span>(<span style="color:#666">*</span>mtx)
+<span style="color:#008000">print</span>(<span style="color:#008000">list</span>(mtx))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;map object at 0x7fc5a95e7b20&gt;
+a! s! d! f! g! h! j! k! l! l!
+[]
+</code></pre></div><p>Now let&rsquo;s move on to <code>zip</code>, which <strong>accepts</strong> an arbitrary number of iterables and <strong>returns an iterator</strong> of tuples. We could use a <code>for</code> loop to iterate over the zip object and print the tuples. We could also have used the <code>*</code> operator or <code>list</code> method to print all the elements.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">s <span style="color:#666">=</span> <span style="color:#ba2121">&#34;asdfghjkl&#34;</span>
+t <span style="color:#666">=</span> <span style="color:#ba2121">&#34;qwertyuio&#34;</span>
+st <span style="color:#666">=</span> <span style="color:#008000">zip</span>(s,t)
+
+<span style="color:#008000">print</span>(st)
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(st), <span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#34;</span>)
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> st:
+    <span style="color:#008000">print</span>(i)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;zip object at 0x7fc5787fce40&gt;
+(&#39;a&#39;, &#39;q&#39;) 
+
+(&#39;s&#39;, &#39;w&#39;)
+(&#39;d&#39;, &#39;e&#39;)
+(&#39;f&#39;, &#39;r&#39;)
+(&#39;g&#39;, &#39;t&#39;)
+(&#39;h&#39;, &#39;y&#39;)
+(&#39;j&#39;, &#39;u&#39;)
+(&#39;k&#39;, &#39;i&#39;)
+(&#39;l&#39;, &#39;o&#39;)
+</code></pre></div><p>Notice the difference between <code>zip()</code>, <code>*zip()</code>, and <code>zip(*)</code>.</p>
+<ul>
+<li><code>zip(it1, it2)</code> can assemble two iterable object <code>it1</code>, <code>it2</code> to a zip object; <code>zip(it1)</code> assemble a iterable object <code>it</code> with an empty iterable object.</li>
+<li><code>*z</code> can show a zip object;</li>
+<li><code>zip(*z)</code> can disassemble a zip object <code>z</code> to the original iterable objects.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">s <span style="color:#666">=</span> <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;asdfghjkl&#34;</span>)
+t <span style="color:#666">=</span> <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;qwertyuio&#34;</span>)
+
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;zip:&#34;</span>, <span style="color:#008000">zip</span>(s,t))
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;*zip:&#34;</span>, <span style="color:#666">*</span><span style="color:#008000">zip</span>(s,t))
+<span style="color:#008000">print</span>(<span style="color:#ba2121">&#34;zip(*):&#34;</span>, <span style="color:#666">*</span><span style="color:#008000">zip</span>(<span style="color:#666">*</span><span style="color:#008000">zip</span>(s,t)))
+
+s1, t1 <span style="color:#666">=</span> <span style="color:#008000">zip</span>(<span style="color:#666">*</span><span style="color:#008000">zip</span>(s,t))
+<span style="color:#008000">print</span>(<span style="color:#008000">list</span>(s1) <span style="color:#666">==</span> s <span style="color:#a2f;font-weight:bold">and</span> <span style="color:#008000">list</span>(t1) <span style="color:#666">==</span> t)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">zip: &lt;zip object at 0x7fc5a95b2ec0&gt;
+*zip: (&#39;a&#39;, &#39;q&#39;) (&#39;s&#39;, &#39;w&#39;) (&#39;d&#39;, &#39;e&#39;) (&#39;f&#39;, &#39;r&#39;) (&#39;g&#39;, &#39;t&#39;) (&#39;h&#39;, &#39;y&#39;) (&#39;j&#39;, &#39;u&#39;) (&#39;k&#39;, &#39;i&#39;) (&#39;l&#39;, &#39;o&#39;)
+zip(*): (&#39;a&#39;, &#39;s&#39;, &#39;d&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;, &#39;j&#39;, &#39;k&#39;, &#39;l&#39;) (&#39;q&#39;, &#39;w&#39;, &#39;e&#39;, &#39;r&#39;, &#39;t&#39;, &#39;y&#39;, &#39;u&#39;, &#39;i&#39;, &#39;o&#39;)
+True
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">z1 <span style="color:#666">=</span> <span style="color:#008000">zip</span>(mutants, powers)
+<span style="color:#008000">print</span>(<span style="color:#666">*</span>z1)
+
+z1 <span style="color:#666">=</span> <span style="color:#008000">zip</span>(mutants, powers)
+result1, result2 <span style="color:#666">=</span> <span style="color:#008000">zip</span>(<span style="color:#666">*</span>z1)
+<span style="color:#008000">print</span>(result1 <span style="color:#666">==</span> mutants)
+<span style="color:#008000">print</span>(result2 <span style="color:#666">==</span> powers)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">(&#39;charles xavier&#39;, &#39;telepathy&#39;) (&#39;bobby drake&#39;, &#39;thermokinesis&#39;) (&#39;kurt wagner&#39;, &#39;teleportation&#39;) (&#39;max eisenhardt&#39;, &#39;magnetokinesis&#39;) (&#39;kitty pryde&#39;, &#39;intangibility&#39;)
+True
+True
+</code></pre></div><h2 id="13-using-iterators-to-load-large-files-into-memory">1.3 Using iterators to load large files into memory</h2>
+<p>If you are pulling data that you can&rsquo;t hold it in memory. One solution is to load the data in chunks, perform the desired operation or operations on each chuck, store the result, discard the chunk and then load the next chunk. To surmount this challenge, we can use the pandas function <code>pd.read_csv()</code>and specify the argument <code>chunksize</code>.</p>
+<p>The object created by the <code>read_csv()</code> call is an <strong>iterable</strong> so you can can iterate over it, using a <code>for</code> loop, in which each chunk will be a DataFrame.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">count_entries</span>(csv_file, c_size, colname):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a dictionary with counts of
+</span><span style="color:#ba2121">    occurrences as value for each key.&#34;&#34;&#34;</span>
+
+    counts_dict <span style="color:#666">=</span> {}
+
+    <span style="color:#008000;font-weight:bold">for</span> chunk <span style="color:#a2f;font-weight:bold">in</span> pd<span style="color:#666">.</span>read_csv(csv_file, chunksize<span style="color:#666">=</span>c_size):
+        <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> chunk[colname]:
+            <span style="color:#008000;font-weight:bold">if</span> entry <span style="color:#a2f;font-weight:bold">in</span> counts_dict<span style="color:#666">.</span>keys():
+                counts_dict[entry] <span style="color:#666">+=</span> <span style="color:#666">1</span>
+            <span style="color:#008000;font-weight:bold">else</span>:
+                counts_dict[entry] <span style="color:#666">=</span> <span style="color:#666">1</span>
+    <span style="color:#008000;font-weight:bold">return</span> counts_dict
+
+result_counts <span style="color:#666">=</span> count_entries(<span style="color:#ba2121">&#34;tweets.csv&#34;</span>, <span style="color:#666">10</span>, <span style="color:#ba2121">&#34;lang&#34;</span>)
+<span style="color:#008000">print</span>(result_counts)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;en&#39;: 97, &#39;et&#39;: 1, &#39;und&#39;: 2}
+</code></pre></div><h1 id="2-list-comprehensions-and-generators">2. List comprehensions and generators</h1>
+<h2 id="21-list-comprehensions">2.1 List comprehensions</h2>
+<p>You can finish a <code>for</code> loop in one line of code by comprehensions. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">[ <span style="color:#666">&lt;</span>expression<span style="color:#666">&gt;</span> <span style="color:#008000;font-weight:bold">for</span> <span style="color:#666">&lt;</span>variable<span style="color:#666">&gt;</span> <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#666">&lt;</span>iterable<span style="color:#666">&gt;</span> ]
+</code></pre></div><blockquote>
+<p>You can write a list comprehension over any iterable.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">matrix <span style="color:#666">=</span> [[i <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">6</span>)] <span style="color:#008000;font-weight:bold">for</span> j <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">5</span>)]
+
+Print the matrix
+<span style="color:#008000;font-weight:bold">for</span> row <span style="color:#a2f;font-weight:bold">in</span> matrix:
+    <span style="color:#008000">print</span>(row)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[0, 1, 2, 3, 4, 5]
+[0, 1, 2, 3, 4, 5]
+[0, 1, 2, 3, 4, 5]
+[0, 1, 2, 3, 4, 5]
+[0, 1, 2, 3, 4, 5]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tweet_time <span style="color:#666">=</span> df[<span style="color:#ba2121">&#34;created_at&#34;</span>]
+<span style="color:#008000">print</span>(tweet_time<span style="color:#666">.</span>head())
+
+tweet_clock_time <span style="color:#666">=</span> [entry[<span style="color:#666">12</span>:<span style="color:#666">20</span>] <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> tweet_time]
+<span style="color:#008000">print</span>(tweet_clock_time)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">0    Tue Mar 29 23:40:17 +0000 2016
+1    Tue Mar 29 23:40:17 +0000 2016
+2    Tue Mar 29 23:40:17 +0000 2016
+3    Tue Mar 29 23:40:17 +0000 2016
+4    Tue Mar 29 23:40:17 +0000 2016
+Name: created_at, dtype: object
+[&#39;23:40:17&#39;, &#39;23:40:17&#39;, &#39;23:40:17&#39;, &#39;23:40:17&#39;, &#39;23:40:17&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:17&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:19&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:18&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:18&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:18&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:18&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;]
+</code></pre></div><p>We can also use list comprehensions to create nested loop. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">[<span style="color:#666">&lt;</span>exp<span style="color:#666">.&gt;</span> <span style="color:#666">&lt;</span>outer <span style="color:#008000;font-weight:bold">for</span> loop<span style="color:#666">&gt;</span> <span style="color:#666">&lt;</span>inner <span style="color:#008000;font-weight:bold">for</span> loop<span style="color:#666">&gt;</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">ls <span style="color:#666">=</span> [(x,y) <span style="color:#008000;font-weight:bold">for</span> x <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">0</span>,<span style="color:#666">3</span>) <span style="color:#008000;font-weight:bold">for</span> y <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">3</span>,<span style="color:#666">6</span>)]
+<span style="color:#008000">print</span>(ls)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[(0, 3), (0, 4), (0, 5), (1, 3), (1, 4), (1, 5), (2, 3), (2, 4), (2, 5)]
+</code></pre></div><h2 id="22-advanced-comprehensions">2.2 Advanced comprehensions</h2>
+<p>We can filter the output of a list comprehension using a conditional on the iterable, the syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">[<span style="color:#666">&lt;</span>exp<span style="color:#666">.&gt;</span> <span style="color:#666">&lt;</span><span style="color:#008000;font-weight:bold">for</span> loop<span style="color:#666">&gt;</span> <span style="color:#008000;font-weight:bold">if</span> <span style="color:#666">&lt;</span>con<span style="color:#666">.&gt;</span>]
+</code></pre></div><p>We can also condition the list comprehension on the output expression, like</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">[<span style="color:#666">&lt;</span>exp<span style="color:#666">.&gt;</span> <span style="color:#008000;font-weight:bold">if</span> <span style="color:#666">&lt;</span>con<span style="color:#666">.&gt;</span> <span style="color:#008000;font-weight:bold">else</span> <span style="color:#666">&lt;</span>exp<span style="color:#666">.&gt;</span> <span style="color:#666">&lt;</span><span style="color:#008000;font-weight:bold">for</span> loop<span style="color:#666">&gt;</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">[
+    <span style="color:#666">&lt;</span>exp<span style="color:#666">.1</span><span style="color:#666">&gt;</span> <span style="color:#008000;font-weight:bold">if</span> <span style="color:#666">&lt;</span>con<span style="color:#666">.1</span><span style="color:#666">&gt;</span> 
+    <span style="color:#008000;font-weight:bold">else</span> <span style="color:#666">&lt;</span>exp<span style="color:#666">.2</span><span style="color:#666">&gt;</span> <span style="color:#008000;font-weight:bold">if</span> <span style="color:#666">&lt;</span>con<span style="color:#666">.2</span><span style="color:#666">&gt;</span> 
+    <span style="color:#008000;font-weight:bold">else</span> <span style="color:#666">&lt;</span>exp3<span style="color:#666">&gt;</span> 
+    <span style="color:#666">&lt;</span><span style="color:#008000;font-weight:bold">for</span> loop<span style="color:#666">&gt;</span>
+]
+
+<span style="color:#408080;font-style:italic"># e.t.</span>
+<span style="color:#008000;font-weight:bold">if</span> con<span style="color:#666">.1</span>:
+    exp<span style="color:#666">.1</span>
+<span style="color:#008000;font-weight:bold">elif</span> con<span style="color:#666">.2</span>:
+    exp<span style="color:#666">.2</span>
+<span style="color:#008000;font-weight:bold">else</span>:
+    exp<span style="color:#666">.3</span>
+</code></pre></div><p>some example:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fellowship <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;frodo&#39;</span>, <span style="color:#ba2121">&#39;samwise&#39;</span>, <span style="color:#ba2121">&#39;merry&#39;</span>, <span style="color:#ba2121">&#39;aragorn&#39;</span>, <span style="color:#ba2121">&#39;legolas&#39;</span>, <span style="color:#ba2121">&#39;boromir&#39;</span>, <span style="color:#ba2121">&#39;gimli&#39;</span>]
+
+new_fellowship <span style="color:#666">=</span> [member <span style="color:#008000;font-weight:bold">for</span> member <span style="color:#a2f;font-weight:bold">in</span> fellowship <span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(member)<span style="color:#666">&gt;=</span><span style="color:#666">7</span>]
+
+<span style="color:#008000">print</span>(new_fellowship)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;samwise&#39;, &#39;aragorn&#39;, &#39;legolas&#39;, &#39;boromir&#39;]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fellowship <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;frodo&#39;</span>, <span style="color:#ba2121">&#39;samwise&#39;</span>, <span style="color:#ba2121">&#39;merry&#39;</span>, <span style="color:#ba2121">&#39;aragorn&#39;</span>, <span style="color:#ba2121">&#39;legolas&#39;</span>, <span style="color:#ba2121">&#39;boromir&#39;</span>, <span style="color:#ba2121">&#39;gimli&#39;</span>]
+
+new_fellowship <span style="color:#666">=</span> [member <span style="color:#008000;font-weight:bold">if</span> <span style="color:#008000">len</span>(member)<span style="color:#666">&gt;=</span><span style="color:#666">7</span> <span style="color:#008000;font-weight:bold">else</span> <span style="color:#ba2121">&#34;&#34;</span> <span style="color:#008000;font-weight:bold">for</span> member <span style="color:#a2f;font-weight:bold">in</span> fellowship]
+
+<span style="color:#008000">print</span>(new_fellowship)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;&#39;, &#39;samwise&#39;, &#39;&#39;, &#39;aragorn&#39;, &#39;legolas&#39;, &#39;boromir&#39;, &#39;&#39;]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tweet_time <span style="color:#666">=</span> df[<span style="color:#ba2121">&#34;created_at&#34;</span>]
+
+tweet_clock_time <span style="color:#666">=</span> [entry[<span style="color:#666">11</span>:<span style="color:#666">19</span>] <span style="color:#008000;font-weight:bold">for</span> entry <span style="color:#a2f;font-weight:bold">in</span> tweet_time <span style="color:#008000;font-weight:bold">if</span> entry[<span style="color:#666">17</span>:<span style="color:#666">19</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#34;19&#34;</span>]
+
+<span style="color:#008000">print</span>(tweet_clock_time)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;, &#39;23:40:19&#39;]
+</code></pre></div><h2 id="23-dictionary-comprehensions">2.3 Dictionary comprehensions</h2>
+<p>Now we can also write dictionary comprehensions to create new dictionaries from iterables. The syntax is almost the same as in list comprehensions and there are 2 differences.</p>
+<ul>
+<li>One, we use curly braces instead of square brackets.</li>
+<li>Two, the key and value are separated by a colon in the output expression.</li>
+</ul>
+<p>We can generate a dictionary from two list:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">keys <span style="color:#666">=</span> <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;abcdefg&#34;</span>)
+vals <span style="color:#666">=</span> <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;1234567&#34;</span>)
+dic <span style="color:#666">=</span> {
+    key: value <span style="color:#008000;font-weight:bold">for</span> key, value <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">zip</span>(keys, vals)
+}
+<span style="color:#008000">print</span>(dic)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;a&#39;: &#39;1&#39;, &#39;b&#39;: &#39;2&#39;, &#39;c&#39;: &#39;3&#39;, &#39;d&#39;: &#39;4&#39;, &#39;e&#39;: &#39;5&#39;, &#39;f&#39;: &#39;6&#39;, &#39;g&#39;: &#39;7&#39;}
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+ks <span style="color:#666">=</span> <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;abcde&#34;</span>)
+vs <span style="color:#666">=</span> [np<span style="color:#666">.</span>random<span style="color:#666">.</span>randn(<span style="color:#666">10</span>) <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">5</span>)]
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame({k:v <span style="color:#008000;font-weight:bold">for</span> k,v <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">zip</span>(ks,vs)})
+<span style="color:#008000">print</span>(df)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">          a         b         c         d         e
+0  0.108696  0.405694  0.018458  0.529013  0.284126
+1  0.645469  0.937125 -0.420953  0.210035  0.151663
+2  1.414896  1.298583  1.485383 -0.096663  0.036326
+3  0.883876 -3.009644  1.328881 -0.127821 -0.111707
+4  1.888317 -2.507632  0.157957  2.036903  2.164004
+5  0.144894  1.298034  0.160900 -0.022732  0.080893
+6 -0.233574  0.076446 -0.146595  0.842054  1.818775
+7  0.509977 -0.424521  0.657196 -0.913793  0.131405
+8 -0.049865 -0.816738 -0.975876  0.170173 -0.569519
+9 -0.269802  0.755459  0.021207  0.102335  0.119438
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+ks <span style="color:#666">=</span> <span style="color:#008000">list</span>(<span style="color:#ba2121">&#34;abcde&#34;</span>)
+vs <span style="color:#666">=</span> [
+    np<span style="color:#666">.</span>random<span style="color:#666">.</span>rand(<span style="color:#666">10</span>) <span style="color:#008000;font-weight:bold">if</span> i <span style="color:#666">&lt;</span><span style="color:#666">2</span>
+    <span style="color:#008000;font-weight:bold">else</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>uniform(<span style="color:#666">5</span>,<span style="color:#666">6</span>,<span style="color:#666">10</span>) <span style="color:#008000;font-weight:bold">if</span> i<span style="color:#666">&lt;</span><span style="color:#666">4</span>
+    <span style="color:#008000;font-weight:bold">else</span> np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint(<span style="color:#666">0</span>,<span style="color:#666">9</span>,<span style="color:#666">10</span>)
+    <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">5</span>)
+]
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame({k:v <span style="color:#008000;font-weight:bold">for</span> k,v <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">zip</span>(ks,vs)})
+<span style="color:#008000">print</span>(df)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">          a         b         c         d  e
+0  0.797270  0.079468  5.167152  5.205353  7
+1  0.036326  0.752136  5.421250  5.275327  4
+2  0.698624  0.703501  5.322341  5.295758  8
+3  0.306367  0.092034  5.659722  5.430591  8
+4  0.217272  0.251593  5.353020  5.078669  2
+5  0.404077  0.882906  5.145223  5.866817  3
+6  0.677442  0.012514  5.186332  5.221120  8
+7  0.080858  0.226505  5.724067  5.976189  7
+8  0.366588  0.884782  5.561158  5.070010  6
+9  0.694882  0.928411  5.180124  5.449207  2
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fellowship <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;frodo&#39;</span>, <span style="color:#ba2121">&#39;samwise&#39;</span>, <span style="color:#ba2121">&#39;merry&#39;</span>, <span style="color:#ba2121">&#39;aragorn&#39;</span>, <span style="color:#ba2121">&#39;legolas&#39;</span>, <span style="color:#ba2121">&#39;boromir&#39;</span>, <span style="color:#ba2121">&#39;gimli&#39;</span>]
+
+new_fellowship <span style="color:#666">=</span> {
+    member: <span style="color:#008000">len</span>(member)  <span style="color:#008000;font-weight:bold">for</span> member <span style="color:#a2f;font-weight:bold">in</span> fellowship 
+}
+
+<span style="color:#008000">print</span>(new_fellowship)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;frodo&#39;: 5, &#39;samwise&#39;: 7, &#39;merry&#39;: 5, &#39;aragorn&#39;: 7, &#39;legolas&#39;: 7, &#39;boromir&#39;: 7, &#39;gimli&#39;: 5}
+</code></pre></div><h2 id="24-generator-expressions">2.4 Generator expressions</h2>
+<p>Recall that this list comprehension will create a list. Now lets replace the square brackets with round <strong>parentheses</strong>. Something called a <strong>generator object</strong> has been created.</p>
+<p>A generator is like a list comprehension except <strong>it does not store the list in memory</strong>: it does not construct the list, but is an object we can iterate over to produce elements of the list as required. Like any other <strong>iterator</strong>, we can pass a generator to the function <code>next()</code> in order to iterate through its elements.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">result <span style="color:#666">=</span> (num <span style="color:#008000;font-weight:bold">for</span> num <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">0</span>,<span style="color:#666">10</span>))
+
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(result))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(result))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(result))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(result))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(result), <span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#ba2121">&#34;</span>)
+
+<span style="color:#408080;font-style:italic"># Print the rest of the values</span>
+<span style="color:#008000;font-weight:bold">for</span> value <span style="color:#a2f;font-weight:bold">in</span> result:
+    <span style="color:#008000">print</span>(value)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">0
+1
+2
+3
+4 
+
+5
+6
+7
+8
+9
+</code></pre></div><p>Generator is an example of something called <strong>lazy evaluation, whereby the evaluation of the expression is delayed until its value is needed</strong>. (This means that you can&rsquo;t index values by square brackets.) This can help a great deal when working with <strong>extremely large sequences</strong> as you don&rsquo;t want to store the entire list in memory, which is what comprehensions would do; you can generate elements of the sequence on the fly. Let&rsquo;s say that we wanted to iterate over a very large sequence of numbers, such as from 0 up to 10 to the power of a million.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">[i <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">10</span> <span style="color:#666">**</span> <span style="color:#666">1000000</span>)]
+</code></pre></div><blockquote>
+<p>DO NOT try this on your personal computer.</p>
+</blockquote>
+<p>This can cause outages, since the list we are trying to create are so large that can&rsquo;t even be stored in memory. however: We can easily create the analogous generator object because it does not yet create the entire list.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> (i <span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">10</span> <span style="color:#666">**</span> <span style="color:#666">1000000</span>))
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(g))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">0
+</code></pre></div><p>The thing we can do in a list comprehension such as filtering and applying conditionals, can also be done in a generator expression.</p>
+<p>Generator functions are functions that, when called, produce generator objects. Generator functions are written with the syntax of any other user-defined function, however instead of returning values using the keyword <code>return</code>, they yield sequences of values using the keyword <code>yield</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">lannister <span style="color:#666">=</span> [<span style="color:#ba2121">&#39;cersei&#39;</span>, <span style="color:#ba2121">&#39;jaime&#39;</span>, <span style="color:#ba2121">&#39;tywin&#39;</span>, <span style="color:#ba2121">&#39;tyrion&#39;</span>, <span style="color:#ba2121">&#39;joffrey&#39;</span>]
+
+<span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">get_lengths</span>(input_list):
+    <span style="color:#ba2121">&#34;&#34;&#34;Generator function that yields the
+</span><span style="color:#ba2121">    length of the strings in input_list.&#34;&#34;&#34;</span>
+
+    <span style="color:#008000;font-weight:bold">for</span> person <span style="color:#a2f;font-weight:bold">in</span> input_list:
+        <span style="color:#008000;font-weight:bold">yield</span> <span style="color:#008000">len</span>(person)
+
+<span style="color:#008000;font-weight:bold">for</span> value <span style="color:#a2f;font-weight:bold">in</span> get_lengths(lannister):
+    <span style="color:#008000">print</span>(value)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">6
+5
+5
+6
+7
+</code></pre></div><h1 id="3-world-bank-data-analysis-case">3. World Bank Data Analysis Case</h1>
+<p>Here, we will use the skills of writing user-defined functions, iterators, list comprehensions and generators to wrangle and extract meaningful information from a real-world dataset, the World Bank World Development Indicators dataset.</p>
+<p>This dataset contains data on 217 world economies for over half a century, from 1960 up until 2015. The data contains hundreds of indicators from population, electricity consumption and CO2 emissions to literacy rates, unemployment and mortality rates.</p>
+<hr>
+<p>The first list <code>feature_names</code> contains header names of the dataset and the second list <code>row_vals</code> contains actual values of a row from the dataset, corresponding to each of the header names. Create a zip object by calling <code>zip()</code> and passing to it <code>feature_names</code> and <code>row_vals</code>. Assign the result to <code>zipped_lists</code>. Create a dictionary from the <code>zipped_lists</code> zip object by calling <code>dict()</code> with <code>zipped_lists</code>. Assign the resulting dictionary to <code>rs_dict</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">zipped_lists <span style="color:#666">=</span> <span style="color:#008000">zip</span>(feature_names, row_vals)
+rs_dict <span style="color:#666">=</span> <span style="color:#008000">dict</span>(zipped_lists) <span style="color:#408080;font-style:italic"># e.t. rs_dict = {k:v for k,v in zipped_lists}</span>
+<span style="color:#008000">print</span>(rs_dict)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;CountryName&#39;: &#39;Arab World&#39;, &#39;CountryCode&#39;: &#39;ARB&#39;, &#39;IndicatorName&#39;: &#39;Adolescent fertility rate (births per 1,000 women ages 15-19)&#39;, &#39;IndicatorCode&#39;: &#39;SP.ADO.TFRT&#39;, &#39;Year&#39;: &#39;1960&#39;, &#39;Value&#39;: &#39;133.56090740552298&#39;}
+</code></pre></div><p>Define the function <code>lists2dict()</code> with two parameters: first is <code>list1</code> and second is <code>list2</code>. Return the resulting dictionary <code>rs_dict</code> in <code>lists2dict()</code>. Call the <code>lists2dict()</code> function with the arguments <code>feature_names</code> and <code>row_vals</code>. Assign the result of the function call to <code>rs_fxn</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">lists2dict</span>(list1, list2):
+    <span style="color:#ba2121">&#34;&#34;&#34;Return a dictionary where list1 provides
+</span><span style="color:#ba2121">    the keys and list2 provides the values.&#34;&#34;&#34;</span>
+    zipped_lists <span style="color:#666">=</span> <span style="color:#008000">zip</span>(list1, list2)
+    rs_dict <span style="color:#666">=</span> <span style="color:#008000">dict</span>(zipped_lists)
+    <span style="color:#008000;font-weight:bold">return</span> rs_dict
+
+rs_fxn <span style="color:#666">=</span> lists2dict(feature_names, row_vals)
+<span style="color:#008000">print</span>(rs_fxn)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;CountryName&#39;: &#39;Arab World&#39;, &#39;CountryCode&#39;: &#39;ARB&#39;, &#39;IndicatorName&#39;: &#39;Adolescent fertility rate (births per 1,000 women ages 15-19)&#39;, &#39;IndicatorCode&#39;: &#39;SP.ADO.TFRT&#39;, &#39;Year&#39;: &#39;1960&#39;, &#39;Value&#39;: &#39;133.56090740552298&#39;}
+</code></pre></div><p><code>row_lists</code> is a list of lists, where each sublist is a list of actual values of a row from the dataset. Inspect the contents of <code>row_lists</code> by printing the first two lists in <code>row_lists</code>. Create a list comprehension that generates a dictionary using <code>lists2dict()</code> for each sublist in <code>row_lists</code>. The keys are from the <code>feature_names</code> list and the values are the row entries in <code>row_lists</code>. Use <code>sublist</code> as your iterator variable and assign the resulting list of dictionaries to <code>list_of_dicts</code>. Look at the first two dictionaries in <code>list_of_dicts</code> by printing them out.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000">print</span>(row_lists[<span style="color:#666">0</span>])
+<span style="color:#008000">print</span>(row_lists[<span style="color:#666">1</span>])
+
+list_of_dicts <span style="color:#666">=</span> [lists2dict(feature_names, sublist) <span style="color:#008000;font-weight:bold">for</span> sublist <span style="color:#a2f;font-weight:bold">in</span> row_lists]
+
+<span style="color:#008000">print</span>(list_of_dicts[<span style="color:#666">0</span>])
+<span style="color:#008000">print</span>(list_of_dicts[<span style="color:#666">1</span>])
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;Arab World&#39;, &#39;ARB&#39;, &#39;Adolescent fertility rate (births per 1,000 women ages 15-19)&#39;, &#39;SP.ADO.TFRT&#39;, &#39;1960&#39;, &#39;133.56090740552298&#39;]
+[&#39;Arab World&#39;, &#39;ARB&#39;, &#39;Age dependency ratio (% of working-age population)&#39;, &#39;SP.POP.DPND&#39;, &#39;1960&#39;, &#39;87.7976011532547&#39;]
+{&#39;CountryName&#39;: &#39;Arab World&#39;, &#39;CountryCode&#39;: &#39;ARB&#39;, &#39;IndicatorName&#39;: &#39;Adolescent fertility rate (births per 1,000 women ages 15-19)&#39;, &#39;IndicatorCode&#39;: &#39;SP.ADO.TFRT&#39;, &#39;Year&#39;: &#39;1960&#39;, &#39;Value&#39;: &#39;133.56090740552298&#39;}
+{&#39;CountryName&#39;: &#39;Arab World&#39;, &#39;CountryCode&#39;: &#39;ARB&#39;, &#39;IndicatorName&#39;: &#39;Age dependency ratio (% of working-age population)&#39;, &#39;IndicatorCode&#39;: &#39;SP.POP.DPND&#39;, &#39;Year&#39;: &#39;1960&#39;, &#39;Value&#39;: &#39;87.7976011532547&#39;}
+</code></pre></div><p>To use the <code>DataFrame()</code> function, first import the <code>pandas</code> package with the alias <code>pd</code>. Create a DataFrame from the list of dictionaries in <code>list_of_dicts</code> by calling <code>pd.DataFrame()</code>. Assign the resulting DataFrame to <code>df</code>. Inspect the contents of df printing the head of the DataFrame. Head of the DataFrame df can be accessed by calling <code>df.head()</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+
+list_of_dicts <span style="color:#666">=</span> [lists2dict(feature_names, sublist) <span style="color:#008000;font-weight:bold">for</span> sublist <span style="color:#a2f;font-weight:bold">in</span> row_lists]
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(list_of_dicts)
+df<span style="color:#666">.</span>head()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">  CountryName CountryCode                                      IndicatorName   IndicatorCode  Year               Value
+0  Arab World         ARB  Adolescent fertility rate (births per 1,000 wo...     SP.ADO.TFRT  1960  133.56090740552298
+1  Arab World         ARB  Age dependency ratio (% of working-age populat...     SP.POP.DPND  1960    87.7976011532547
+2  Arab World         ARB  Age dependency ratio, old (% of working-age po...  SP.POP.DPND.OL  1960   6.634579191565161
+3  Arab World         ARB  Age dependency ratio, young (% of working-age ...  SP.POP.DPND.YG  1960   81.02332950839141
+4  Arab World         ARB        Arms exports (SIPRI trend indicator values)  MS.MIL.XPRT.KD  1960           3000000.0
+</code></pre></div><p>In the function <code>read_large_file()</code>, read a line from <code>file_object</code> by using the method <code>readline()</code>. Assign the result to <code>data</code>. In the function <code>read_large_file()</code>, <code>yield</code> the line read from the file data. In the context manager, create a generator object <code>gen_file</code> by calling your generator function <code>read_large_file()</code> and passing file to it. Print the first three lines produced by the generator object gen_file using <code>next()</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">read_large_file</span>(file_object):
+    <span style="color:#ba2121">&#34;&#34;&#34;A generator function to read a large file lazily.&#34;&#34;&#34;</span>
+
+    <span style="color:#008000;font-weight:bold">while</span> <span style="color:#008000;font-weight:bold">True</span>:
+        data <span style="color:#666">=</span> file_object<span style="color:#666">.</span>readline()        
+        <span style="color:#008000;font-weight:bold">if</span> <span style="color:#a2f;font-weight:bold">not</span> data: <span style="color:#408080;font-style:italic"># &lt;-- Break if this is the end of the file</span>
+            <span style="color:#008000;font-weight:bold">break</span>
+        <span style="color:#008000;font-weight:bold">yield</span> data <span style="color:#408080;font-style:italic"># &lt;-- After calling read_large_file(), in each loop, programme will freeze here until calling next()</span>
+        
+<span style="color:#008000;font-weight:bold">with</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#39;world_dev_ind.csv&#39;</span>) <span style="color:#008000;font-weight:bold">as</span> file:
+    gen_file <span style="color:#666">=</span> read_large_file(file)
+
+    <span style="color:#008000">print</span>(<span style="color:#008000">next</span>(gen_file))
+    <span style="color:#008000">print</span>(<span style="color:#008000">next</span>(gen_file))
+    <span style="color:#008000">print</span>(<span style="color:#008000">next</span>(gen_file))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">CountryName,CountryCode,IndicatorName,IndicatorCode,Year,Value
+
+Arab World,ARB,&#34;Adolescent fertility rate (births per 1,000 women ages 15-19)&#34;,SP.ADO.TFRT,1960,133.56090740552298
+
+Arab World,ARB,Age dependency ratio (% of working-age population),SP.POP.DPND,1960,87.7976011532547
+</code></pre></div><p>Bind the file &lsquo;world_dev_ind.csv&rsquo; to file in the context manager with <code>open()</code>. Complete the <code>for</code> loop so that it iterates over the generator from the call to <code>read_large_file()</code> to process all the rows of the file.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">counts_dict <span style="color:#666">=</span> {}
+
+<span style="color:#008000;font-weight:bold">with</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#34;world_dev_ind.csv&#34;</span>) <span style="color:#008000;font-weight:bold">as</span> file:
+
+    <span style="color:#008000;font-weight:bold">for</span> line <span style="color:#a2f;font-weight:bold">in</span> read_large_file(file): <span style="color:#408080;font-style:italic"># &lt;-- Each loop is a call to next()</span>
+        row <span style="color:#666">=</span> line<span style="color:#666">.</span>split(<span style="color:#ba2121">&#39;,&#39;</span>) <span style="color:#408080;font-style:italic"># &lt;-- Separate each line of the CSV with a comma and generate a list</span>
+        first_col <span style="color:#666">=</span> row[<span style="color:#666">0</span>]
+        <span style="color:#008000;font-weight:bold">if</span> first_col <span style="color:#a2f;font-weight:bold">in</span> counts_dict<span style="color:#666">.</span>keys():
+            counts_dict[first_col] <span style="color:#666">+=</span> <span style="color:#666">1</span>
+        <span style="color:#008000;font-weight:bold">else</span>:
+            counts_dict[first_col] <span style="color:#666">=</span> <span style="color:#666">1</span>
+           
+<span style="color:#008000">print</span>(counts_dict)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;CountryName&#39;: 1, &#39;Arab World&#39;: 80, &#39;Caribbean small states&#39;: 77, &#39;Central Europe and the Baltics&#39;: 71, &#39;East Asia &amp; Pacific (all income levels)&#39;: 122, &#39;East Asia &amp; Pacific (developing only)&#39;: 123, &#39;Euro area&#39;: 119, &#39;Europe &amp; Central Asia (all income levels)&#39;: 109, &#39;Europe &amp; Central Asia (developing only)&#39;: 89, &#39;European Union&#39;: 116, &#39;Fragile and conflict affected situations&#39;: 76, &#39;Heavily indebted poor countries (HIPC)&#39;: 99, &#39;High income&#39;: 131, &#39;High income: nonOECD&#39;: 68, &#39;High income: OECD&#39;: 127, &#39;Latin America &amp; Caribbean (all income levels)&#39;: 130, &#39;Latin America &amp; Caribbean (developing only)&#39;: 133, &#39;Least developed countries: UN classification&#39;: 78, &#39;Low &amp; middle income&#39;: 138, &#39;Low income&#39;: 80, &#39;Lower middle income&#39;: 126, &#39;Middle East &amp; North Africa (all income levels)&#39;: 89, &#39;Middle East &amp; North Africa (developing only)&#39;: 94, &#39;Middle income&#39;: 138, &#39;North America&#39;: 123, &#39;OECD members&#39;: 130, &#39;Other small states&#39;: 63, &#39;Pacific island small states&#39;: 66, &#39;Small states&#39;: 69, &#39;South Asia&#39;: 36}
+</code></pre></div><p>Use <code>pd.read_csv()</code> to read in &lsquo;ind_pop.csv&rsquo; in chunks of size 10. Assign the result to <code>df_reader</code>. Print the first two chunks from <code>df_reader</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+
+df_reader <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;ind_pop.csv&#34;</span>, chunksize<span style="color:#666">=</span><span style="color:#666">10</span>)
+
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(df_reader)) 
+<span style="color:#008000">print</span>(<span style="color:#008000">next</span>(df_reader))
+
+<span style="color:#408080;font-style:italic"># e.t.</span>
+<span style="color:#408080;font-style:italic"># t=0</span>
+<span style="color:#408080;font-style:italic"># for i in df_reaedr: # &lt;-- Each loop is a next()</span>
+<span style="color:#408080;font-style:italic">#     t += 1</span>
+<span style="color:#408080;font-style:italic">#     print(i)</span>
+<span style="color:#408080;font-style:italic">#     if t == 2:</span>
+<span style="color:#408080;font-style:italic">#         break</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">                                 CountryName CountryCode                  IndicatorName      IndicatorCode  Year   Value
+0                                 Arab World         ARB  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  31.285
+1                     Caribbean small states         CSS  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  31.597
+2             Central Europe and the Baltics         CEB  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  44.508
+3    East Asia &amp; Pacific (all income levels)         EAS  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  22.471
+4      East Asia &amp; Pacific (developing only)         EAP  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  16.918
+5                                  Euro area         EMU  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  62.097
+6  Europe &amp; Central Asia (all income levels)         ECS  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  55.379
+7    Europe &amp; Central Asia (developing only)         ECA  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  38.066
+8                             European Union         EUU  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  61.213
+9   Fragile and conflict affected situations         FCS  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  17.892
+                                      CountryName CountryCode                  IndicatorName      IndicatorCode  Year   Value
+10         Heavily indebted poor countries (HIPC)         HPC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  12.236
+11                                    High income         HIC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  62.680
+12                           High income: nonOECD         NOC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  56.108
+13                              High income: OECD         OEC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  64.285
+14  Latin America &amp; Caribbean (all income levels)         LCN  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  49.285
+15    Latin America &amp; Caribbean (developing only)         LAC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  44.863
+16   Least developed countries: UN classification         LDC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960   9.616
+17                            Low &amp; middle income         LMY  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  21.273
+18                                     Low income         LIC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  11.498
+19                            Lower middle income         LMC  Urban population (% of total)  SP.URB.TOTL.IN.ZS  1960  19.811
+</code></pre></div><p>Use <code>pd.read_csv()</code> to read in the file in &lsquo;ind_pop_data.csv&rsquo; in chunks of size 1000. Assign the result to <code>urb_pop_reader</code>. Get the first DataFrame chunk from the iterable <code>urb_pop_reader</code> and assign this to <code>df_urb_pop</code>.</p>
+<p>Select only the rows of <code>df_urb_pop</code> that have a &lsquo;<code>CountryCode</code>&rsquo; of &lsquo;<code>CEB</code>&rsquo;. Using <code>zip()</code>, zip together the &lsquo;Total Population&rsquo; and &lsquo;Urban population (% of total)&rsquo; columns of <code>df_pop_ceb</code>. Assign the resulting zip object to <code>pops</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">urb_pop_reader <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#34;ind_pop_data.csv&#34;</span>, chunksize<span style="color:#666">=</span><span style="color:#666">1000</span>)
+df_urb_pop <span style="color:#666">=</span> <span style="color:#008000">next</span>(urb_pop_reader)
+<span style="color:#008000">print</span>(df_urb_pop<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">                               CountryName CountryCode  Year  Total Population  Urban population (% of total)
+0                               Arab World         ARB  1960         9.250e+07                         31.285
+1                   Caribbean small states         CSS  1960         4.191e+06                         31.597
+2           Central Europe and the Baltics         CEB  1960         9.140e+07                         44.508
+3  East Asia &amp; Pacific (all income levels)         EAS  1960         1.042e+09                         22.471
+4    East Asia &amp; Pacific (developing only)         EAP  1960         8.965e+08                         16.918
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df_pop_ceb <span style="color:#666">=</span> df_urb_pop[df_urb_pop[<span style="color:#ba2121">&#34;CountryCode&#34;</span>]<span style="color:#666">==</span><span style="color:#ba2121">&#34;CEB&#34;</span>]
+pops <span style="color:#666">=</span> <span style="color:#008000">zip</span>(df_pop_ceb[<span style="color:#ba2121">&#39;Total Population&#39;</span>], df_pop_ceb[<span style="color:#ba2121">&#39;Urban population (</span><span style="color:#b68;font-weight:bold">% o</span><span style="color:#ba2121">f total)&#39;</span>])
+pops_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(pops)
+<span style="color:#008000">print</span>(pops_list)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[(91401583.0, 44.5079211390026), (92237118.0, 45.206665319194), (93014890.0, 45.866564696018), (93845749.0, 46.5340927663649), (94722599.0, 47.2087429803526)]
+</code></pre></div><p>Write a list comprehension to generate a list of values from <code>pops_list</code> for the new column &lsquo;<code>Total Urban Population</code>&rsquo;. The output expression should be the product of the first and second element in each tuple in pops_list. Because the 2nd element is a percentage, you also need to either multiply the result by 0.01 or divide it by 100. In addition, note that the column &lsquo;<code>Total Urban Population</code>&rsquo; should only be able to take on integer values. To ensure this, make sure you cast the output expression to an integer with <code>int()</code>.</p>
+<p>Create a scatter plot where the x-axis are values from the &lsquo;<code>Year</code>&rsquo; column and the y-axis are values from the &lsquo;<code>Total Urban Population</code>&rsquo; column.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">urb_pop_reader <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#39;ind_pop_data.csv&#39;</span>, chunksize<span style="color:#666">=</span><span style="color:#666">1000</span>)
+df_urb_pop <span style="color:#666">=</span> <span style="color:#008000">next</span>(urb_pop_reader)
+df_pop_ceb <span style="color:#666">=</span> df_urb_pop[df_urb_pop[<span style="color:#ba2121">&#39;CountryCode&#39;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#39;CEB&#39;</span>]
+pops <span style="color:#666">=</span> <span style="color:#008000">zip</span>(df_pop_ceb[<span style="color:#ba2121">&#39;Total Population&#39;</span>], 
+           df_pop_ceb[<span style="color:#ba2121">&#39;Urban population (</span><span style="color:#b68;font-weight:bold">% o</span><span style="color:#ba2121">f total)&#39;</span>])
+pops_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(pops)
+df_pop_ceb[<span style="color:#ba2121">&#39;Total Urban Population&#39;</span>] <span style="color:#666">=</span> [<span style="color:#008000">int</span>(x[<span style="color:#666">0</span>]<span style="color:#666">*</span>x[<span style="color:#666">1</span>]<span style="color:#666">*</span><span style="color:#666">0.01</span>) <span style="color:#008000;font-weight:bold">for</span> x <span style="color:#a2f;font-weight:bold">in</span> pops_list ]
+
+df_pop_ceb<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>, x<span style="color:#666">=</span><span style="color:#ba2121">&#34;Year&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;Total Urban Population&#34;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203290936455.png" alt=""></p>
+<p>Now let&rsquo;s show the <strong>panoramic view</strong>.  Initialize an empty DataFrame data using <code>pd.DataFrame()</code>. In the for loop, iterate over <code>urb_pop_reader</code> to be able to process all the DataFrame chunks in the dataset.
+Using the method <code>append()</code> of the DataFrame data, append <code>df_pop_ceb</code> to data.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">urb_pop_reader <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(<span style="color:#ba2121">&#39;ind_pop_data.csv&#39;</span>, chunksize<span style="color:#666">=</span><span style="color:#666">1000</span>)
+data <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame()
+
+<span style="color:#008000;font-weight:bold">for</span> df_urb_pop <span style="color:#a2f;font-weight:bold">in</span> urb_pop_reader:
+    df_pop_ceb <span style="color:#666">=</span> df_urb_pop[df_urb_pop[<span style="color:#ba2121">&#39;CountryCode&#39;</span>] <span style="color:#666">==</span> <span style="color:#ba2121">&#39;CEB&#39;</span>]
+    pops <span style="color:#666">=</span> <span style="color:#008000">zip</span>(
+        df_pop_ceb[<span style="color:#ba2121">&#39;Total Population&#39;</span>],
+        df_pop_ceb[<span style="color:#ba2121">&#39;Urban population (</span><span style="color:#b68;font-weight:bold">% o</span><span style="color:#ba2121">f total)&#39;</span>]
+    )
+    pops_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(pops)
+    df_pop_ceb[<span style="color:#ba2121">&#39;Total Urban Population&#39;</span>] <span style="color:#666">=</span> [<span style="color:#008000">int</span>(tup[<span style="color:#666">0</span>] <span style="color:#666">*</span> tup[<span style="color:#666">1</span>] <span style="color:#666">*</span> <span style="color:#666">0.01</span>) <span style="color:#008000;font-weight:bold">for</span> tup <span style="color:#a2f;font-weight:bold">in</span> pops_list]
+    data <span style="color:#666">=</span> data<span style="color:#666">.</span>append(df_pop_ceb)
+
+data<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;scatter&#39;</span>, x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Year&#39;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Total Urban Population&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291014089.png" alt=""></p>
+<p>Now we <strong>encapsulate</strong> the above code into a function. Define the function <code>plot_pop()</code> that has two arguments: first is <code>filename</code> for the file to process and second is <code>country_code</code> for the country to be processed in the dataset. Call <code>plot_pop()</code> to process the data for country code &lsquo;<code>CEB</code>&rsquo; in the file &lsquo;<code>ind_pop_data.csv</code>&rsquo;. Call <code>plot_pop()</code> to process the data for country code &lsquo;<code>ARB</code>&rsquo; in the file &lsquo;<code>ind_pop_data.csv</code>&rsquo;</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">plot_pop</span>(filename, country_code):
+
+    urb_pop_reader <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(filename, chunksize<span style="color:#666">=</span><span style="color:#666">1000</span>)
+    data <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame()
+    
+    <span style="color:#008000;font-weight:bold">for</span> df_urb_pop <span style="color:#a2f;font-weight:bold">in</span> urb_pop_reader:
+        df_pop_ceb <span style="color:#666">=</span> df_urb_pop[df_urb_pop[<span style="color:#ba2121">&#39;CountryCode&#39;</span>] <span style="color:#666">==</span> country_code]
+        pops <span style="color:#666">=</span> <span style="color:#008000">zip</span>(
+            df_pop_ceb[<span style="color:#ba2121">&#39;Total Population&#39;</span>],
+            df_pop_ceb[<span style="color:#ba2121">&#39;Urban population (</span><span style="color:#b68;font-weight:bold">% o</span><span style="color:#ba2121">f total)&#39;</span>]
+        )
+        pops_list <span style="color:#666">=</span> <span style="color:#008000">list</span>(pops)
+        df_pop_ceb[<span style="color:#ba2121">&#39;Total Urban Population&#39;</span>] <span style="color:#666">=</span> [<span style="color:#008000">int</span>(tup[<span style="color:#666">0</span>] <span style="color:#666">*</span> tup[<span style="color:#666">1</span>] <span style="color:#666">*</span> <span style="color:#666">0.01</span>) <span style="color:#008000;font-weight:bold">for</span> tup <span style="color:#a2f;font-weight:bold">in</span> pops_list]
+        data <span style="color:#666">=</span> data<span style="color:#666">.</span>append(df_pop_ceb)
+
+    data<span style="color:#666">.</span>plot(kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;scatter&#39;</span>, x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Year&#39;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Total Urban Population&#39;</span>)
+    plt<span style="color:#666">.</span>show()
+
+fn <span style="color:#666">=</span> <span style="color:#ba2121">&#39;ind_pop_data.csv&#39;</span>
+<span style="color:#408080;font-style:italic"># plot_pop(fn, &#34;CEB&#34;)</span>
+plot_pop(fn, <span style="color:#ba2121">&#34;ARB&#34;</span>)
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291020374.png" alt=""></p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+

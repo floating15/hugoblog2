@@ -77,12 +77,14 @@ emp.salary = emp.salary + 5000 # e.t. emp.</description>
     </item>
     
     <item>
-      <title>Object Oriented Programming II (Iterators &amp; Generators)</title>
-      <link>/post/2019/08/16/object-oriented-programming-ii-iterators-generators/</link>
+      <title>Object Oriented Programming II (Iterators, Comprehensions &amp; Generators)</title>
+      <link>/post/2019/08/16/object-oriented-programming-ii-iterators-comprehensions-generators/</link>
       <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/2019/08/16/object-oriented-programming-ii-iterators-generators/</guid>
-      <description>[toc]</description>
+      <guid>/post/2019/08/16/object-oriented-programming-ii-iterators-comprehensions-generators/</guid>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]
+1. Iterators in PythonLand 1.1 Introduction to iterators When you use a for loop to print out each element of a list, you&amp;rsquo;re iterating over the list. You can also use a for loop to iterate over characters in a string. You can also use a for loop to iterate a over a sequence of numbers produced by a special range object.</description>
     </item>
     
     <item>
