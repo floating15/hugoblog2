@@ -44,7 +44,38 @@
     <header>
     <h2>Content</h2>
     </header>
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-seaborn-introduction">1. Seaborn Introduction</a>
+      <ul>
+        <li><a href="#11-distribution-plot">1.1 Distribution plot</a></li>
+        <li><a href="#12-regression-plots">1.2 Regression Plots</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-customizing-seaborn-plots">2. Customizing Seaborn Plots</a>
+      <ul>
+        <li><a href="#21-seaborn-styles">2.1 Seaborn styles</a></li>
+        <li><a href="#22-colors-in-seaborn">2.2 Colors in Seaborn</a></li>
+        <li><a href="#23-customizing-with-matplotlib">2.3 Customizing with matplotlib</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-additional-plot-types">3. Additional Plot Types</a>
+      <ul>
+        <li><a href="#31-categorical-plot-types">3.1 Categorical Plot Types</a></li>
+        <li><a href="#32-regression-plots">3.2 Regression Plots</a></li>
+        <li><a href="#33-matrix-plots">3.3 Matrix plots</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-creating-plots-on-data-aware-grids">4. Creating Plots on Data Aware Grids</a>
+      <ul>
+        <li><a href="#41-facetgrid-factorplot-and-lmplot">4.1 <code>FacetGrid</code>, <code>factorplot</code> and <code>lmplot</code></a></li>
+        <li><a href="#42-pairgrid-and-pairplot">4.2 <code>PairGrid</code> and <code>pairplot</code></a></li>
+        <li><a href="#43-jointgrid-and-jointplot">4.3 <code>JointGrid</code> and <code>jointplot</code></a></li>
+        <li><a href="#44-union-frame">4.4 Union Frame</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
     <HR>
 </aside>
 
@@ -53,6 +84,745 @@
 <p>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.</p>
 </blockquote>
 <p>[toc]</p>
+<h1 id="1-seaborn-introduction">1. Seaborn Introduction</h1>
+<h2 id="11-distribution-plot">1.1 Distribution plot</h2>
+<p>The pandas library supports simple plotting of data, which is very convenient when data is already likely to be in a pandas DataFrame.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df[<span style="color:#ba2121">&#39;Award_Amount&#39;</span>]<span style="color:#666">.</span>plot<span style="color:#666">.</span>hist()
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf() <span style="color:#408080;font-style:italic"># &lt;-- Clear out the pandas histogram</span>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291030759.png" alt=""></p>
+<p>Seaborn generally does more statistical analysis on data and can provide more sophisticated insight into the data. (v.s. the seaborn distplot.)</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;Award_Amount&#39;</span>])
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291030362.png" alt=""></p>
+<p>Now we will customize distribution plots in Seaborn. The Seaborn API supports customizing the type of plot by using different arguments. We can use the same <code>distplot()</code> function to create a standard histogram and customize the number of <code>bins</code>. Trying different combinations of the <code>kde</code> and <code>rug</code> lot can yield important insights.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;Award_Amount&#39;</span>],
+             kde<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, <span style="color:#408080;font-style:italic"># &lt;-- Kernel Density Estimate curve, default True</span>
+             bins<span style="color:#666">=</span><span style="color:#666">20</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291103691.png" alt=""></p>
+<p>There are many functions in Seaborn that build upon each other. The <code>distplot()</code> function we have been discussing relies on using additional Seaborn functions such as the <code>kdeplot()</code> and <code>rugplot()</code>. By understanding this relationship, you can further customize Seaborn plots by passing additional arguments to the underlying functions. For example, we can tell the underlying <code>kde()</code> function to shade the plot by passing the <code>kde_kws</code> dictionary.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;Award_Amount&#39;</span>],
+             hist<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>,
+             rug<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+             kde_kws<span style="color:#666">=</span>{<span style="color:#ba2121">&#39;shade&#39;</span>:<span style="color:#008000;font-weight:bold">True</span>})
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291102938.png" alt=""></p>
+<h2 id="12-regression-plots">1.2 Regression Plots</h2>
+<p>Now we will transition to another basic visualization process by plotting linear regression lines.</p>
+<p>The <code>regplot()</code> function is the <strong>basis function</strong> for building regression plots in Seaborn. We explicitly define the <code>x</code> and <code>y</code> variables as well as the source of the <code>data</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>regplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;insurance_losses&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;premiums&#34;</span>,
+    data<span style="color:#666">=</span>df
+)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291132274.png" alt=""></p>
+<blockquote>
+<p>As mentioned earlier, you can turn off the confidence interval by setting argument <code>ci =False</code>.</p>
+</blockquote>
+<p>One of the confusing points about Seaborn is that it may seem like there is more than one way to do the same plot. We have looked at <code>distplot()</code> and briefly discussed <code>kde()</code> plots as a <strong>building block</strong> for the more robust <code>distplot()</code>. In a similar manner, the <strong>lower level</strong> <code>regplot()</code> and <strong>higher level</strong> <code>lmplot()</code> are related. You can specify <code>hue</code> or <code>col</code> (<code>row</code>) in <code>lmplot()</code> to visualize category regression plot.</p>
+<table>
+<thead>
+<tr>
+<th>lower level func</th>
+<th>higher level func</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kde()</code>, <code>rug()</code></td>
+<td><code>distplot()</code></td>
+</tr>
+<tr>
+<td><code>countplot()</code>, &hellip;</td>
+<td><code>catplot()</code></td>
+</tr>
+<tr>
+<td><code>scatterplot</code>, &hellip;</td>
+<td><code>relplot()</code></td>
+</tr>
+<tr>
+<td><code>regplot()</code></td>
+<td><code>lmplot()</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>lmplot(
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;insurance_losses&#34;</span>,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#34;premiums&#34;</span>,
+    data<span style="color:#666">=</span>df,
+    ci<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291135656.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>lmplot(data<span style="color:#666">=</span>df,
+           x<span style="color:#666">=</span><span style="color:#ba2121">&#34;insurance_losses&#34;</span>,
+           y<span style="color:#666">=</span><span style="color:#ba2121">&#34;premiums&#34;</span>,
+           hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;Region&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291137516.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>lmplot(data<span style="color:#666">=</span>df,
+           x<span style="color:#666">=</span><span style="color:#ba2121">&#34;insurance_losses&#34;</span>,
+           y<span style="color:#666">=</span><span style="color:#ba2121">&#34;premiums&#34;</span>,
+           row<span style="color:#666">=</span><span style="color:#ba2121">&#34;Region&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203291137721.png" alt=""></p>
+<h1 id="2-customizing-seaborn-plots">2. Customizing Seaborn Plots</h1>
+<h2 id="21-seaborn-styles">2.1 Seaborn styles</h2>
+<p>Seaborn has several default built in themes that are more appealing than the default matplotlib styles. In order to set a default theme, use the <code>sns.set()</code> function.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set()
+df[<span style="color:#ba2121">&#39;fmr_2&#39;</span>]<span style="color:#666">.</span>plot<span style="color:#666">.</span>hist()
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203300933570.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set_style(<span style="color:#ba2121">&#34;whitegrid&#34;</span>)
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#34;fmr_2&#34;</span>])
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203300937091.png" alt=""></p>
+<p>A common use case is to remove the lines around the axes called spines. Seaborn&rsquo;s <code>despine()</code> function removes one or more of the spines on a chart. The default is to remove the <strong>top and right</strong> lines but more can be removed by passing arguments to the <code>despine()</code> function.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set_style(<span style="color:#ba2121">&#39;white&#39;</span>)<span style="color:#666">=</span>
+sns<span style="color:#666">.</span>lmplot(data<span style="color:#666">=</span>df,
+           x<span style="color:#666">=</span><span style="color:#ba2121">&#39;pop2010&#39;</span>,
+           y<span style="color:#666">=</span><span style="color:#ba2121">&#39;fmr_2&#39;</span>)
+sns<span style="color:#666">.</span>despine()
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203300938312.png" alt=""></p>
+<h2 id="22-colors-in-seaborn">2.2 Colors in Seaborn</h2>
+<p>Since Seaborn is built on top of matplotlib, it is able to interpret and apply matplotlib color codes. By using the familiar <code>sns.set()</code> function with <code>color_codes=True</code>, any matplotlib color codes, like <code>color='g'</code>, will be appropriately mapped to the Seaborn palette.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>set(color_codes<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_3&#39;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#39;m&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301022615.png" alt=""></p>
+<p>You can set a palette of colors that can be cycled through in a plot, which can be helpful when there are many items that must be encoded with color. Seaborn has six default palettes in <code>sns.palettes.SEABORN_PALETTES</code> including deep, muted, pastel, bright, dark, and colorblind. Seaborn offers several convenience functions for working with palettes:</p>
+<ul>
+<li><code>sns.set_palette()</code> method set current palette.</li>
+<li><code>sns.color_palette(p)</code> function return palette <code>p</code>&rsquo;s (R,G,B) tuples (default return the current palette&rsquo;s (R,G,B) tuples). The second parameter specifies how many colors the palette contains.</li>
+<li><code>sns.palplot()</code> function display palette with (R,G,B) tuples (in a Jupyter notebook).</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">t<span style="color:#666">=</span><span style="color:#666">0</span>
+<span style="color:#008000;font-weight:bold">for</span> p <span style="color:#a2f;font-weight:bold">in</span> sns<span style="color:#666">.</span>palettes<span style="color:#666">.</span>SEABORN_PALETTES:
+    t <span style="color:#666">+=</span> <span style="color:#666">1</span>
+    sns<span style="color:#666">.</span>set_palette(p)
+    <span style="color:#008000">print</span>(p)
+    <span style="color:#008000">print</span>(sns<span style="color:#666">.</span>color_palette())
+    <span style="color:#008000;font-weight:bold">if</span> t <span style="color:#666">==</span> <span style="color:#666">4</span>:
+        <span style="color:#008000;font-weight:bold">break</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">deep
+[(0.2980392156862745, 0.4470588235294118, 0.6901960784313725), (0.8666666666666667, 0.5176470588235295, 0.3215686274509804), (0.3333333333333333, 0.6588235294117647, 0.40784313725490196), (0.7686274509803922, 0.3058823529411765, 0.3215686274509804), (0.5058823529411764, 0.4470588235294118, 0.7019607843137254), (0.5764705882352941, 0.47058823529411764, 0.3764705882352941), (0.8549019607843137, 0.5450980392156862, 0.7647058823529411), (0.5490196078431373, 0.5490196078431373, 0.5490196078431373), (0.8, 0.7254901960784313, 0.4549019607843137), (0.39215686274509803, 0.7098039215686275, 0.803921568627451)]
+deep6
+[(0.2980392156862745, 0.4470588235294118, 0.6901960784313725), (0.3333333333333333, 0.6588235294117647, 0.40784313725490196), (0.7686274509803922, 0.3058823529411765, 0.3215686274509804), (0.5058823529411764, 0.4470588235294118, 0.7019607843137254), (0.8, 0.7254901960784313, 0.4549019607843137), (0.39215686274509803, 0.7098039215686275, 0.803921568627451)]
+muted
+[(0.2823529411764706, 0.47058823529411764, 0.8156862745098039), (0.9333333333333333, 0.5215686274509804, 0.2901960784313726), (0.41568627450980394, 0.8, 0.39215686274509803), (0.8392156862745098, 0.37254901960784315, 0.37254901960784315), (0.5843137254901961, 0.4235294117647059, 0.7058823529411765), (0.5490196078431373, 0.3803921568627451, 0.23529411764705882), (0.8627450980392157, 0.49411764705882355, 0.7529411764705882), (0.4745098039215686, 0.4745098039215686, 0.4745098039215686), (0.8352941176470589, 0.7333333333333333, 0.403921568627451), (0.5098039215686274, 0.7764705882352941, 0.8862745098039215)]
+muted6
+[(0.2823529411764706, 0.47058823529411764, 0.8156862745098039), (0.41568627450980394, 0.8, 0.39215686274509803), (0.8392156862745098, 0.37254901960784315, 0.37254901960784315), (0.5843137254901961, 0.4235294117647059, 0.7058823529411765), (0.8352941176470589, 0.7333333333333333, 0.403921568627451), (0.5098039215686274, 0.7764705882352941, 0.8862745098039215)]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">t<span style="color:#666">=</span><span style="color:#666">0</span>
+<span style="color:#008000;font-weight:bold">for</span> p <span style="color:#a2f;font-weight:bold">in</span> sns<span style="color:#666">.</span>palettes<span style="color:#666">.</span>SEABORN_PALETTES:
+    t <span style="color:#666">+=</span> <span style="color:#666">1</span>
+    sns<span style="color:#666">.</span>set_palette(p)
+    <span style="color:#008000">print</span>(p)
+    sns<span style="color:#666">.</span>palplot(sns<span style="color:#666">.</span>color_palette())
+    plt<span style="color:#666">.</span>show()
+    <span style="color:#008000;font-weight:bold">if</span> t <span style="color:#666">==</span> <span style="color:#666">4</span>:
+        <span style="color:#008000;font-weight:bold">break</span>
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301008763.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>palplot(
+    sns<span style="color:#666">.</span>color_palette(<span style="color:#ba2121">&#34;Purples&#34;</span>, <span style="color:#666">8</span>)
+)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301043109.png" alt=""></p>
+<p>There are three main types of color palettes.</p>
+<ul>
+<li><em>Circular color</em> palettes are used for categorical data that is not ordered.</li>
+<li><em>Sequential palettes</em> are useful when the data has a consistent range from high to low values.</li>
+<li><em>Diverging color</em> palette is best used when both the high and the low values are interesting.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">cp <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;Paired&#34;</span>, <span style="color:#ba2121">&#34;Blues&#34;</span>, <span style="color:#ba2121">&#34;BrBG&#34;</span>]
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> cp:
+    <span style="color:#008000">print</span>(i)
+    <span style="color:#008000">print</span>(sns<span style="color:#666">.</span>color_palette(i))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Paired
+[(0.6509803921568628, 0.807843137254902, 0.8901960784313725), (0.12156862745098039, 0.47058823529411764, 0.7058823529411765), (0.6980392156862745, 0.8745098039215686, 0.5411764705882353), (0.2, 0.6274509803921569, 0.17254901960784313), (0.984313725490196, 0.6039215686274509, 0.6), (0.8901960784313725, 0.10196078431372549, 0.10980392156862745), (0.9921568627450981, 0.7490196078431373, 0.43529411764705883), (1.0, 0.4980392156862745, 0.0), (0.792156862745098, 0.6980392156862745, 0.8392156862745098), (0.41568627450980394, 0.23921568627450981, 0.6039215686274509), (1.0, 1.0, 0.6), (0.6941176470588235, 0.34901960784313724, 0.1568627450980392)]
+Blues
+[(0.8584083044982699, 0.9134486735870818, 0.9645674740484429), (0.7309496347558632, 0.8394771241830065, 0.9213225682429834), (0.5356862745098039, 0.746082276047674, 0.8642522106881968), (0.32628988850442137, 0.6186236063052672, 0.802798923490965), (0.16696655132641292, 0.48069204152249134, 0.7291503267973857), (0.044059976931949255, 0.3338869665513264, 0.6244521337946944)]
+BrBG
+[(0.6313725490196078, 0.3951557093425605, 0.09573241061130335), (0.8572856593617839, 0.7257977700884274, 0.4471357170319107), (0.9636293733179546, 0.9237985390234525, 0.8185313341022683), (0.8299115724721262, 0.9294886582083814, 0.9152633602460593), (0.4615916955017304, 0.7748558246828146, 0.7299500192233758), (0.0878892733564014, 0.479123414071511, 0.44775086505190315)]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">cp <span style="color:#666">=</span> [<span style="color:#ba2121">&#34;Paired&#34;</span>, <span style="color:#ba2121">&#34;Blues&#34;</span>, <span style="color:#ba2121">&#34;BrBG&#34;</span>]
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> cp:
+    <span style="color:#008000">print</span>(i)
+    sns<span style="color:#666">.</span>palplot(sns<span style="color:#666">.</span>color_palette(i))
+    plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301018097.png" alt=""></p>
+<h2 id="23-customizing-with-matplotlib">2.3 Customizing with matplotlib</h2>
+<p>Since Seaborn is based on matplotlib, there is a wide variety of options for further modifying your Seaborn plots. By using matplotlib&rsquo;s <code>axes</code> objects, you can customize almost any element of your plot.</p>
+<p>The most important concept is to add additional code to create the subplots using matplotlib&rsquo;s <code>plt.subplots()</code> functions and pass the resulting <code>axes</code> object to the Seaborn function. <strong>Seaborn will then plot the data on the given axes</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+sns<span style="color:#666">.</span>set_palette(<span style="color:#ba2121">&#34;Reds&#34;</span>)
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_3&#39;</span>], ax<span style="color:#666">=</span>ax)
+ax<span style="color:#666">.</span>set(
+    xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;3 Bedroom Fair Market Rent&#34;</span>,
+    ylabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;rate&#34;</span>,
+    xlim<span style="color:#666">=</span>(<span style="color:#666">0</span>,<span style="color:#666">4000</span>),
+    title<span style="color:#666">=</span><span style="color:#ba2121">&#34;Title&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301113001.png" alt=""></p>
+<p>You can use <code>ax.axvline()</code> or <code>ax.axhline()</code> to create a line in the plot, and then call <code>ax.legned()</code> to show it.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_1&#39;</span>], ax<span style="color:#666">=</span>ax)
+
+ax<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;1 Bedroom Fair Market Rent&#34;</span>, xlim<span style="color:#666">=</span>(<span style="color:#666">100</span>,<span style="color:#666">1500</span>), title<span style="color:#666">=</span><span style="color:#ba2121">&#34;US Rent&#34;</span>)
+ax<span style="color:#666">.</span>axvline(x<span style="color:#666">=</span>df[<span style="color:#ba2121">&#39;fmr_1&#39;</span>]<span style="color:#666">.</span>median(), color<span style="color:#666">=</span><span style="color:#ba2121">&#39;g&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;Median&#39;</span>, linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#39;--&#39;</span>, linewidth<span style="color:#666">=</span><span style="color:#666">2</span>)
+ax<span style="color:#666">.</span>axvline(x<span style="color:#666">=</span>df[<span style="color:#ba2121">&#39;fmr_1&#39;</span>]<span style="color:#666">.</span>mean(), color<span style="color:#666">=</span><span style="color:#ba2121">&#39;r&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;Mean&#39;</span>, linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#39;-&#39;</span>, linewidth<span style="color:#666">=</span><span style="color:#666">2</span>)
+ax<span style="color:#666">.</span>axhline(y<span style="color:#666">=</span><span style="color:#666">0.002</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#39;b&#39;</span>, label<span style="color:#666">=</span><span style="color:#ba2121">&#39;y*&#39;</span>, linestyle<span style="color:#666">=</span><span style="color:#ba2121">&#39;:&#39;</span>, linewidth<span style="color:#666">=</span><span style="color:#666">2</span>)
+
+ax<span style="color:#666">.</span>legend()
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301120303.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots()
+sns<span style="color:#666">.</span>set(color_codes<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_1&#39;</span>], ax<span style="color:#666">=</span>ax, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_2&#39;</span>], ax<span style="color:#666">=</span>ax, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;c&#34;</span>)
+ax<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;1 Bedroom Fair Market Rent&#34;</span>, xlim<span style="color:#666">=</span>(<span style="color:#666">100</span>,<span style="color:#666">1500</span>))
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301129919.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, (ax0, ax1) <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(nrows<span style="color:#666">=</span><span style="color:#666">1</span>, ncols<span style="color:#666">=</span><span style="color:#666">2</span>, sharey<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>) <span style="color:#408080;font-style:italic"># &lt;-- Make the Y-axis of the two subgraphs consistent</span>
+
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_1&#39;</span>], ax<span style="color:#666">=</span>ax0)
+ax0<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;1 Bedroom Fair Market Rent&#34;</span>, xlim<span style="color:#666">=</span>(<span style="color:#666">100</span>,<span style="color:#666">1500</span>))
+
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_2&#39;</span>], ax<span style="color:#666">=</span>ax1)
+ax1<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;2 Bedroom Fair Market Rent&#34;</span>, xlim<span style="color:#666">=</span>(<span style="color:#666">100</span>,<span style="color:#666">1500</span>))
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203301122222.png" alt=""></p>
+<p>You can also make this by</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(nrows<span style="color:#666">=</span><span style="color:#666">1</span>, ncols<span style="color:#666">=</span><span style="color:#666">2</span>, sharey<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_1&#39;</span>], ax<span style="color:#666">=</span>ax[<span style="color:#666">0</span>])
+ax[<span style="color:#666">0</span>]<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;1 Bedroom Fair Market Rent&#34;</span>, xlim<span style="color:#666">=</span>(<span style="color:#666">100</span>,<span style="color:#666">1500</span>))
+
+sns<span style="color:#666">.</span>distplot(df[<span style="color:#ba2121">&#39;fmr_2&#39;</span>], ax<span style="color:#666">=</span>ax[<span style="color:#666">1</span>])
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>set(xlabel<span style="color:#666">=</span><span style="color:#ba2121">&#34;2 Bedroom Fair Market Rent&#34;</span>, xlim<span style="color:#666">=</span>(<span style="color:#666">100</span>,<span style="color:#666">1500</span>))
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><h1 id="3-additional-plot-types">3. Additional Plot Types</h1>
+<h2 id="31-categorical-plot-types">3.1 Categorical Plot Types</h2>
+<p>Seaborn supports many plot types with categorical data. Seaborn breaks categorical data plots into <strong>three</strong> groups.</p>
+<ol>
+<li>
+<p>The first group includes the <code>stripplot()</code> and <code>swarmplot()</code>, which show all the individual observations on the plot.</p>
+</li>
+<li>
+<p>The second category contains the <code>boxplot()</code>, as well as the <code>violinplot()</code> and <code>lvplot()</code>. These plots show an abstract representation of the categorical data.</p>
+</li>
+<li>
+<p>The final group of plots show statistical estimates of the categorical variables. The <code>barplot()</code> and <code>pointplot()</code> contain useful summaries of data. The <code>countplot()</code> shows the number of instances of each observation.</p>
+</li>
+</ol>
+<p><a href="https://www.cntofu.com/book/172/docs/14.md">stripplot( )</a> shows every observation in the dataset. Sometimes, the data&rsquo;s distribution is too busy, and we can set parameters <code>jitter =  True</code> to scatter data rather than gather it in a single line.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>stripplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Award_Amount&#39;</span>,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Model Selected&#39;</span>,)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311046594.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>stripplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Award_Amount&#39;</span>,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Model Selected&#39;</span>,
+         jitter<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311047759.png" alt=""></p>
+<p>We can plot a more sophisticated visualization of all the data using a <a href="https://www.cntofu.com/book/172/docs/15.md">swarmplot( )</a>. This plot uses a complex algorithm to place the observations in a manner where they do not overlap. <code>swarmplot()</code> does not scale well to large datasets.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>swarmplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Award_Amount&#39;</span>,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Model Selected&#39;</span>,
+         hue<span style="color:#666">=</span><span style="color:#ba2121">&#39;Region&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311050914.png" alt=""></p>
+<p><a href="https://www.cntofu.com/book/172/docs/16.md">boxplot( )</a> is the most common plots show abstract representations of the data. This plot is used to show several measures related to the distribution of data, including the median, upper and lower quartiles, as well as outliers.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>boxplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Award_Amount&#39;</span>,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Model Selected&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311053365.png" alt=""></p>
+<p>The <a href="https://www.cntofu.com/book/172/docs/17.md">violinplot( )</a> is a combination of a kernel density plot and a box plot and can be suitable for providing an alternative view of the distribution of data.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>violinplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Award_Amount&#39;</span>,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Model Selected&#39;</span>,
+         palette<span style="color:#666">=</span><span style="color:#ba2121">&#39;husl&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311053743.png" alt=""></p>
+<p><code>lvplot()</code> stands for Letter Value plot. The API is the same as the <code>boxplot()</code> and <code>violinplot()</code> but can scale more effectively to large datasets.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>lvplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Award_Amount&#39;</span>,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Model Selected&#39;</span>,
+         palette<span style="color:#666">=</span><span style="color:#ba2121">&#39;Paired&#39;</span>,
+         hue<span style="color:#666">=</span><span style="color:#ba2121">&#39;Region&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311102135.png" alt=""></p>
+<p>The <a href="https://www.cntofu.com/book/172/docs/20.md">barplot( )</a> shows an estimate of the value as well as a confidence interval. The <a href="https://www.cntofu.com/book/172/docs/19.md">pointplot( )</a> is similar to the <code>barplot()</code> in that it shows a summary measure and confidence interval.  the <a href="https://www.cntofu.com/book/172/docs/21.md">countplot( )</a> displays the number of instances of each variable.</p>
+<h2 id="32-regression-plots">3.2 Regression Plots</h2>
+<p><a href="https://www.cntofu.com/book/172/docs/28.md">regplot( )</a>, like most of the Seaborn functions we have reviewed, requires the definition of the data and the <code>x</code> and <code>y</code> variables and you include a marker for the observations by setting <code>marker=&quot;+&quot;</code>. If a value greater than 1 is passed to the <code>order</code> parameter of <code>regplot()</code>, then Seaborn will attempt a polynomial fit using underlying <code>NumPy</code> functions.</p>
+<p>The <a href="https://www.cntofu.com/book/172/docs/29.md">residplot( )</a> plot is a very useful plot for understanding the appropriateness of a regression model. Ideally, the residual values in the plot should be plotted randomly across the horizontal line.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(nrows<span style="color:#666">=</span><span style="color:#666">1</span>, ncols<span style="color:#666">=</span><span style="color:#666">2</span>)
+
+sns<span style="color:#666">.</span>regplot(data<span style="color:#666">=</span>df,
+         y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#34;SAT_AVG_ALL&#34;</span>,
+         marker<span style="color:#666">=</span><span style="color:#ba2121">&#39;^&#39;</span>,
+         color<span style="color:#666">=</span><span style="color:#ba2121">&#39;g&#39;</span>,
+         ax<span style="color:#666">=</span>ax[<span style="color:#666">0</span>])
+ax[<span style="color:#666">0</span>]<span style="color:#666">.</span>set(title<span style="color:#666">=</span><span style="color:#ba2121">&#34;Regression plot&#34;</span>)
+
+sns<span style="color:#666">.</span>residplot(data<span style="color:#666">=</span>df,
+          y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+          x<span style="color:#666">=</span><span style="color:#ba2121">&#34;SAT_AVG_ALL&#34;</span>,
+          color<span style="color:#666">=</span><span style="color:#ba2121">&#39;g&#39;</span>,
+          ax<span style="color:#666">=</span>ax[<span style="color:#666">1</span>])
+
+ax[<span style="color:#666">1</span>]<span style="color:#666">.</span>set(title<span style="color:#666">=</span><span style="color:#ba2121">&#34;Residual plot&#34;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311132749.png" alt=""></p>
+<p>Seaborn also supports regression plots with categorical variables. you can use the <code>jitter</code> parameter makes it easier to see the individual distribution of the categorical variable. In some cases, even with the <code>jitter</code>, it may be difficult to see if there are any trends based on the value of the variable. Using an <code>x_estimator=func</code> for the x value can apply this function to each unique value of x and plot the resulting estimate.</p>
+<p>When there are continuous variables, it can be helpful to break them into different bins by setting parameter <code>x_bins</code>. When this parameter is used, it implies that the default of <code>x_estimator</code> is <code>numpy.mean</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(nrows<span style="color:#666">=</span><span style="color:#666">2</span>, ncols<span style="color:#666">=</span><span style="color:#666">2</span>)
+sns<span style="color:#666">.</span>regplot(
+    data<span style="color:#666">=</span>df,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;PCTPELL&#34;</span>,
+    ax<span style="color:#666">=</span>ax[<span style="color:#666">0</span>][<span style="color:#666">0</span>]
+)
+sns<span style="color:#666">.</span>regplot(
+    data<span style="color:#666">=</span>df,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;PCTPELL&#34;</span>,
+    x_bins<span style="color:#666">=</span><span style="color:#666">5</span>,
+    ax<span style="color:#666">=</span>ax[<span style="color:#666">0</span>][<span style="color:#666">1</span>]
+)
+sns<span style="color:#666">.</span>regplot(
+    data<span style="color:#666">=</span>df,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;PCTPELL&#34;</span>,
+    x_bins<span style="color:#666">=</span><span style="color:#666">5</span>,
+    order<span style="color:#666">=</span><span style="color:#666">2</span>,
+    ax<span style="color:#666">=</span>ax[<span style="color:#666">1</span>][<span style="color:#666">0</span>]
+)
+sns<span style="color:#666">.</span>residplot(
+    data<span style="color:#666">=</span>df,
+    y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+    x<span style="color:#666">=</span><span style="color:#ba2121">&#34;PCTPELL&#34;</span>,
+    order<span style="color:#666">=</span><span style="color:#666">2</span>,
+    ax<span style="color:#666">=</span>ax[<span style="color:#666">1</span>][<span style="color:#666">1</span>]
+)
+
+ax[<span style="color:#666">0</span>][<span style="color:#666">0</span>]<span style="color:#666">.</span>set(title<span style="color:#666">=</span><span style="color:#ba2121">&#34;Reg plot&#34;</span>)
+ax[<span style="color:#666">0</span>][<span style="color:#666">1</span>]<span style="color:#666">.</span>set(title<span style="color:#666">=</span><span style="color:#ba2121">&#34;Reg bins plot&#34;</span>)
+ax[<span style="color:#666">1</span>][<span style="color:#666">0</span>]<span style="color:#666">.</span>set(title<span style="color:#666">=</span><span style="color:#ba2121">&#34;2 orders Reg bins plot&#34;</span>)
+ax[<span style="color:#666">1</span>][<span style="color:#666">1</span>]<span style="color:#666">.</span>set(title<span style="color:#666">=</span><span style="color:#ba2121">&#34;2 orders Resid plot&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311141252.png" alt=""></p>
+<h2 id="33-matrix-plots">3.3 Matrix plots</h2>
+<p>Seaborn&rsquo;s <a href="https://www.cntofu.com/book/172/docs/30.md">heatmap( )</a> function expects the data to be in a matrix. You can use <code>pd.crosstab()</code> or <code>pd.pivot_table()</code> to create this matirx.</p>
+<blockquote>
+<p><code>pd.crosstab(s1, s2)</code> is a special kind of <code>pd.pivot_table</code>, it is a shortcut to count the number of (s1_i, s2_j).</p>
+</blockquote>
+<p>The display of the heatmap can be customized in multiple ways to present the most information as clearly as possible. First, we use <code>annot</code> equals <code>True</code> to turn on annotations in the individual cells. The <code>fmt=d</code> ensures that the results are displayed as integers. Next, we use a custom <code>cmap</code> to change the shading we use. By setting <code>cbar</code> equals <code>False</code>, the color bar is not displayed. we can use <code>center</code> to center the colormap at the value we want. Finally, passing a variable to <code>linewidths</code> puts some small spacing between the cells so that the values are simpler to view.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">pd_crosstab <span style="color:#666">=</span> pd<span style="color:#666">.</span>crosstab(df[<span style="color:#ba2121">&#34;Group&#34;</span>], df[<span style="color:#ba2121">&#34;YEAR&#34;</span>])
+
+sns<span style="color:#666">.</span>heatmap(pd_crosstab, cbar<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, cmap<span style="color:#666">=</span><span style="color:#ba2121">&#34;BuGn&#34;</span>, linewidths<span style="color:#666">=</span><span style="color:#666">0.3</span>, annot<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+plt<span style="color:#666">.</span>yticks(rotation<span style="color:#666">=</span><span style="color:#666">0</span>)
+plt<span style="color:#666">.</span>xticks(rotation<span style="color:#666">=</span><span style="color:#666">90</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311210514.png" alt=""></p>
+<p>One common usage for a heatmap is to visually represent the correlation between variables. pandas DataFrames have a <code>corr()</code> function that calculates the correlation between the values in the columns. The output of this function is ideally structured to be displayed as a heatmap.</p>
+<h1 id="4-creating-plots-on-data-aware-grids">4. Creating Plots on Data Aware Grids</h1>
+<h2 id="41-facetgrid-factorplot-and-lmplot">4.1 <code>FacetGrid</code>, <code>factorplot</code> and <code>lmplot</code></h2>
+<p>One of Seaborn&rsquo;s most powerful features is its ability to combine multiple smaller plots into a larger visualization that can help identify trends in data with many variables.</p>
+<blockquote>
+<p>One very important requirement for Seaborn to create these plots is that the data must be in <strong>tidy format</strong>. This means that each row of the data is a single observation and the columns contain the variables.</p>
+</blockquote>
+<p>There are two step processes to use <a href="https://www.cntofu.com/book/172/docs/32.md">FacetGrid( )</a> make multi subplots.</p>
+<ol>
+<li>Call <code>sns.FacetGrid()</code> to initialize the grid axes.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> sns<span style="color:#666">.</span>FacetGrid(
+    data, 
+    row<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, col<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, hue<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, palette<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    row_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, col_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, hue_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, hue_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    col_wrap<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, sharex<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, sharey<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, height<span style="color:#666">=</span><span style="color:#666">3</span>, aspect<span style="color:#666">=</span><span style="color:#666">1</span>, 
+    dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, legend_out<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, despine<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, margin_titles<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, 
+    xlim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, ylim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, subplot_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, gridspec_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, size<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+</code></pre></div><ol>
+<li>Call <code>g.map()</code> to specify plot type, data, color and style.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#408080;font-style:italic"># single variable plot</span>
+g<span style="color:#666">.</span>map(plt<span style="color:#666">.</span>hist, <span style="color:#ba2121">&#34;total_bill&#34;</span>, bins<span style="color:#666">=</span>bins, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+
+<span style="color:#408080;font-style:italic"># double variables plot</span>
+g<span style="color:#666">.</span>map(plt<span style="color:#666">.</span>scatter, <span style="color:#ba2121">&#34;total_bill&#34;</span>, <span style="color:#ba2121">&#34;tip&#34;</span>, edgecolor<span style="color:#666">=</span><span style="color:#ba2121">&#34;w&#34;</span>, marker<span style="color:#666">=</span><span style="color:#ba2121">&#34;.&#34;</span>)
+</code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g2 <span style="color:#666">=</span> sns<span style="color:#666">.</span>FacetGrid(
+    df, 
+    row<span style="color:#666">=</span><span style="color:#ba2121">&#34;Degree_Type&#34;</span>,
+    row_order<span style="color:#666">=</span>[
+        <span style="color:#ba2121">&#39;Graduate&#39;</span>, <span style="color:#ba2121">&#39;Bachelors&#39;</span>, <span style="color:#ba2121">&#39;Associates&#39;</span>, <span style="color:#ba2121">&#39;Certificate&#39;</span>
+    ]
+)
+g2<span style="color:#666">.</span>map(sns<span style="color:#666">.</span>pointplot, <span style="color:#ba2121">&#39;SAT_AVG_ALL&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311333237.png" alt=""></p>
+<p>Seaborn&rsquo;s <code>FacetGrid()</code> is very powerful and flexible but involves multiple steps to create. The <code>factorplot()</code> function  returned value is also a FacetGrid but the process for creating one is much simpler.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>factorplot(data<span style="color:#666">=</span>df,
+        x<span style="color:#666">=</span><span style="color:#ba2121">&#39;SAT_AVG_ALL&#39;</span>,
+        kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;point&#39;</span>,
+        row<span style="color:#666">=</span><span style="color:#ba2121">&#39;Degree_Type&#39;</span>,
+        row_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#39;Graduate&#39;</span>, <span style="color:#ba2121">&#39;Bachelors&#39;</span>, <span style="color:#ba2121">&#39;Associates&#39;</span>, <span style="color:#ba2121">&#39;Certificate&#39;</span>])
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311335450.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>factorplot(data<span style="color:#666">=</span>df,
+         x<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+         kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;box&#39;</span>,
+         row<span style="color:#666">=</span><span style="color:#ba2121">&#39;Degree_Type&#39;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311334804.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">seaborn<span style="color:#666">.</span>lmplot(
+    x, y, data, 
+    hue<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, col<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, row<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, palette<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    hue_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, col_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, row_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    col_wrap<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, height<span style="color:#666">=</span><span style="color:#666">5</span>, aspect<span style="color:#666">=</span><span style="color:#666">1</span>, markers<span style="color:#666">=</span><span style="color:#ba2121">&#39;o&#39;</span>, sharex<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, sharey<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>,
+    legend<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, legend_out<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, x_estimator<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, x_bins<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, x_ci<span style="color:#666">=</span><span style="color:#ba2121">&#39;ci&#39;</span>, scatter<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, fit_reg<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, ci<span style="color:#666">=</span><span style="color:#666">95</span>, 
+    n_boot<span style="color:#666">=</span><span style="color:#666">1000</span>, units<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, order<span style="color:#666">=</span><span style="color:#666">1</span>, logistic<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, lowess<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, robust<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, logx<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, x_partial<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, y_partial<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, truncate<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, x_jitter<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, y_jitter<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, scatter_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, line_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, size<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+</code></pre></div><p>The <a href="https://www.cntofu.com/book/172/docs/27.md">lmplot( )</a> function combines <code>regplot()</code> and <code>FacetGrid</code>. It is intended as a convenient interface to fit regression models across conditional subsets of a dataset. When thinking about how to assign variables to different facets, a general rule is that it makes sense to use <code>hue</code> for the most important comparison, followed by <code>col</code> and <code>row</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">g <span style="color:#666">=</span> sns<span style="color:#666">.</span>FacetGrid(
+        df, col<span style="color:#666">=</span><span style="color:#ba2121">&#34;Ownership&#34;</span>,
+        row<span style="color:#666">=</span><span style="color:#ba2121">&#39;Degree_Type&#39;</span>,
+        row_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#39;Graduate&#39;</span>, <span style="color:#ba2121">&#39;Bachelors&#39;</span>],
+        hue<span style="color:#666">=</span><span style="color:#ba2121">&#39;WOMENONLY&#39;</span>,
+        col_order<span style="color:#666">=</span>inst_ord
+)
+g<span style="color:#666">.</span>map(plt<span style="color:#666">.</span>scatter, <span style="color:#ba2121">&#39;SAT_AVG_ALL&#39;</span>, <span style="color:#ba2121">&#34;Tuition&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311344802.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>lmplot(data<span style="color:#666">=</span>df,
+        x<span style="color:#666">=</span><span style="color:#ba2121">&#39;SAT_AVG_ALL&#39;</span>,
+        y<span style="color:#666">=</span><span style="color:#ba2121">&#39;Tuition&#39;</span>,
+        col<span style="color:#666">=</span><span style="color:#ba2121">&#34;Ownership&#34;</span>,
+        row<span style="color:#666">=</span><span style="color:#ba2121">&#39;Degree_Type&#39;</span>,
+        row_order<span style="color:#666">=</span>[<span style="color:#ba2121">&#39;Graduate&#39;</span>, <span style="color:#ba2121">&#39;Bachelors&#39;</span>],
+        hue<span style="color:#666">=</span><span style="color:#ba2121">&#39;WOMENONLY&#39;</span>,
+        col_order<span style="color:#666">=</span>inst_ord)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311338552.png" alt=""></p>
+<blockquote>
+<p>Notice, <code>factorplot()</code>, <code>lmplot()</code>, <code>relplot()</code>, <code>catplot()</code>.</p>
+</blockquote>
+<h2 id="42-pairgrid-and-pairplot">4.2 <code>PairGrid</code> and <code>pairplot</code></h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">PairGrid(
+    data, 
+    hue<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, hue_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, palette<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, hue_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    <span style="color:#008000">vars</span><span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, x_vars<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, y_vars<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    diag_sharey<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, height<span style="color:#666">=</span><span style="color:#666">2.5</span>, aspect<span style="color:#666">=</span><span style="color:#666">1</span>, despine<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, size<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+</code></pre></div><p><a href="https://www.cntofu.com/book/172/docs/35.md">PairGrid</a> and <code>pairplot</code> are similar to the <code>FacetGrid</code>, <code>factorplot</code>, and <code>lmplots</code>, exercise because they allow us to see interactions across different columns of data.</p>
+<p>The <code>PairGrid</code> plot allows us to build plots that show the relationships between <strong>two</strong> data elements. The process for creating a <code>PairGrid</code> is similar to a <code>FacetGrid</code> in that we must create the grid.Notice that we define the <strong>variables instead of the row and column parameters</strong>. Three cases:</p>
+<ul>
+<li>seaborn will create row and column respectively for each of variable you specify in <code>vars</code> arguments.</li>
+<li>seaborn will create row for variable you specify in <code>x_vars</code> arguments, and column for variable in <code>y_vars</code> arguments.</li>
+<li>seaborn will create row and column respectively for each of volumns in the dateframe if you don&rsquo;t specify <code>vars</code> argument.</li>
+</ul>
+<p>Then <code>map</code> a plot type to the grid. You can use the <code>map_diag()</code> function to define the plotting function for the main diagonal. The <code>map_offdiag()</code> function defines the other diagonal.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">iris <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;iris&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>PairGrid(iris, hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;species&#34;</span>)
+g<span style="color:#666">.</span>map_diag(plt<span style="color:#666">.</span>hist, histtype<span style="color:#666">=</span><span style="color:#ba2121">&#34;step&#34;</span>)
+g<span style="color:#666">.</span>map_offdiag(plt<span style="color:#666">.</span>scatter)
+g<span style="color:#666">.</span>add_legend()
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311502150.png" alt=""></p>
+<p>you can also use <code>map_upper()</code>, <code>map_lower()</code> to specify different plot type on the both sides of the diagonal.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">iris <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;iris&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>PairGrid(iris)
+g<span style="color:#666">.</span>map_upper(plt<span style="color:#666">.</span>scatter)
+g<span style="color:#666">.</span>map_lower(sns<span style="color:#666">.</span>kdeplot, cmap<span style="color:#666">=</span><span style="color:#ba2121">&#34;Blues_d&#34;</span>)
+g<span style="color:#666">.</span>map_diag(sns<span style="color:#666">.</span>kdeplot)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311459497.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">seaborn<span style="color:#666">.</span>pairplot(
+    data, 
+    hue<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, hue_order<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, palette<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    <span style="color:#008000">vars</span><span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, x_vars<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, y_vars<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;scatter&#39;</span>, diag_kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;auto&#39;</span>, 
+    markers<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, height<span style="color:#666">=</span><span style="color:#666">2.5</span>, aspect<span style="color:#666">=</span><span style="color:#666">1</span>, dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, plot_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, diag_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, grid_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, size<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+</code></pre></div><p><a href="https://www.cntofu.com/book/172/docs/23.md">Pairplot</a> is a high-level interface for <code>PairGrid</code> that is intended to make it easy to draw a few common styles. You should use PairGrid directly if you need more flexibility. Two arguments:</p>
+<ul>
+<li><code>kind：{‘scatter’, ‘reg’}, optional</code> Kind of plot for the non-identity relationships.</li>
+<li><code>diag_kind：{‘auto’, ‘hist’, ‘kde’}, optional</code> Kind of plot for the diagonal subplots.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">iris <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;iris&#34;</span>)
+sns<span style="color:#666">.</span>pairplot(
+        iris,
+        hue<span style="color:#666">=</span><span style="color:#ba2121">&#34;species&#34;</span>,
+        palette<span style="color:#666">=</span><span style="color:#ba2121">&#34;husl&#34;</span>,
+        markers<span style="color:#666">=</span>[<span style="color:#ba2121">&#34;o&#34;</span>, <span style="color:#ba2121">&#34;+&#34;</span>, <span style="color:#ba2121">&#34;v&#34;</span>],
+        diag_kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;kde&#34;</span>,
+        diag_kws<span style="color:#666">=</span>{<span style="color:#ba2121">&#39;alpha&#39;</span>:<span style="color:#666">.5</span>, <span style="color:#ba2121">&#34;shade&#34;</span>:<span style="color:#008000;font-weight:bold">True</span>},
+        kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;reg&#34;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311515267.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">sns<span style="color:#666">.</span>pairplot(
+    data<span style="color:#666">=</span>df,
+    <span style="color:#008000">vars</span><span style="color:#666">=</span>[<span style="color:#ba2121">&#34;insurance_losses&#34;</span>, <span style="color:#ba2121">&#34;premiums&#34;</span>],
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;reg&#39;</span>,
+    palette<span style="color:#666">=</span><span style="color:#ba2121">&#39;BrBG&#39;</span>,
+    diag_kind <span style="color:#666">=</span> <span style="color:#ba2121">&#39;kde&#39;</span>,
+    diag_kws<span style="color:#666">=</span>{
+        <span style="color:#ba2121">&#34;shade&#34;</span>:<span style="color:#008000;font-weight:bold">True</span>,
+        <span style="color:#ba2121">&#34;alpha&#34;</span>:<span style="color:#666">.5</span>
+    },
+    hue<span style="color:#666">=</span><span style="color:#ba2121">&#39;Region&#39;</span>
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311519757.png" alt=""></p>
+<h2 id="43-jointgrid-and-jointplot">4.3 <code>JointGrid</code> and <code>jointplot</code></h2>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">seaborn<span style="color:#666">.</span>JointGrid(
+    x, y, data<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    height<span style="color:#666">=</span><span style="color:#666">6</span>, ratio<span style="color:#666">=</span><span style="color:#666">5</span>, space<span style="color:#666">=</span><span style="color:#666">0.2</span>, dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, 
+    xlim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, ylim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, size<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+</code></pre></div><p><a href="https://www.cntofu.com/book/172/docs/41.md">JoinGrid</a> creates grid for drawing a bivariate plot with marginal univariate plots. Initialize the figure but don’t draw any plots onto it:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>JointGrid(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311550478.png" alt=""></p>
+<p>Add plots using default parameters:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>JointGrid(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips)
+g<span style="color:#666">.</span>plot(sns<span style="color:#666">.</span>regplot, sns<span style="color:#666">.</span>distplot)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311551344.png" alt=""></p>
+<p>Draw the join and marginal plots separately:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>JointGrid(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips)
+
+g<span style="color:#666">.</span>plot_joint(plt<span style="color:#666">.</span>scatter, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;.5&#34;</span>, edgecolor<span style="color:#666">=</span><span style="color:#ba2121">&#34;white&#34;</span>)
+g<span style="color:#666">.</span>plot_marginals(sns<span style="color:#666">.</span>distplot, kde<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">False</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;.5&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311552709.png" alt=""></p>
+<p>or</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+
+tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>JointGrid(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips)
+
+g<span style="color:#666">.</span>plot_joint(plt<span style="color:#666">.</span>scatter, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;m&#34;</span>, edgecolor<span style="color:#666">=</span><span style="color:#ba2121">&#34;white&#34;</span>)
+g<span style="color:#666">.</span>ax_marg_x<span style="color:#666">.</span>hist(tips[<span style="color:#ba2121">&#34;total_bill&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>, alpha<span style="color:#666">=</span><span style="color:#666">.6</span>, bins<span style="color:#666">=</span>np<span style="color:#666">.</span>arange(<span style="color:#666">0</span>, <span style="color:#666">60</span>, <span style="color:#666">4</span>))
+g<span style="color:#666">.</span>ax_marg_y<span style="color:#666">.</span>hist(tips[<span style="color:#ba2121">&#34;tip&#34;</span>], color<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>, alpha<span style="color:#666">=</span><span style="color:#666">.6</span>, orientation<span style="color:#666">=</span><span style="color:#ba2121">&#34;horizontal&#34;</span>, bins<span style="color:#666">=</span>np<span style="color:#666">.</span>arange(<span style="color:#666">0</span>, <span style="color:#666">12</span>, <span style="color:#666">.5</span>))
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311554726.png" alt=""></p>
+<p>Add an annotation with a statistic summarizing the bivariate relationship:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">scipy</span> <span style="color:#008000;font-weight:bold">import</span> stats
+
+tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+g <span style="color:#666">=</span> sns<span style="color:#666">.</span>JointGrid(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips)
+
+g<span style="color:#666">.</span>plot_joint(plt<span style="color:#666">.</span>scatter)
+g<span style="color:#666">.</span>plot_marginals(sns<span style="color:#666">.</span>kdeplot, shade<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>)
+
+rsquare <span style="color:#666">=</span> <span style="color:#008000;font-weight:bold">lambda</span> a, b: stats<span style="color:#666">.</span>pearsonr(a, b)[<span style="color:#666">0</span>] <span style="color:#666">**</span> <span style="color:#666">2</span>
+g<span style="color:#666">.</span>annotate(
+    rsquare, 
+    template<span style="color:#666">=</span><span style="color:#ba2121">&#34;</span><span style="color:#b68;font-weight:bold">{stat}</span><span style="color:#ba2121">: </span><span style="color:#b68;font-weight:bold">{val:.2f}</span><span style="color:#ba2121">&#34;</span>, 
+    stat<span style="color:#666">=</span><span style="color:#ba2121">&#34;$R^2$&#34;</span>, 
+    loc<span style="color:#666">=</span><span style="color:#ba2121">&#34;upper left&#34;</span>, 
+    fontsize<span style="color:#666">=</span><span style="color:#666">12</span>
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311600896.png" alt=""></p>
+<hr>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">seaborn<span style="color:#666">.</span>jointplot(
+    x, y, data<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, kind<span style="color:#666">=</span><span style="color:#ba2121">&#39;scatter&#39;</span>, 
+    stat_func<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, color<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    height<span style="color:#666">=</span><span style="color:#666">6</span>, ratio<span style="color:#666">=</span><span style="color:#666">5</span>, space<span style="color:#666">=</span><span style="color:#666">0.2</span>, dropna<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, 
+    xlim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, ylim<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, 
+    joint_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, marginal_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, annot_kws<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>, <span style="color:#666">**</span>kwargs
+)
+</code></pre></div><p><a href="https://www.cntofu.com/book/172/docs/22.md">jointplot( )</a> function provides a convenient interface to the JointGrid class, with several canned plot kinds. This is intended to be a fairly lightweight wrapper; if you need more flexibility, you should use JointGrid directly.</p>
+<p>Draw a default jointplot, i.e. scatterplot with marginal histograms:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+sns<span style="color:#666">.</span>jointplot(x<span style="color:#666">=</span><span style="color:#ba2121">&#34;total_bill&#34;</span>, y<span style="color:#666">=</span><span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips)
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311613152.png" alt=""></p>
+<p>Add (3 order) regression and kernel density fits</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+sns<span style="color:#666">.</span>jointplot(
+    <span style="color:#ba2121">&#34;total_bill&#34;</span>, 
+    <span style="color:#ba2121">&#34;tip&#34;</span>, 
+    data<span style="color:#666">=</span>tips, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;reg&#34;</span>, 
+    order<span style="color:#666">=</span><span style="color:#666">3</span>, 
+    xlim<span style="color:#666">=</span>(<span style="color:#666">0</span>,<span style="color:#666">50</span>)
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311629886.png" alt=""></p>
+<p>the corresponding residual plot:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+sns<span style="color:#666">.</span>jointplot(
+    <span style="color:#ba2121">&#34;total_bill&#34;</span>, 
+    <span style="color:#ba2121">&#34;tip&#34;</span>, 
+    data<span style="color:#666">=</span>tips, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;resid&#34;</span>, 
+    order<span style="color:#666">=</span><span style="color:#666">3</span>, 
+    xlim<span style="color:#666">=</span>(<span style="color:#666">0</span>,<span style="color:#666">50</span>)
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311630192.png" alt=""></p>
+<p>Replace the scatterplot with a joint histogram using hexagonal bins:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">tips <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;tips&#34;</span>)
+sns<span style="color:#666">.</span>jointplot(<span style="color:#ba2121">&#34;total_bill&#34;</span>, <span style="color:#ba2121">&#34;tip&#34;</span>, data<span style="color:#666">=</span>tips, kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;hex&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311616091.png" alt=""></p>
+<p>Replace the scatterplots and histograms with density estimates and align the marginal Axes tightly with the joint Axes:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">iris <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;iris&#34;</span>)
+sns<span style="color:#666">.</span>jointplot(<span style="color:#ba2121">&#34;sepal_width&#34;</span>, <span style="color:#ba2121">&#34;petal_length&#34;</span>, data<span style="color:#666">=</span>iris, kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;kde&#34;</span>, space<span style="color:#666">=</span><span style="color:#666">0</span>, color<span style="color:#666">=</span><span style="color:#ba2121">&#34;g&#34;</span>)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311618656.png" alt=""></p>
+<p>Draw a scatterplot, then add a joint density estimate:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">iris <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;iris&#34;</span>)
+
+(
+    sns<span style="color:#666">.</span>jointplot(
+        <span style="color:#ba2121">&#34;sepal_length&#34;</span>, 
+        <span style="color:#ba2121">&#34;sepal_width&#34;</span>, 
+        data<span style="color:#666">=</span>iris, 
+        color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>, 
+        kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;scatter&#34;</span>
+    )<span style="color:#666">.</span>plot_joint(
+        sns<span style="color:#666">.</span>kdeplot, 
+        n_levels<span style="color:#666">=</span><span style="color:#666">10</span>, 
+        cmap<span style="color:#666">=</span><span style="color:#ba2121">&#34;RdBu&#34;</span>
+    )
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311626407.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">iris <span style="color:#666">=</span> sns<span style="color:#666">.</span>load_dataset(<span style="color:#ba2121">&#34;iris&#34;</span>)
+
+(sns<span style="color:#666">.</span>jointplot(
+    <span style="color:#ba2121">&#34;sepal_length&#34;</span>, 
+    <span style="color:#ba2121">&#34;sepal_width&#34;</span>, 
+    data<span style="color:#666">=</span>iris, 
+    color<span style="color:#666">=</span><span style="color:#ba2121">&#34;b&#34;</span>, 
+    kind<span style="color:#666">=</span><span style="color:#ba2121">&#34;kde&#34;</span>
+    )<span style="color:#666">.</span>plot_joint(
+        sns<span style="color:#666">.</span>kdeplot, 
+        n_levels<span style="color:#666">=</span><span style="color:#666">10</span>, 
+        cmap<span style="color:#666">=</span><span style="color:#ba2121">&#34;RdBu&#34;</span>
+    )
+)
+
+plt<span style="color:#666">.</span>show()
+plt<span style="color:#666">.</span>clf()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202203311625847.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th><code>Grid</code> class</th>
+<th>high-level function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FacetGrid</code></td>
+<td><code>factorplot()</code>, <code>lmplot()</code>, <code>relplot()</code>, <code>catplot()</code></td>
+</tr>
+<tr>
+<td><code>PairGrid</code></td>
+<td><code>pairplot</code></td>
+</tr>
+<tr>
+<td><code>JointGrid</code></td>
+<td><code>jointplot</code>, <code>jointplot.plot_joint</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="44-union-frame">4.4 Union Frame</h2>
+<p>The final section of this blog will bring all of the concepts together and give a framework for deciding when to use each Seaborn plot.</p>
+<h3 id="univariate-distribution-analysis">Univariate Distribution Analysis</h3>
+<p>One of the first steps in analyzing numerical data is looking at its <strong>distribution</strong>. Seaborn&rsquo;s <code>distplot()</code> combines many of the features of the <code>rugplot()</code>, <code>kdeplot()</code>, and <code>plt.histplot()</code> into a single function. The <code>distplot()</code> function is the best place to start when trying to do distribution analysis with Seaborn.</p>
+<h3 id="regression-analysis">Regression Analysis</h3>
+<p>A regression plot is an example of a plot that shows the <strong>relationship</strong> between two variables. matplotlib&rsquo;s <code>scatter()</code> plot is a very simple method to compare the interaction of two variables on the x and y-axis. The <code>lmplot()</code> combines many of these features of the underlying <code>regplot()</code> and <code>residplot()</code> in addition to the ability to plot the data on a <code>FacetGrid()</code>. In many instances, <code>lmplot()</code> is the best function to use for determining linear relationships between data.</p>
+<h3 id="categorical-plots">Categorical Plots</h3>
+<p>Seaborn has many types of categorical plots as well. In most scenarios, it makes sense to use one of the categorical plots such as the <code>boxplot()</code> or <code>violinplot()</code> to examine the distribution of the variables. Then, follow up with the statistical estimation plots such as the point, bar, or countplot. If you need to facet the data across rows or columns, use a <code>factorplot()</code>.</p>
+<h3 id="relation">Relation</h3>
+<p>The <code>pairplot()</code> and <code>jointplot()</code> visualizations are going to be most useful after you have done some preliminary analysis of regressions or distributions of the data. Once you are familiar with the data, the <code>pairplot()</code> and <code>jointplot()</code> can be very useful in understanding how two or more variables interact with each other.</p>
 
 </main>
 

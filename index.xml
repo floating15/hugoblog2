@@ -29,7 +29,9 @@
       
       <guid>/post/2020/04/23/data-visualization-iii-seaborn/</guid>
       <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
- [toc]</description>
+ [toc]
+1. Seaborn Introduction 1.1 Distribution plot The pandas library supports simple plotting of data, which is very convenient when data is already likely to be in a pandas DataFrame.
+df[&amp;#39;Award_Amount&amp;#39;].plot.hist() plt.show() plt.clf() # &amp;lt;-- Clear out the pandas histogram Seaborn generally does more statistical analysis on data and can provide more sophisticated insight into the data.</description>
     </item>
     
     <item>
@@ -187,7 +189,7 @@ Quisque mattis volutpat lorem vitae feugiat.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/note/</guid>
-      <description>Analysis I (General Topology) Operations Research I Game Theory I Machine Learning Foundation I (CN)  Analysis I (General Topology)  Lecture_01.pdf Lecture_02.pdf Lecture_03.pdf Lecture_04.pdf Lecture_05.pdf Lecture_06.pdf  Operations Research I  Introduction.pdf Lecture_02.pdf Lecture_03.pdf Lecture_04.pdf Lecture_05.pdf Lecture_06.pdf  Game Theory I  Pure Strategy Nash Equilibrium.pdf Mixed Strategy Nash Equilibrium.pdf Further Solution Concepts  Machine Learning Foundation I (CN)  Perceptron.pdf PAC Learning Frame.pdf Theory of Generalization.pdf VC Dimension.</description>
+      <description>Analysis I (General Topology) Operations Research I Game Theory I Machine Learning Foundation I (CN)  Analysis I (General Topology)  Lecture_01.pdf Lecture_02.pdf Lecture_03.pdf Lecture_04.pdf Lecture_05.pdf Lecture_06.pdf  Operations Research I  Introduction.pdf Lecture_02.pdf Lecture_03.pdf Lecture_04.pdf Lecture_05.pdf Lecture_06.pdf  Game Theory I  Pure Strategy Nash Equilibrium.pdf Mixed Strategy Nash Equilibrium.pdf Further Solution Concepts.pdf  Machine Learning Foundation I (CN)  Perceptron.pdf PAC Learning Frame.pdf Theory of Generalization.pdf VC Dimension.</description>
     </item>
     
   </channel>

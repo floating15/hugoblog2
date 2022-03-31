@@ -29,7 +29,9 @@
       
       <guid>/post/2020/04/23/data-visualization-iii-seaborn/</guid>
       <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
- [toc]</description>
+ [toc]
+1. Seaborn Introduction 1.1 Distribution plot The pandas library supports simple plotting of data, which is very convenient when data is already likely to be in a pandas DataFrame.
+df[&amp;#39;Award_Amount&amp;#39;].plot.hist() plt.show() plt.clf() # &amp;lt;-- Clear out the pandas histogram Seaborn generally does more statistical analysis on data and can provide more sophisticated insight into the data.</description>
     </item>
     
     <item>
