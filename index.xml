@@ -23,6 +23,28 @@
     </item>
     
     <item>
+      <title>Importing Data in Python II</title>
+      <link>/post/2020/05/01/importing-data-in-python-ii/</link>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/05/01/importing-data-in-python-ii/</guid>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]</description>
+    </item>
+    
+    <item>
+      <title>Importing Data in Python I</title>
+      <link>/post/2020/04/26/importing-data-in-python-i/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/04/26/importing-data-in-python-i/</guid>
+      <description>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.
+ [toc]
+1. Importing data from flat files We&amp;rsquo;ll discuss how to import data from 3 kind of data sources
+ flat files such as dot txts and dot csvs; files native to other software such as Excel spreadsheets, Stata, SAS and MATLAB files; relational databases such as SQLite &amp;amp; PostgreSQL.</description>
+    </item>
+    
+    <item>
       <title>Data Visualization III (Seaborn)</title>
       <link>/post/2020/04/23/data-visualization-iii-seaborn/</link>
       <pubDate>Thu, 23 Apr 2020 00:00:00 +0000</pubDate>

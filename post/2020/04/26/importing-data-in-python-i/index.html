@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Importing Data in Python I | haoming&#39;s blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/note/">Notes</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/post/">Posts</a></li>
+      
+      <li><a href="/replicate/">Replicate</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+
+
+
+<div class="article-meta">
+<h1><span class="title">Importing Data in Python I</span></h1>  
+
+<h2 class="date">2020/04/26</h2>
+</div>
+
+
+<main>
+
+
+<aside>
+    <header>
+    <h2>Content</h2>
+    </header>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-importing-data-from-flat-files">1. Importing data from flat files</a>
+      <ul>
+        <li><a href="#11-importing-flat-files-using-open">1.1 Importing flat files using <code>open()</code></a></li>
+        <li><a href="#12-importing-flat-files-using-numpy">1.2 Importing flat files using <code>NumPy</code></a></li>
+        <li><a href="#13-importing-flat-files-using-pandas">1.3 Importing flat files using <code>Pandas</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#2-importing-data-from-other-file-types">2. Importing data from other file types</a>
+      <ul>
+        <li><a href="#21-importing-pickle-and-excel-file">2.1 Importing Pickle and Excel file</a></li>
+        <li><a href="#22-importing-sasstata-files">2.2 Importing SAS/Stata files</a></li>
+        <li><a href="#23-importing-hdf5-files">2.3 Importing HDF5 files</a></li>
+        <li><a href="#24-importing-matlab-files">2.4 Importing MATLAB files</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-relational-databases-in-python">3. Relational databases in Python</a>
+      <ul>
+        <li><a href="#31-creating-a-database-engine-in-python">3.1 Creating a database engine in Python</a></li>
+        <li><a href="#32-querying-relational-databases-in-python">3.2 Querying relational databases in Python</a></li>
+        <li><a href="#33-querying-relational-databases-directly-with-pandas">3.3 Querying relational databases directly with pandas</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <HR>
+</aside>
+
+
+<blockquote>
+<p>All figures in this blog are embedded by Github Image Hosting Service. These figures may not be displayed on mobile devices.</p>
+</blockquote>
+<p>[toc]</p>
+<h1 id="1-importing-data-from-flat-files">1. Importing data from flat files</h1>
+<p>We&rsquo;ll discuss how to import data from 3 kind of data sources</p>
+<ol>
+<li>flat files such as dot txts and dot csvs;</li>
+<li>files native to other software such as Excel spreadsheets, Stata, SAS and MATLAB files;</li>
+<li>relational databases such as SQLite &amp; PostgreSQL.</li>
+</ol>
+<h2 id="11-importing-flat-files-using-open">1.1 Importing flat files using <code>open()</code></h2>
+<p>To check out any plain text file, you can use Python’s basic <code>open()</code> function to open a connection to the file. To do so, you pass the filename to the function <code>open()</code> and also pass it the argument <code>mode=&quot;r&quot;</code>, which makes sure that we can only read it (we wouldn&rsquo;t want to accidentally write to it!), assign the text from the file to a variable by applying the method <code>read()</code> to the connection to the file. After you do this, make sure that you close the connection to the file using the <code>close()</code> method.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">file <span style="color:#666">=</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#34;moby_dick.txt&#34;</span>, mode<span style="color:#666">=</span><span style="color:#ba2121">&#34;r&#34;</span>)
+<span style="color:#008000">print</span>(file<span style="color:#666">.</span>read()[<span style="color:#666">0</span>:<span style="color:#666">200</span>])
+<span style="color:#008000">print</span>(file<span style="color:#666">.</span>closed) <span style="color:#408080;font-style:italic"># Check whether the file is closed</span>
+file<span style="color:#666">.</span>close()
+<span style="color:#008000">print</span>(file<span style="color:#666">.</span>closed)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">CHAPTER 1. Loomings.
+
+Call me Ishmael. Some years ago--never mind how long precisely--having
+little or no money in my purse, and nothing particular to interest me on
+shore, I thought I would sail abou
+False
+True
+</code></pre></div><blockquote>
+<p>If you wanted to open a file in order to write to it, you would pass it the argument <code>mode=&quot;w&quot;</code>.</p>
+</blockquote>
+<p>using a <code>with</code> statement. This allows you to create a context in which you can execute commands with the file open. Once out of this context, the file will be closed, for this reason, it is called a <strong>Context Manager</strong>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">with</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#39;moby_dick.txt&#39;</span>) <span style="color:#008000;font-weight:bold">as</span> file:
+    <span style="color:#008000">print</span>(file<span style="color:#666">.</span>readline())
+    <span style="color:#008000">print</span>(file<span style="color:#666">.</span>readline())
+    <span style="color:#008000">print</span>(file<span style="color:#666">.</span>readline())
+    <span style="color:#008000">print</span>(file<span style="color:#666">.</span>readline())
+    <span style="color:#008000">print</span>(file<span style="color:#666">.</span>readline())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">CHAPTER 1. Loomings.
+
+
+
+Call me Ishmael. Some years ago--never mind how long precisely--having
+
+little or no money in my purse, and nothing particular to interest me on
+
+shore, I thought I would sail about a little and see the watery part of
+</code></pre></div><h2 id="12-importing-flat-files-using-numpy">1.2 Importing flat files using <code>NumPy</code></h2>
+<p>If all the data are numerical, you can use the package <code>numpy</code> to import the data as a numpy array with the NumPy functions <a href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">loadtxt( )</a>. We call <code>loadtxt()</code> and pass it the filename as the first argument, along with the <code>delimiter</code> as the 2nd argument. Note that the default delimiter is any white space so we’ll usually need to specify it explicitly.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+
+file <span style="color:#666">=</span> <span style="color:#ba2121">&#39;digits.csv&#39;</span>
+digits <span style="color:#666">=</span> np<span style="color:#666">.</span>loadtxt(file, delimiter<span style="color:#666">=</span><span style="color:#ba2121">&#34;,&#34;</span>)
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(digits), digits<span style="color:#666">.</span>shape)
+
+fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(<span style="color:#666">5</span>,<span style="color:#666">5</span>)
+<span style="color:#008000;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">5</span>):
+    <span style="color:#008000;font-weight:bold">for</span> j <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#008000">range</span>(<span style="color:#666">5</span>):
+        im <span style="color:#666">=</span> digits[np<span style="color:#666">.</span>random<span style="color:#666">.</span>randint(<span style="color:#666">0</span>,<span style="color:#666">100</span>), <span style="color:#666">1</span>:]
+        im_sq <span style="color:#666">=</span> np<span style="color:#666">.</span>reshape(im, (<span style="color:#666">28</span>, <span style="color:#666">28</span>))
+        ax[i][j]<span style="color:#666">.</span>imshow(
+            im_sq, 
+            cmap<span style="color:#666">=</span><span style="color:#ba2121">&#39;Greys&#39;</span>, 
+            interpolation<span style="color:#666">=</span><span style="color:#ba2121">&#39;nearest&#39;</span>
+        )
+plt<span style="color:#666">.</span>show()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;class &#39;numpy.ndarray&#39;&gt; (100, 785)
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204011031415.png" alt=""></p>
+<p>You can skip the first row by calling <code>loadtxt</code> with the argument <code>skiprows=1</code>; You can select the 1st and 3rd columns of the data, by setting <code>usecols=[0,2]</code>. You can also import different datatypes into NumPy arrays: for example, setting the argument <code>dtype=&quot;str&quot;</code> will ensure that all entries are imported as strings.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+
+file <span style="color:#666">=</span> <span style="color:#ba2121">&#39;digits_header.txt&#39;</span>
+data <span style="color:#666">=</span> np<span style="color:#666">.</span>loadtxt(file, delimiter<span style="color:#666">=</span><span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#ba2121">&#34;</span>, skiprows<span style="color:#666">=</span><span style="color:#666">1</span>, usecols<span style="color:#666">=</span>[<span style="color:#666">0</span>,<span style="color:#666">2</span>])
+<span style="color:#008000">print</span>(data[:<span style="color:#666">5</span>])
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[[1. 0.]
+ [0. 0.]
+ [1. 0.]
+ [4. 0.]
+ [0. 0.]]
+</code></pre></div><p>Notice that <code>loadtxt</code> tends to <strong>break down</strong> when we have <strong>mixed datatypes</strong>, for example, columns consisting of floats and columns consisting of strings. And you should import in different datatypes respectively.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">file <span style="color:#666">=</span> <span style="color:#ba2121">&#39;seaslug.txt&#39;</span>
+
+data <span style="color:#666">=</span> np<span style="color:#666">.</span>loadtxt(file, delimiter<span style="color:#666">=</span><span style="color:#ba2121">&#39;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#ba2121">&#39;</span>, dtype<span style="color:#666">=</span><span style="color:#008000">str</span>)
+<span style="color:#008000">print</span>(data[<span style="color:#666">0</span>])
+data_float <span style="color:#666">=</span> np<span style="color:#666">.</span>loadtxt(file, delimiter<span style="color:#666">=</span><span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#ba2121">&#34;</span>, dtype<span style="color:#666">=</span><span style="color:#008000">float</span>, skiprows<span style="color:#666">=</span><span style="color:#666">1</span>)
+<span style="color:#008000">print</span>(data_float[<span style="color:#666">9</span>])
+
+plt<span style="color:#666">.</span>scatter(data_float[:, <span style="color:#666">0</span>], data_float[:, <span style="color:#666">1</span>])
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;time (min.)&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;percentage of larvae&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;Time&#39; &#39;Percent&#39;]
+[0.    0.357]
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204011040444.png" alt=""></p>
+<p>Much of the time you will need to import datasets which have different datatypes in different columns; one column may contain strings and another floats, for example. The function <code>np.loadtxt()</code> will <strong>freak</strong> at this. There is another function, <a href="https://numpy.org/doc/stable/reference/generated/numpy.genfromtxt.html?highlight=genfromtxt#numpy.genfromtxt">genfromtxt( )</a>, which can handle such structures. If we pass <code>dtype=None</code> to it, it will figure out what types each column should be.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">data <span style="color:#666">=</span> np<span style="color:#666">.</span>genfromtxt(
+    <span style="color:#ba2121">&#39;titanic.csv&#39;</span>, 
+    delimiter<span style="color:#666">=</span><span style="color:#ba2121">&#39;,&#39;</span>, 
+    names<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">True</span>, 
+    dtype<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>
+)
+data[<span style="color:#666">0</span>:<span style="color:#666">10</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">array([( 1, 0, 3, b&#39;male&#39;, 22., 1, 0, b&#39;A/5 21171&#39;,  7.25  , b&#39;&#39;, b&#39;S&#39;),
+       ( 2, 1, 1, b&#39;female&#39;, 38., 1, 0, b&#39;PC 17599&#39;, 71.2833, b&#39;C85&#39;, b&#39;C&#39;),
+       ( 3, 1, 3, b&#39;female&#39;, 26., 0, 0, b&#39;STON/O2. 3101282&#39;,  7.925 , b&#39;&#39;, b&#39;S&#39;),
+       ( 4, 1, 1, b&#39;female&#39;, 35., 1, 0, b&#39;113803&#39;, 53.1   , b&#39;C123&#39;, b&#39;S&#39;),
+       ( 5, 0, 3, b&#39;male&#39;, 35., 0, 0, b&#39;373450&#39;,  8.05  , b&#39;&#39;, b&#39;S&#39;),
+       ( 6, 0, 3, b&#39;male&#39;, nan, 0, 0, b&#39;330877&#39;,  8.4583, b&#39;&#39;, b&#39;Q&#39;),
+       ( 7, 0, 1, b&#39;male&#39;, 54., 0, 0, b&#39;17463&#39;, 51.8625, b&#39;E46&#39;, b&#39;S&#39;),
+       ( 8, 0, 3, b&#39;male&#39;,  2., 3, 1, b&#39;349909&#39;, 21.075 , b&#39;&#39;, b&#39;S&#39;),
+       ( 9, 1, 3, b&#39;female&#39;, 27., 0, 2, b&#39;347742&#39;, 11.1333, b&#39;&#39;, b&#39;S&#39;),
+       (10, 1, 2, b&#39;female&#39;, 14., 1, 0, b&#39;237736&#39;, 30.0708, b&#39;&#39;, b&#39;C&#39;)],
+      dtype=[(&#39;PassengerId&#39;, &#39;&lt;i8&#39;), (&#39;Survived&#39;, &#39;&lt;i8&#39;), (&#39;Pclass&#39;, &#39;&lt;i8&#39;), (&#39;Sex&#39;, &#39;S6&#39;), (&#39;Age&#39;, &#39;&lt;f8&#39;), (&#39;SibSp&#39;, &#39;&lt;i8&#39;), (&#39;Parch&#39;, &#39;&lt;i8&#39;), (&#39;Ticket&#39;, &#39;S18&#39;), (&#39;Fare&#39;, &#39;&lt;f8&#39;), (&#39;Cabin&#39;, &#39;S15&#39;), (&#39;Embarked&#39;, &#39;S1&#39;)])
+</code></pre></div><p>In addition to <code>genfromtxt</code>, the <code>numpy</code> module provides several convenience functions derived from <code>genfromtxt</code>. These functions work the same way as the original, but they have different default values.</p>
+<ul>
+<li>
+<p><code>recfromtxt</code>
+Returns a standard <code>numpy.recarray</code> (if <code>usemask=False</code>) or a <code>MaskedRecords</code> array (if <code>usemaske=True</code>). The default dtype is <code>dtype=None</code>, meaning that <strong>the types of each column will be automatically determined</strong>.</p>
+</li>
+<li>
+<p><code>recfromcsv</code>
+Like <code>recfromtxt</code>, but with a default <code>delimiter=&quot;,&quot;</code>.</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">file <span style="color:#666">=</span> <span style="color:#ba2121">&#39;titanic.csv&#39;</span>
+d<span style="color:#666">=</span> np<span style="color:#666">.</span>recfromcsv(file)
+<span style="color:#008000">print</span>(d[:<span style="color:#666">3</span>])
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[(1, 0, 3, b&#39;male&#39;, 22., 1, 0, b&#39;A/5 21171&#39;,  7.25  , b&#39;&#39;, b&#39;S&#39;)
+(2, 1, 1, b&#39;female&#39;, 38., 1, 0, b&#39;PC 17599&#39;, 71.2833, b&#39;C85&#39;, b&#39;C&#39;)
+(3, 1, 3, b&#39;female&#39;, 26., 0, 0, b&#39;STON/O2. 3101282&#39;,  7.925 , b&#39;&#39;, b&#39;S&#39;)]
+</code></pre></div><h2 id="13-importing-flat-files-using-pandas">1.3 Importing flat files using <code>Pandas</code></h2>
+<p>If we wish to import a CSV in the most basic case all we need to do is to call the function <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">read_csv( )</a> and supply it with a single argument, the name of the file, it will return a DataFrame object of the file.</p>
+<blockquote>
+<p>As Hadley Wickham tweeted, &ldquo;A matrix has rows and columns. A data frame has observations and variables.&rdquo;</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">file <span style="color:#666">=</span> <span style="color:#ba2121">&#39;digits.csv&#39;</span>
+<span style="color:#408080;font-style:italic"># Read the first 5 rows of the file except header into a DataFrame: data</span>
+data<span style="color:#666">=</span>pd<span style="color:#666">.</span>read_csv(file, nrows<span style="color:#666">=</span><span style="color:#666">5</span>, header<span style="color:#666">=</span><span style="color:#008000;font-weight:bold">None</span>) 
+data_array<span style="color:#666">=</span>np<span style="color:#666">.</span>array(data)
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(data_array))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;class &#39;numpy.ndarray&#39;&gt;
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+
+file <span style="color:#666">=</span> <span style="color:#ba2121">&#39;titanic_corrupt.txt&#39;</span>
+data <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(
+    file, 
+    sep<span style="color:#666">=</span><span style="color:#ba2121">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#ba2121">&#34;</span>, <span style="color:#408080;font-style:italic"># &lt;-- the pandas version of delim</span>
+    comment<span style="color:#666">=</span><span style="color:#ba2121">&#34;#&#34;</span>, <span style="color:#408080;font-style:italic"># &lt;-- indicates remainder of line should not be parsed.</span>
+    na_values<span style="color:#666">=</span><span style="color:#ba2121">&#34;Nothing&#34;</span> <span style="color:#408080;font-style:italic"># &lt;-- takes str (in this case, &#34;Nothing&#34;) to recognize as NA/NaN</span>
+)
+data_origin <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(file)
+<span style="color:#008000">print</span>(data<span style="color:#666">.</span>head())
+<span style="color:#008000">print</span>(data_origin<span style="color:#666">.</span>head())
+
+pd<span style="color:#666">.</span>DataFrame<span style="color:#666">.</span>hist(data[[<span style="color:#ba2121">&#39;Age&#39;</span>]])
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;Age (years)&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;count&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">PassengerId  Survived  Pclass     Sex   Age  ...  Parch            Ticket    Fare  Cabin Embarked
+0            1         0       3    male  22.0  ...      0         A/5 21171   7.250    NaN       S 
+1            2         1       1  female  38.0  ...      0          PC 17599     NaN    NaN      NaN   # &lt;-- Notice here
+2            3         1       3  female  26.0  ...      0  STON/O2. 3101282   7.925    NaN        S
+3            4         1       1  female  35.0  ...      0            113803  53.100   C123        S
+4            5         0       3    male  35.0  ...      0            373450   8.050    NaN        S
+
+  PassengerId\tSurvived\tPclass\tSex\tAge\tSibSp\tParch\tTicket\tFare\tCabin\tEmbarked
+0  1\t0\t3\tmale\t22.0\t1\t0\tA/5 21171\t7.25\tNo...                                  
+1  2\t1\t1\tfemale\t38.0\t1\t0\tPC 17599#to\t71.2... # &lt;-- Notice here &#34;#&#34;                                  
+2  3\t1\t3\tfemale\t26.0\t0\t0\tSTON/O2. 3101282\...                                  
+3  4\t1\t1\tfemale\t35.0\t1\t0\t113803\t53.1\tC12...                                  
+4       5\t0\t3\tmale\t35.0\t0\t0\t373450\t8.05\t\tS    
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204011127745.png" alt=""></p>
+<h1 id="2-importing-data-from-other-file-types">2. Importing data from other file types</h1>
+<h2 id="21-importing-pickle-and-excel-file">2.1 Importing Pickle and Excel file</h2>
+<p><a href="https://pythonnumericalmethods.berkeley.edu/notebooks/chapter11.03-Pickle-Files.html">Pickle Files</a> is a file type native to Python, which can store data-types in python such as dictionaries, tuples, lists etc. It can <strong>serialize</strong> objects so that they can be saved into a file and loaded again later. when opening such a file, you can specify that it is <strong>read only</strong> and is a <strong>binary file</strong>, by passing the string &lsquo;<code>rb</code>&rsquo; as the second argument of <code>open</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">d <span style="color:#666">=</span> <span style="color:#008000">dict</span>(name<span style="color:#666">=</span><span style="color:#ba2121">&#39;Bob&#39;</span>, age<span style="color:#666">=</span><span style="color:#666">20</span>, score<span style="color:#666">=</span><span style="color:#666">88</span>)
+<span style="color:#008000">print</span>(d)
+f <span style="color:#666">=</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#39;dump.pkl&#39;</span>, <span style="color:#ba2121">&#39;wb&#39;</span>)
+<span style="color:#408080;font-style:italic"># wirte</span>
+pickle<span style="color:#666">.</span>dump(d,f)
+f<span style="color:#666">.</span>close()
+<span style="color:#408080;font-style:italic"># read</span>
+g <span style="color:#666">=</span> <span style="color:#008000">open</span>(<span style="color:#ba2121">&#39;./dump.pkl&#39;</span>, <span style="color:#ba2121">&#39;rb&#39;</span>)
+e<span style="color:#666">=</span>pickle<span style="color:#666">.</span>load(g)
+g<span style="color:#666">.</span>close()
+<span style="color:#008000">print</span>(e)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">{&#39;name&#39;: &#39;Bob&#39;, &#39;age&#39;: 20, &#39;score&#39;: 88}
+{&#39;name&#39;: &#39;Bob&#39;, &#39;age&#39;: 20, &#39;score&#39;: 88}
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">! hexdump -x ./dump.pkl
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">0000000    0480    2495    0000    0000    0000    7d00    2894    048c
+0000010    616e    656d    8c94    4203    626f    8c94    6103    6567
+0000020    4b94    8c14    7305    6f63    6572    4b94    7558    002e
+000002f
+</code></pre></div><p>An Excel working book generally consists of a number of working sheets, and each working sheets has a mass of working cells. There are many ways (like <code>openpyxl</code> and <code>pyexcel</code> module) to import Excel files and we&rsquo;ll use <code>pandas</code> to do so because it produces dataframes natively.</p>
+<p>We can use the function <a href="https://pandas.pydata.org/docs/reference/api/pandas.ExcelFile.parse.html?highlight=excelfile">Excelfile</a> to assign an Excel file to a variable <code>data</code>. As an Excel file consists of sheets, the first thing to do is figure out what the sheets are. This is straightforward with the <code>data.sheet_names</code> attribute.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">data <span style="color:#666">=</span> pd<span style="color:#666">.</span>ExcelFile(<span style="color:#ba2121">&#34;/Users/wanghaoming/Documents/gpa.xlsx&#34;</span>)
+data<span style="color:#666">.</span>sheet_names
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;Sheet1&#39;, &#39;Sheet2&#39;, &#39;Sheet3&#39;, &#39;Sheet4&#39;, &#39;Sheet5&#39;, &#39;Sheet6&#39;]
+</code></pre></div><p>To then load a particular sheet as a dataframe, we need only apply the method <code>parse()</code> to the object <code>data</code> with a single argument, which is either the name as a string or the index as a float of the sheet.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df6 <span style="color:#666">=</span> data<span style="color:#666">.</span>parse(
+    sheet_name<span style="color:#666">=</span><span style="color:#666">5</span>,
+    usecols<span style="color:#666">=</span><span style="color:#ba2121">&#34;A:F&#34;</span>,
+    nrows<span style="color:#666">=</span><span style="color:#666">12</span>
+)
+<span style="color:#008000">print</span>(df6)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">       课程名称  学分  成绩    课程名称.1  学分.1  成绩.1
+0     实变函数论   3  97  金融衍生品定价Ⅰ     4    93
+1       投资学   4  96     金融经济学     4    93
+2   概率论（理科）   4  96     高等数学Ⅱ     5    93
+3     货币金融学   4  96     高等代数Ⅰ     4    93
+4   金融随机分析Ⅱ   3  95  商业银行经营管理     4    92
+5    衍生金融工具   4  95      随机过程     4    91
+6   金融随机分析Ⅰ   4  94     高等数学Ⅰ     5    91
+7    固定收益证券   4  94       统计学     4    91
+8     国际金融学   4  94      优化理论     3    90
+9     偏微分方程   3  94    金融风险管理     4    90
+10      财政学   4  94       会计学     4    90
+11    计量经济学   4  93      公司金融     4    80
+</code></pre></div><blockquote>
+<p><code>pd.ExcelFile.parse()</code> is equivalent to <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html">pd.read_excel</a> method.</p>
+</blockquote>
+<h2 id="22-importing-sasstata-files">2.2 Importing SAS/Stata files</h2>
+<p>The most common SAS files have the extension <code>.sas7bdat</code> and <code>.sas7bcat</code>, which are dataset files and catalog files respectively. We can import the former as DataFrames using the function <code>SAS7BDAT</code> (upper case) from the package <code>sas7bdat</code> (lower case). We can bind the variable <code>file</code> to a connection to the file &lsquo;xxx.sas7bdat&rsquo; in a context manager. Within this context, We can assign to a variable <code>df_sas</code> the result of applying method <code>to_data_frame</code> to <code>file</code>.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sas7bdat</span> <span style="color:#008000;font-weight:bold">import</span> SAS7BDAT
+
+<span style="color:#008000;font-weight:bold">with</span> SAS7BDAT(<span style="color:#ba2121">&#39;sales.sas7bdat&#39;</span>) <span style="color:#008000;font-weight:bold">as</span> file:
+    df_sas <span style="color:#666">=</span> file<span style="color:#666">.</span>to_data_frame()
+<span style="color:#008000">print</span>(df_sas<span style="color:#666">.</span>head())
+
+pd<span style="color:#666">.</span>DataFrame<span style="color:#666">.</span>hist(df_sas[[<span style="color:#ba2121">&#39;P&#39;</span>]])
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;count&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204021119271.png" alt=""></p>
+<blockquote>
+<p>The other way to import sas (<code>xport</code> and <code>sas7bdat</code>) file is <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_sas.html">pd.read_sas</a>.</p>
+</blockquote>
+<p>Stata files have extension <code>.dta</code> and we can import them using <code>pandas</code>. We don&rsquo;t even need to initialize a context manager in this case. We merely pass the filename to the function <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_stata.html">pd.read_stata</a> and assign it to a variable.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_stata(<span style="color:#ba2121">&#39;disarea.dta&#39;</span>)
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+
+pd<span style="color:#666">.</span>DataFrame<span style="color:#666">.</span>hist(df[[<span style="color:#ba2121">&#39;disa10&#39;</span>]])
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;Extent of disease&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;Number of countries&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204021120375.png" alt=""></p>
+<h2 id="23-importing-hdf5-files">2.3 Importing HDF5 files</h2>
+<blockquote>
+<p>&ldquo;In the Python world, consensus is rapidly converging on Hierarchical Data Format version 5, or &lsquo;HDF5,&rsquo; as the standard mechanism for storing large quantities of numerical data.&rdquo;
+&mdash;-  2013 O&rsquo;Reilly book <em>Python and HDF5</em> by Andrew Collette,</p>
+</blockquote>
+<h3 id="intro-to-hdf5">Intro to HDF5</h3>
+<h4 id="i-group--dataset">i. Group &amp; Dataset</h4>
+<p>The <a href="https://www.neonscience.org/resources/learning-hub/tutorials/about-hdf5">Hierarchical Data Format version 5 (HDF5)</a> format can be thought of as a file system contained and described within one single file. Think about the files and folders stored on your computer. You might have a data directory with some temperature data for multiple field sites. These temperature data are collected every minute and summarized on an hourly, daily and weekly basis. Within one HDF5 file, you can store a similar set of data organized in the same way that you might organize files and folders on your computer. However in a HDF5 file, what we call <strong>&ldquo;directories&rdquo; or &ldquo;folders&rdquo;</strong> on our computers, are called <code>groups</code> and what we call <strong>files</strong> on our computer are called <code>datasets</code>.</p>
+<ul>
+<li>Group: A folder like element within an HDF5 file that might contain other groups or datasets within it.</li>
+<li>Dataset: The actual data contained within the HDF5 file. Datasets are often (but don&rsquo;t have to be) stored within groups in the file.</li>
+</ul>
+<h4 id="ii-metadata">ii. Metadata</h4>
+<p>HDF5 format is <strong>self describing</strong>. This means that each file, group and dataset can have associated <strong>metadata</strong> that describes exactly what the data are. One key benefit of having metadata that are attached to each file, group and dataset, is that this facilitates automation without the need for a separate (and additional) metadata document. Using a programming language, like <code>R</code> or <code>Python</code>, we can grab information from the metadata that are already associated with the dataset, and which we might need to process the dataset.</p>
+<p><img src="https://raw.githubusercontent.com/floating15/img/main/202204021216082.png" alt=""></p>
+<h4 id="iii-compressed--subsetting">iii. Compressed &amp; Subsetting</h4>
+<p>The HDF5 format is a <strong>compressed format</strong>. The size of all data contained within HDF5 is optimized which makes the overall file size smaller. Even when compressed, however, HDF5 files often contain big data and can thus still be quite large. A powerful attribute of HDF5 is <code>data slicing</code>, by which a particular subsets of a dataset can be extracted for processing. This means that the entire dataset doesn&rsquo;t have to be read into memory (RAM); very helpful in allowing us to more efficiently work with very large (gigabytes or more) datasets!</p>
+<h4 id="iv-heterogeneous">iv. Heterogeneous</h4>
+<p>HDF5 files can store many different types of data within in the same file. For example, one <code>group</code> may contain a set of datasets to contain integer (numeric) and text (string) data. Or, one <code>dataset</code> can contain heterogeneous data types (e.g., both text and numeric data even images in one dataset).</p>
+<h4 id="v-summary-points">v. Summary Points</h4>
+<ul>
+<li><strong>Self-Describing</strong>: The datasets with an HDF5 file are self describing. This allows us to efficiently extract metadata without needing an additional metadata document.</li>
+<li><strong>Supporta Heterogeneous Data</strong>: Different types of datasets can be contained within one HDF5 file.</li>
+<li><strong>Supports Large, Complex Data</strong>: HDF5 is a compressed format that is designed to support large, heterogeneous, and complex datasets.</li>
+<li><strong>Supports Data Slicing</strong>: &ldquo;Data slicing&rdquo;, or extracting portions of the dataset as needed for analysis, means large files don&rsquo;t need to be completely read into the computers memory or RAM.</li>
+</ul>
+<h3 id="h5py-package"><code>h5py</code> package</h3>
+<p>We import the package <a href="https://docs.h5py.org/en/stable/">h5py</a> and then import the file using <a href="https://docs.h5py.org/en/stable/high/file.html?highlight=file">h5py.File</a> function, remembering to use &lsquo;<code>r</code>&rsquo; in order to specify read only.</p>
+<p>You can explore HDF5&rsquo;s hierarchical structure as you would that of a Python dictionary using the method <code>keys</code>. Each of keys is an HDF group. You can think of these groups as directories too.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">h5py</span>
+
+file <span style="color:#666">=</span> <span style="color:#ba2121">&#34;LIGO_data.hdf5&#34;</span>
+data <span style="color:#666">=</span> h5py<span style="color:#666">.</span>File(file, <span style="color:#ba2121">&#34;r&#34;</span>)
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(data))
+<span style="color:#008000;font-weight:bold">for</span> key <span style="color:#a2f;font-weight:bold">in</span> data<span style="color:#666">.</span>keys():
+    <span style="color:#008000">print</span>(key)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;class &#39;h5py._hl.files.File&#39;&gt;
+meta
+quality
+strain
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">group <span style="color:#666">=</span> data[<span style="color:#ba2121">&#39;strain&#39;</span>] 
+
+<span style="color:#008000;font-weight:bold">for</span> key <span style="color:#a2f;font-weight:bold">in</span> group<span style="color:#666">.</span>keys():
+    <span style="color:#008000">print</span>(key)
+
+strain <span style="color:#666">=</span> data[<span style="color:#ba2121">&#39;strain&#39;</span>][<span style="color:#ba2121">&#39;Strain&#39;</span>]<span style="color:#666">.</span>value
+num_samples <span style="color:#666">=</span> <span style="color:#666">10000</span>
+time <span style="color:#666">=</span> np<span style="color:#666">.</span>arange(<span style="color:#666">0</span>, <span style="color:#666">1</span>, <span style="color:#666">1</span><span style="color:#666">/</span>num_samples)
+
+plt<span style="color:#666">.</span>plot(time, strain[:num_samples])
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;GPS Time (s)&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;strain&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Strain
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204021202367.png" alt=""></p>
+<h2 id="24-importing-matlab-files">2.4 Importing MATLAB files</h2>
+<p>The standard library <code>scipy.io</code> has functions <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.io.loadmat.html">loadmat</a> and <code>savemat</code>, which allow us to read and write <code>.mat</code> files, respectively.</p>
+<p>A <code>.mat</code> file is simply a collection of many objects like strings, floats, vectors and arrays. This means when importing a <code>.mat</code> file in Python, we should expect to see a number of different variables and objects.</p>
+<p>We first import <code>scipy.io</code> and then load the <code>.mat</code> file. Then a dictionary object results returns. How this dictionary relates to a MATLAB workspace is straightforward: the keys of the Python dictionary are the MATLAB variable names and the values of the Python dictionary are the objects that are assigned to the variables.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">scipy.io</span>
+
+mat <span style="color:#666">=</span> scipy<span style="color:#666">.</span>io<span style="color:#666">.</span>loadmat(<span style="color:#ba2121">&#34;albeck_gene_expression.mat&#34;</span>)
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(mat))
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;class &#39;dict&#39;&gt;
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000">print</span>(mat<span style="color:#666">.</span>keys())
+<span style="color:#008000">print</span>(<span style="color:#008000">type</span>(mat[<span style="color:#ba2121">&#34;CYratioCyt&#34;</span>]))
+<span style="color:#008000">print</span>(mat[<span style="color:#ba2121">&#34;CYratioCyt&#34;</span>]<span style="color:#666">.</span>shape)
+
+data <span style="color:#666">=</span> mat[<span style="color:#ba2121">&#39;CYratioCyt&#39;</span>][<span style="color:#666">25</span>, <span style="color:#666">5</span>:]
+fig <span style="color:#666">=</span> plt<span style="color:#666">.</span>figure()
+plt<span style="color:#666">.</span>plot(data)
+plt<span style="color:#666">.</span>xlabel(<span style="color:#ba2121">&#39;time (min.)&#39;</span>)
+plt<span style="color:#666">.</span>ylabel(<span style="color:#ba2121">&#39;normalized fluorescence (measure of expression)&#39;</span>)
+plt<span style="color:#666">.</span>show()
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">dict_keys([&#39;__header__&#39;, &#39;__version__&#39;, &#39;__globals__&#39;, &#39;rfpCyt&#39;, &#39;rfpNuc&#39;, &#39;cfpNuc&#39;, &#39;cfpCyt&#39;, &#39;yfpNuc&#39;, &#39;yfpCyt&#39;, &#39;CYratioCyt&#39;])
+&lt;class &#39;numpy.ndarray&#39;&gt;
+(200, 137)
+</code></pre></div><p><img src="https://raw.githubusercontent.com/floating15/img/main/202204021251238.png" alt=""></p>
+<h1 id="3-relational-databases-in-python">3. Relational databases in Python</h1>
+<h2 id="31-creating-a-database-engine-in-python">3.1 Creating a database engine in Python</h2>
+<h3 id="intro-to-relational-database">Intro to Relational database</h3>
+<p>Relational database is a type of database that is based upon the Relational model of data, first described by Ted Codd in the late 1960s.</p>
+<p>A database consists of <strong>tables</strong>. A table generally represents one <code>entity type</code>. Notice that the table looks a great deal like a dataframe. In a relational database table, each <strong>row</strong> or record represents an <code>instance</code> of the <code>entity type</code>. Each <strong>column</strong> represents an <code>attribute</code> of each <code>instance</code>. In this sense, a table is entirely analogous to a dataframe. It is essential that each row contain a <strong>unique identifier</strong>, known as a primary key, that we can use to explicitly access the row in question.</p>
+<p>The really cool thing about relational databases is not merely that you have a bunch of tables, but that the tables are <strong>linked</strong>. Some column in a table corresponds precisely to the primary keys in other tables. This is cool because it means that you don&rsquo;t need to store all the details in one table, it saves an incredible amount of space.</p>
+<h3 id="build-engine">Build engine</h3>
+<p>We&rsquo;ll use an SQLite database as an example because SQLite is fast and simple while still containing enough functionality to introduce the necessary concepts of querying a database. There are many packages we could use to access an SQLite database such as <code>sqlite3</code> and <code>SQLAlchemy</code>. We&rsquo;ll use <a href="https://docs.sqlalchemy.org/en/14/intro.html">SQLAlchemy</a> as it works with many other Relational Database Management Systems, such as Postgres and MySQL.</p>
+<p>To connect to database, we need to import the relevant funtion <a href="https://docs.sqlalchemy.org/en/14/core/engines.html">create_engine</a> from the package <code>sqlalchemy</code>. We then use the function <code>create_engine</code> to fire up an SQL engine that will communicate our queries to the database. The only required argument of <code>create_engine</code> is a string that indicates the <strong>type</strong> of database you&rsquo;re connecting to and the <strong>name</strong> of the database.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sqlalchemy</span> <span style="color:#008000;font-weight:bold">import</span> create_engine
+
+engine <span style="color:#666">=</span> create_engine(<span style="color:#ba2121">&#34;sqlite:///Chinook.sqlite&#34;</span>)
+</code></pre></div><p>We would like to know the names of the tables it contains. To do this, apply the method <code>table_names</code> to the object engine. This will return a list of the table names.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sqlalchemy</span> <span style="color:#008000;font-weight:bold">import</span> create_engine
+
+engine <span style="color:#666">=</span> create_engine(<span style="color:#ba2121">&#34;sqlite:///Chinook.sqlite&#34;</span>)
+table_names <span style="color:#666">=</span> engine<span style="color:#666">.</span>table_names()
+<span style="color:#008000">print</span>(table_names)
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">[&#39;Album&#39;, &#39;Artist&#39;, &#39;Customer&#39;, &#39;Employee&#39;, &#39;Genre&#39;, &#39;Invoice&#39;, &#39;InvoiceLine&#39;, &#39;MediaType&#39;, &#39;Playlist&#39;, &#39;PlaylistTrack&#39;, &#39;Track&#39;]
+</code></pre></div><h2 id="32-querying-relational-databases-in-python">3.2 Querying relational databases in Python</h2>
+<p>The workflow of SQL querying will be as follows.</p>
+<ol>
+<li><strong>import the required packages and functions;</strong></li>
+<li><strong>create the engine;</strong>
+Create the engine object using the function <code>create_engine()</code>.</li>
+<li><strong>connect to it</strong>;
+To connect to the database after creating the engine, you create a <code>connection object</code> by applying the method <a href="https://docs.sqlalchemy.org/en/14/core/connections.html">connect( )</a> to the engine object.</li>
+<li><strong>query the database</strong> ;
+To query the DB, apply the method <code>execute()</code> to the connection object and pass it the relevant SQL query. The query <code>SELECT * FROM Table_Name</code>, where <code>Table_name</code> is the name of any of the tables in the database, returns all columns of all rows of the Table of interest.</li>
+<li><strong>save the results to a dataframe</strong>;
+query manipulation creates a sqlalchemy results object. To turn the results object into a dataframe, we apply the method <a href="https://docs.sqlalchemy.org/en/14/core/connections.html?highlight=fetchall#sqlalchemy.engine.Result.fetchall">fetchmany(size=None) or fetchall( )</a> to result object and save it as a dataframe using the pandas function <code>DataFrame()</code>.  Don&rsquo;t forget setting dataframe columns name by <code>df.columns = rs.keys()</code></li>
+<li><strong>close the connection</strong>.
+To close the connection, execute <code>close()</code> method on connection object.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sqlalchemy</span> <span style="color:#008000;font-weight:bold">import</span> create_engine
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span> <span style="color:#408080;font-style:italic"># step 1. import package</span>
+
+engine <span style="color:#666">=</span> create_engine(<span style="color:#ba2121">&#39;sqlite:///Chinook.sqlite&#39;</span>) <span style="color:#408080;font-style:italic"># step2. create engine</span>
+con <span style="color:#666">=</span> engine<span style="color:#666">.</span>connect() <span style="color:#408080;font-style:italic"># step3. create connection</span>
+rs <span style="color:#666">=</span> con<span style="color:#666">.</span>execute(<span style="color:#ba2121">&#34;select * from Album&#34;</span>) <span style="color:#408080;font-style:italic"># step4. query</span>
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(rs<span style="color:#666">.</span>fetchall()) <span style="color:#408080;font-style:italic"># step5. save result </span>
+df<span style="color:#666">.</span>columns <span style="color:#666">=</span> rs<span style="color:#666">.</span>keys()
+con<span style="color:#666">.</span>close() <span style="color:#408080;font-style:italic"># step6. close connection</span>
+
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">   AlbumId                                  Title  ArtistId
+0        1  For Those About To Rock We Salute You         1
+1        2                      Balls to the Wall         2
+2        3                      Restless and Wild         2
+3        4                      Let There Be Rock         1
+4        5                               Big Ones         3
+</code></pre></div><p>You can also leverage the <strong>context manager</strong> construct to open a connection, which will save you the trouble of closing the connection.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">engine <span style="color:#666">=</span> create_engine(<span style="color:#ba2121">&#39;sqlite:///Chinook.sqlite&#39;</span>)
+<span style="color:#008000;font-weight:bold">with</span> engine<span style="color:#666">.</span>connect() <span style="color:#008000;font-weight:bold">as</span> con:
+    rs <span style="color:#666">=</span> con<span style="color:#666">.</span>execute(<span style="color:#ba2121">&#34;select LastName, Title from Employee&#34;</span>)
+    df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(rs<span style="color:#666">.</span>fetchmany(size<span style="color:#666">=</span><span style="color:#666">3</span>))
+    df<span style="color:#666">.</span>columns <span style="color:#666">=</span> rs<span style="color:#666">.</span>keys()
+
+<span style="color:#008000">print</span>(<span style="color:#008000">len</span>(df))
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">3
+    LastName                Title
+0    Adams      General Manager
+1  Edwards        Sales Manager
+2  Peacock  Sales Support Agent
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">def</span> <span style="color:#00f">query_sql</span>(dbtype, dbname, query):
+    engine <span style="color:#666">=</span> create_engine(dbtype<span style="color:#666">+</span><span style="color:#ba2121">&#34;:///&#34;</span><span style="color:#666">+</span>dbname)
+    <span style="color:#008000;font-weight:bold">with</span> engine<span style="color:#666">.</span>connect() <span style="color:#008000;font-weight:bold">as</span> con:
+        rs <span style="color:#666">=</span> engine<span style="color:#666">.</span>execute(query)
+        df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(rs<span style="color:#666">.</span>fetchall())
+        df<span style="color:#666">.</span>columns <span style="color:#666">=</span> rs<span style="color:#666">.</span>keys()
+    <span style="color:#008000;font-weight:bold">return</span> df
+
+df <span style="color:#666">=</span> query_sql(
+    dbtype<span style="color:#666">=</span><span style="color:#ba2121">&#34;sqlite&#34;</span>, dbname<span style="color:#666">=</span><span style="color:#ba2121">&#34;Chinook.sqlite&#34;</span>,
+    query<span style="color:#666">=</span><span style="color:#ba2121">&#34;select * from Employee where ReportsTo=2.0 order by BirthDate&#34;</span>
+)
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">FirstName                Title  ReportsTo  ... Country PostalCode              Phone                Fax                     Email
+0           4     Park  Margaret  Sales Support Agent          2  ...  Canada    T2P 5G3  +1 (403) 263-4423  +1 (403) 263-4289  margaret@chinookcorp.com
+1           5  Johnson     Steve  Sales Support Agent          2  ...  Canada    T3B 1Y7   1 (780) 836-9987   1 (780) 836-9543     steve@chinookcorp.com
+2           3  Peacock      Jane  Sales Support Agent          2  ...  Canada    T2P 5M5  +1 (403) 262-3443  +1 (403) 262-6712      jane@chinookcorp.com
+
+</code></pre></div><h2 id="33-querying-relational-databases-directly-with-pandas">3.3 Querying relational databases directly with pandas</h2>
+<p>You can actually query datebase in 2 line, utilizing the pandas function <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_sql_query.html">read_sql_query</a> and passing it 2 arguments. The first argument will be the query you wish to make, the 2nd argument the engine you want to connect to.</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sqlalchemy</span> <span style="color:#008000;font-weight:bold">import</span> create_engine
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+
+engine <span style="color:#666">=</span> create_engine(<span style="color:#ba2121">&#34;sqlite:///Chinook.sqlite&#34;</span>)
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_sql_query(<span style="color:#ba2121">&#34;select * from Album&#34;</span>, engine)
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    AlbumId                                  Title  ArtistId
+0        1  For Those About To Rock We Salute You         1
+1        2                      Balls to the Wall         2
+2        3                      Restless and Wild         2
+3        4                      Let There Be Rock         1
+4        5                               Big Ones         3
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sqlalchemy</span> <span style="color:#008000;font-weight:bold">import</span> create_engine
+<span style="color:#008000;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#008000;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+
+engine <span style="color:#666">=</span> create_engine(<span style="color:#ba2121">&#34;sqlite:///Chinook.sqlite&#34;</span>)
+query <span style="color:#666">=</span> <span style="color:#ba2121">&#34;select * from Employee where EmployeeId &gt;= 6 order by BirthDate&#34;</span>
+df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_sql_query(query, engine)
+
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">EmployeeId  LastName FirstName       Title  ReportsTo  ... Country PostalCode              Phone                Fax                    Email
+0           8  Callahan     Laura    IT Staff          6  ...  Canada    T1H 1Y8  +1 (403) 467-3351  +1 (403) 467-8772    laura@chinookcorp.com
+1           7      King    Robert    IT Staff          6  ...  Canada    T1K 5N8  +1 (403) 456-9986  +1 (403) 456-8485   robert@chinookcorp.com
+2           6  Mitchell   Michael  IT Manager          1  ...  Canada    T3B 0C5  +1 (403) 246-9887  +1 (403) 246-9899  michael@chinookcorp.com
+</code></pre></div><p>Recall SQL inner join syntax:</p>
+<div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#008000;font-weight:bold">select</span><span style="color:#bbb"> </span><span style="color:#666">*</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">from</span><span style="color:#bbb"> </span>table1<span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">inner</span><span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">join</span><span style="color:#bbb"> </span>table2<span style="color:#bbb"> </span><span style="color:#008000;font-weight:bold">on</span><span style="color:#bbb"> </span>table1.col1<span style="color:#bbb"> </span><span style="color:#666">=</span><span style="color:#bbb"> </span>table2.col2<span style="color:#bbb">
+</span></code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py"><span style="color:#008000;font-weight:bold">with</span> engine<span style="color:#666">.</span>connect() <span style="color:#008000;font-weight:bold">as</span> con:
+    rs <span style="color:#666">=</span> con<span style="color:#666">.</span>execute(<span style="color:#ba2121">&#34;select Title, Name from Album inner join Artist on Album.ArtistID=Artist.ArtistID&#34;</span>)
+    df <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(rs<span style="color:#666">.</span>fetchall())
+    df<span style="color:#666">.</span>columns <span style="color:#666">=</span> rs<span style="color:#666">.</span>keys()
+
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">                                    Title       Name
+0  For Those About To Rock We Salute You      AC/DC
+1                      Balls to the Wall     Accept
+2                      Restless and Wild     Accept
+3                      Let There Be Rock      AC/DC
+4                               Big Ones  Aerosmith
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-py" data-lang="py">df <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_sql_query(
+    <span style="color:#ba2121">&#34;select * from PlaylistTrack INNER JOIN Track on PlaylistTrack.TrackId = Track.TrackId where Milliseconds &lt; 250000&#34;</span>,
+    engine
+)
+
+<span style="color:#008000">print</span>(df<span style="color:#666">.</span>head())
+</code></pre></div><div class="highlight"><pre tabindex="0" style=";-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    PlaylistId  TrackId  TrackId              Name  AlbumId  ...  GenreId  Composer Milliseconds    Bytes  UnitPrice
+0           1     3390     3390  One and the Same      271  ...       23      None       217732  3559040       0.99
+1           1     3392     3392     Until We Fall      271  ...       23      None       230758  3766605       0.99
+2           1     3393     3393     Original Fire      271  ...       23      None       218916  3577821       0.99
+3           1     3394     3394       Broken City      271  ...       23      None       228366  3728955       0.99
+4           1     3395     3395          Somedays      271  ...       23      None       213831  3497176       0.99
+</code></pre></div>
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="https://yihui.org">Yihui Xie</a> 2017 &ndash; 2022 | <a href="https://www.baidu.com">Github</a> | <a href="https://www.zhihu.com">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
+
+
+
+
+

@@ -29,13 +29,22 @@
     <loc>/tags/</loc>
     <lastmod>2021-07-23T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/tags/data-analysis/</loc>
+    <lastmod>2020-05-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/2020/05/01/importing-data-in-python-ii/</loc>
+    <lastmod>2020-05-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/python/</loc>
+    <lastmod>2020-05-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/2020/04/26/importing-data-in-python-i/</loc>
+    <lastmod>2020-04-26T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/tags/data-visualization/</loc>
     <lastmod>2020-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/2020/04/23/data-visualization-iii-seaborn/</loc>
-    <lastmod>2020-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/python/</loc>
     <lastmod>2020-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/2020/04/20/data-visualization-ii-seaborn/</loc>
